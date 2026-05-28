@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Dealer Settings</title>
+<meta name="description" content="Manage your Dealer Hub account and store preferences.">
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#0e7490',     /* Indigo/Teal for Dealers */
+                    secondary: '#d97706',   /* amber-gold */
+                    surface: '#f0f4f8',
+                    'surface-container': '#e2e8f0',
+                    'surface-container-low': '#ffffff',
+                    'surface-container-high': '#cbd5e1',
+                    'on-surface': '#0f172a',
+                    'on-surface-variant': '#334155',
+                    'outline-variant': 'rgba(14, 116, 144, 0.2)'
+                },
+                fontFamily: {
+                    headline: ['Epilogue', 'serif'],
+                    body: ['Manrope', 'sans-serif'],
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: rgba(14, 116, 144, 0.1); border-radius: 99px; transition: .3s; border: 1px solid rgba(14, 116, 144, 0.15); }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: #0e7490; border-radius: 50%; transition: .3s; }
+    input:checked+.slider { background: rgba(14, 116, 144, 0.15); border-color: #06b6d4; }
+    input:checked+.slider:before { transform: translateX(20px); background: #06b6d4; }
+    .agro-card { background: white; border-radius: 2.5rem; transition: transform 0.3s ease; }
+    .field-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; }
+    .field-input { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 0.75rem 1rem; font-size: 0.875rem; transition: all 0.3s; }
+    .field-input:focus { border-color: #0e7490; box-shadow: 0 0 0 2px rgba(14, 116, 144, 0.2); outline: none; background: white; }
+    .btn-agro { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.3s; font-size: 11px; }
+    .btn-primary { background: #0e7490; color: white; }
+    .btn-primary:hover { background: #155e75; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(14, 116, 144, 0.3); }
+</style>
+</head>
+
+<body class="bg-[#f0f4f8] text-on-surface flex overflow-hidden h-screen font-body">
+
+<!-- Sidebar Navigation -->
+<aside class="sidebar hidden md:flex flex-col h-full py-8 w-72 left-0 top-0 fixed border-r border-outline-variant z-50 shrink-0 bg-white shadow-sm">
+    <div onclick="window.location.href='index.html'" class="px-6 mb-10 flex items-center space-x-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center text-primary border-2 border-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+        </div>
+        <div>
+            <h1 class="font-headline text-xl text-primary font-black tracking-tighter">⚙️ Dealer Hub</h1>
+            <p class="font-body text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mt-1">Industrial Network</p>
+        </div>
+    </div>
+    <nav class="flex-1 space-y-2 px-2">
+        <a class="flex items-center gap-4 py-3 px-6 transition-all rounded-xl hover:bg-surface-container text-on-surface-variant font-bold group" href="dealer_dashboard.html">
+            <span class="material-symbols-outlined group-hover:text-primary">precision_manufacturing</span>
+            <span class="text-xs uppercase tracking-widest">Dealer Hub</span>
+        </a>
+        <a class="flex items-center gap-4 py-3 px-6 transition-all rounded-xl hover:bg-surface-container text-on-surface-variant font-bold group" href="marketplace.html">
+            <span class="material-symbols-outlined group-hover:text-secondary text-secondary">storefront</span>
+            <span class="text-xs uppercase tracking-widest">Agro Store</span>
+        </a>
+        <a class="flex items-center gap-4 py-3 px-6 transition-all rounded-xl hover:bg-surface-container text-on-surface-variant font-bold group" href="dealer_earnings.html">
+            <span class="material-symbols-outlined group-hover:text-primary">analytics</span>
+            <span class="text-xs uppercase tracking-widest">Sales Analysis</span>
+        </a>
+        <a class="flex items-center gap-4 py-3 px-6 transition-all rounded-xl text-primary border-r-4 border-primary bg-cyan-50 font-bold" href="dealer_settings.html">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">settings</span>
+            <span class="text-xs uppercase tracking-widest">Store Settings</span>
+        </a>
+        <a class="flex items-center gap-4 text-red-500 py-3 px-6 hover:bg-red-50 transition-all border-t border-outline-variant mt-4 pt-4 rounded-xl" href="signin.html">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-xs uppercase tracking-widest">Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- Main -->
+<main class="flex-1 ml-0 md:ml-72 flex flex-col h-screen overflow-hidden">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md flex justify-between items-center px-8 py-6 shrink-0 border-b border-outline-variant w-full">
+        <div>
+            <h2 class="font-headline tracking-tighter text-on-surface text-3xl font-black text-primary">Store Configuration</h2>
+            <p class="text-on-surface-variant font-bold text-[10px] uppercase tracking-widest mt-0.5">Dealer ID: DD-7782-NEPAL</p>
+        </div>
+        <div class="flex items-center gap-4">
+             <div class="flex items-center space-x-3 bg-slate-50 px-4 py-2 rounded-full border border-outline-variant">
+                <span id="navUserName" class="text-sm font-black font-body text-on-surface">Dealer Name</span>
+                <span class="material-symbols-outlined text-primary text-base">verified_user</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-12">
+        <div class="max-w-4xl mx-auto space-y-8">
+
+            <!-- Store Profile -->
+            <section class="agro-card p-10 relative overflow-hidden group border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/10 transition-all duration-700"></div>
+                <div class="relative z-10">
+                    <span class="text-[9px] uppercase tracking-[0.3em] text-primary font-black">Authorized Establishment</span>
+                    <h3 class="font-headline text-2xl font-black text-on-surface mb-8 mt-1 tracking-tight">Store Profile</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+                        <div class="space-y-1">
+                            <label class="field-label">Store Legal Name</label>
+                            <input id="storeName" class="field-input w-full" placeholder="e.g. Nepal Agromart">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="field-label">Dealer Contact Person</label>
+                            <input id="dealerPerson" class="field-input w-full" placeholder="e.g. Ramesh KC">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="field-label">Official Email</label>
+                            <input id="dealerEmail" class="field-input w-full" placeholder="store@agroharvest.com" type="email">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="field-label">Business Phone</label>
+                            <input id="dealerPhone" class="field-input w-full" placeholder="+977-98XXXXXXXX">
+                        </div>
+                        <div class="space-y-1 sm:col-span-2">
+                             <label class="field-label">Physical Warehouse Address</label>
+                             <input id="storeAddress" class="field-input w-full" placeholder="Plot 22, Industrial Way, Kathmandu">
+                        </div>
+                    </div>
+                    
+                    <button onclick="saveStoreProfile()" class="mt-10 btn-agro btn-primary shadow-xl">
+                        <span class="material-symbols-outlined text-base">domain_verification</span> Update Establishment
+                    </button>
+                </div>
+            </section>
+
+            <!-- Store Logistics -->
+            <section class="agro-card p-10 border border-outline-variant shadow-sm">
+                <span class="text-[9px] uppercase tracking-[0.3em] text-primary font-black">Supply Chain</span>
+                <h3 class="font-headline text-2xl font-black text-on-surface mb-8 mt-1 tracking-tight">Logistics & Supply</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div class="space-y-1">
+                        <label class="field-label">Operational District</label>
+                        <select id="dealerDistrict" class="field-input w-full cursor-pointer appearance-none bg-slate-50">
+                            <option>Kathmandu</option>
+                            <option>Pokhara</option>
+                            <option>Chitwan</option>
+                            <option>Biratnagar</option>
+                            <option>Jumla</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Agro License No.</label>
+                        <input id="licenseNo" class="field-input w-full" placeholder="AG-2026-XXXX">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Primary supply Category</label>
+                        <select id="supplyCategory" class="field-input w-full bg-slate-50">
+                            <option>Heavy Machinery</option>
+                            <option>Small Tools</option>
+                            <option>Fertilizers</option>
+                            <option>Irrigation Setup</option>
+                            <option>Seeds & Grains</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Minimum Order Volume (रू)</label>
+                        <input id="minOrder" class="field-input w-full" placeholder="e.g. 5000">
+                    </div>
+                </div>
+                <button onclick="saveLogistics()" class="mt-10 btn-agro border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-sm">
+                    <span class="material-symbols-outlined text-base">local_shipping</span> Save Logistics Policy
+                </button>
+            </section>
+
+             <!-- Notification Preferences -->
+             <section class="agro-card p-10 border border-outline-variant shadow-sm">
+                <span class="text-[9px] uppercase tracking-[0.3em] text-primary font-black">Automation</span>
+                <h3 class="font-headline text-2xl font-black text-on-surface mb-8 mt-1 tracking-tight">Hub Notifications</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-primary/10 transition-all">
+                        <div>
+                            <p class="font-black text-on-surface text-sm uppercase tracking-tight">Farmer Order Alerts</p>
+                            <p class="text-[10px] text-on-surface-variant font-bold mt-1">Instant notification for new equipment or supply requests</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-primary/10 transition-all">
+                        <div>
+                            <p class="font-black text-on-surface text-sm uppercase tracking-tight">Inventory Threshold Alerts</p>
+                            <p class="text-[10px] text-on-surface-variant font-bold mt-1">Notify when stock for a specific item drops below 10%</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-primary/10 transition-all">
+                        <div>
+                            <p class="font-black text-on-surface text-sm uppercase tracking-tight">Monthly Sales Digest</p>
+                            <p class="text-[10px] text-on-surface-variant font-bold mt-1">Detailed breakdown of gross revenue and analytics</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reset -->
+            <section class="agro-card p-10 border border-red-100 bg-red-50/20">
+                 <h3 class="font-headline text-xl font-bold text-red-900 mb-4">Establishment Reset</h3>
+                 <p class="text-xs text-red-700 font-bold mb-6">Resetting your establishment will clear all listed inventory and sales history. This action cannot be undone.</p>
+                 <button onclick="if(confirm('Wipe all store data?')) { localStorage.clear(); window.location.href='signin.html'; }" class="px-6 py-3 bg-white border border-red-200 text-red-600 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all transition-all duration-300">
+                     Authorize Wipe
+                 </button>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-8 right-8 z-[200] hidden">
+    <div class="bg-primary text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span id="toastMsg" class="font-bold text-sm">Updated Successfully</span>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const name = localStorage.getItem('farmerName') || 'Dealer Hub';
+        document.getElementById('navUserName').textContent = name;
+        document.getElementById('storeName').value = name;
+        
+        // Mock data for other fields
+        document.getElementById('dealerPerson').value = localStorage.getItem('dealerPerson') || '';
+        document.getElementById('dealerEmail').value = localStorage.getItem('farmerEmail') || '';
+        document.getElementById('dealerPhone').value = localStorage.getItem('farmerPhone') || '';
+        document.getElementById('dealerDistrict').value = localStorage.getItem('selectedDistrict') || 'Kathmandu';
+    })();
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    function saveStoreProfile() {
+        const name = document.getElementById('storeName').value;
+        localStorage.setItem('farmerName', name);
+        localStorage.setItem('dealerPerson', document.getElementById('dealerPerson').value);
+        localStorage.setItem('farmerEmail', document.getElementById('dealerEmail').value);
+        localStorage.setItem('farmerPhone', document.getElementById('dealerPhone').value);
+        showToast('Establishment Data Updated!');
+    }
+
+    function saveLogistics() {
+        localStorage.setItem('selectedDistrict', document.getElementById('dealerDistrict').value);
+        showToast('Logistics Policy Secured!');
+    }
+</script>
+
+</body>
+</html>

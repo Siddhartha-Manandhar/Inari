@@ -1,0 +1,275 @@
+version: "2"
+type: frontend
+tech_stack:
+  - language: JavaScript (Vanilla)
+  - framework: Node.js + Express
+  - ui_library: Custom CSS (no framework)
+  - database: PostgreSQL (pg driver)
+  - other: HTML5 static pages served via Express
+
+routes:
+  - path: /
+    file: public/index.html
+    auth_required: false
+    description: Landing/home page for AgroHarvest
+  - path: /signin
+    file: public/signin.html
+    auth_required: false
+    description: User sign-in page
+  - path: /signup
+    file: public/signup.html
+    auth_required: false
+    description: User registration page (farmer, dealer, agent roles)
+  - path: /dashboard
+    file: public/dashboard.html
+    auth_required: true
+    description: Farmer dashboard with product listing, orders, contracts, earnings
+  - path: /dealer_dashboard.html
+    file: public/dealer_dashboard.html
+    auth_required: true
+    description: Dealer dashboard with inventory and delivery tracking
+  - path: /agent_dashboard.html
+    file: public/agent_dashboard.html
+    auth_required: true
+    description: Agent dashboard for managing deliveries
+  - path: /marketplace.html
+    file: public/marketplace.html
+    auth_required: false
+    description: Product marketplace for customers/dealers to browse
+  - path: /orders.html
+    file: public/orders.html
+    auth_required: true
+    description: Orders management page
+  - path: /checkout.html
+    file: public/checkout.html
+    auth_required: true
+    description: Checkout page for placing orders
+  - path: /earnings.html
+    file: public/earnings.html
+    auth_required: true
+    description: Farmer earnings overview
+  - path: /dealer_earnings.html
+    file: public/dealer_earnings.html
+    auth_required: true
+    description: Dealer earnings overview
+  - path: /settings.html
+    file: public/settings.html
+    auth_required: true
+    description: Farmer/user settings page
+  - path: /dealer_settings.html
+    file: public/dealer_settings.html
+    auth_required: true
+    description: Dealer settings page
+  - path: /delivery.html
+    file: public/delivery.html
+    auth_required: true
+    description: Delivery tracking page
+  - path: /market_trends.html
+    file: public/market_trends.html
+    auth_required: false
+    description: Live market price data from Kalimati Market
+
+features:
+  - name: User Signup
+    description: Register as farmer, dealer, or agent with name, email, password, role, district
+    files:
+      - public/signup.html
+    entry_route: /signup
+    user_interactions:
+      - Fill name input field
+      - Fill email input field
+      - Fill password input field
+      - Select role (farmer/dealer/agent)
+      - Select district
+      - Click Sign Up button
+      - See success or error message
+    api_calls:
+      - method: POST
+        endpoint: /api/signup
+    auth_required: false
+
+  - name: User Sign In
+    description: Login with email and password credentials
+    files:
+      - public/signin.html
+    entry_route: /signin
+    user_interactions:
+      - Fill email input field
+      - Fill password input field
+      - Click Sign In button
+      - Redirected to role-specific dashboard on success
+      - See error message on invalid credentials
+    api_calls:
+      - method: POST
+        endpoint: /api/signin
+    auth_required: false
+
+  - name: Farmer Dashboard
+    description: Farmers can list products, view orders, manage contracts, and track earnings
+    files:
+      - public/dashboard.html
+    entry_route: /dashboard
+    user_interactions:
+      - View dashboard stats (total products, orders, earnings)
+      - Add a new product (name, yield, price, category, harvest date, image)
+      - View listed products
+      - Delete a product
+      - View incoming orders
+      - Accept an order
+      - View contracts
+      - Accept a contract
+      - Navigate to earnings, orders, settings, market trends, marketplace
+    api_calls:
+      - method: GET
+        endpoint: /api/products
+      - method: POST
+        endpoint: /api/products
+      - method: DELETE
+        endpoint: /api/products/:id
+      - method: GET
+        endpoint: /api/orders/farmer/:farmerName
+      - method: POST
+        endpoint: /api/orders/:id/accept
+      - method: GET
+        endpoint: /api/contracts
+      - method: POST
+        endpoint: /api/contracts/accept
+    auth_required: true
+
+  - name: Dealer Dashboard
+    description: Dealers can manage inventory and track deliveries
+    files:
+      - public/dealer_dashboard.html
+    entry_route: /dealer_dashboard.html
+    user_interactions:
+      - View inventory list
+      - Add new inventory item
+      - Delete inventory item
+      - View delivery status
+      - Navigate to dealer earnings, settings, market trends
+    api_calls:
+      - method: GET
+        endpoint: /api/products
+      - method: POST
+        endpoint: /api/products
+      - method: DELETE
+        endpoint: /api/products/:id
+    auth_required: true
+
+  - name: Agent Dashboard
+    description: Agents manage and update delivery statuses for orders
+    files:
+      - public/agent_dashboard.html
+    entry_route: /agent_dashboard.html
+    user_interactions:
+      - View all pending/in-transit orders
+      - Update order status (Processing, Shipped, Delivered, Cancelled)
+      - Navigate to market trends
+    api_calls:
+      - method: GET
+        endpoint: /api/orders
+      - method: POST
+        endpoint: /api/orders/:id/status
+    auth_required: true
+
+  - name: Marketplace
+    description: Browse all available products and add to cart for checkout
+    files:
+      - public/marketplace.html
+    entry_route: /marketplace.html
+    user_interactions:
+      - View all available products
+      - Filter products by category
+      - Add product to cart
+      - View cart
+      - Proceed to checkout
+    api_calls:
+      - method: GET
+        endpoint: /api/products
+    auth_required: false
+
+  - name: Checkout and Order Placement
+    description: Place an order for products in cart with delivery address
+    files:
+      - public/checkout.html
+    entry_route: /checkout.html
+    user_interactions:
+      - View cart items
+      - Fill delivery address
+      - Confirm and place order
+      - See order confirmation
+    api_calls:
+      - method: POST
+        endpoint: /api/orders
+    auth_required: true
+
+  - name: Orders Management
+    description: View and manage orders placed by customers
+    files:
+      - public/orders.html
+    entry_route: /orders.html
+    user_interactions:
+      - View all orders list
+      - Filter orders by status
+      - Update order status
+      - Delete an order
+    api_calls:
+      - method: GET
+        endpoint: /api/orders
+      - method: POST
+        endpoint: /api/orders/:id/status
+      - method: DELETE
+        endpoint: /api/orders/:id
+    auth_required: true
+
+  - name: Earnings Overview
+    description: Farmers and dealers can view revenue and pending earnings
+    files:
+      - public/earnings.html
+      - public/dealer_earnings.html
+    entry_route: /earnings.html
+    user_interactions:
+      - View total revenue
+      - View pending amount
+      - View recent orders list
+    api_calls:
+      - method: GET
+        endpoint: /api/earnings/:farmerName
+    auth_required: true
+
+  - name: Live Market Trends
+    description: View live vegetable and fruit prices from Kalimati Market
+    files:
+      - public/market_trends.html
+    entry_route: /market_trends.html
+    user_interactions:
+      - View live price grid with min/max/avg prices
+      - Search/filter commodities
+    api_calls:
+      - method: GET
+        endpoint: /api/market-data
+    auth_required: false
+
+  - name: Settings
+    description: Update account and profile settings
+    files:
+      - public/settings.html
+      - public/dealer_settings.html
+    entry_route: /settings.html
+    user_interactions:
+      - View current settings
+      - Update profile information
+      - Toggle dark/light theme
+    api_calls: []
+    auth_required: true
+
+known_limitations:
+  - issue: "FIXED – Auth guard added to all protected pages (dashboard, dealer_dashboard, agent_dashboard); unauthenticated users are redirected to signin.html immediately"
+    location: public/dashboard.html, public/dealer_dashboard.html, public/agent_dashboard.html
+    impact: Resolved – pages now enforce login before rendering
+  - issue: "FIXED – Market data proxy now has static fallback (12 common crops), an in-memory 10-minute cache, and an 8-second timeout; the page never returns 500"
+    location: server.js /api/market-data
+    impact: Resolved – market trends page gracefully degrades when external API is unavailable
+  - issue: "FIXED – Product images are now compressed via canvas (max 800×800px, 75% JPEG quality) before being stored as base64, reducing payload by ~80-90%"
+    location: public/dashboard.html, public/dealer_dashboard.html
+    impact: Resolved – large image uploads no longer cause performance issues

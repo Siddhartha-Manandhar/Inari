@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Secure Checkout</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: { primary: '#16a34a', secondary: '#d97706', surface: '#f4f9f4', 'surface-container': '#e8f5e9', 'surface-container-low': '#ffffff', 'on-surface': '#064e3b', 'on-surface-variant': '#14532d', 'outline-variant': 'rgba(22, 163, 74, 0.2)' },
+                fontFamily: { headline: ['Epilogue', 'serif'], body: ['Manrope', 'sans-serif']}
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body overflow-x-hidden min-h-screen flex flex-col">
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4 shadow-sm bg-white/80 backdrop-blur-md border-b border-outline-variant">
+    <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer">
+        <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+        <button onclick="window.location.href='marketplace.html'" class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-bold"><span class="material-symbols-outlined text-sm">arrow_back</span> Back to Market</button>
+    </div>
+</nav>
+
+<main class="flex-grow pt-28 pb-12 max-w-6xl mx-auto px-6 w-full flex flex-col lg:flex-row gap-10">
+    <!-- Cart Items -->
+    <div class="flex-1 space-y-6">
+        <h1 class="font-headline text-4xl font-black">Your Cart</h1>
+        <div id="cartList" class="space-y-4">
+            <!-- Items load dynamically -->
+        </div>
+    </div>
+
+    <!-- Order Summary -->
+    <aside class="w-full lg:w-96 shrink-0">
+        <div class="bg-white border border-outline-variant rounded-3xl p-8 shadow-xl sticky top-28">
+            <h2 class="font-headline text-2xl font-bold mb-6">Order Summary</h2>
+            <div class="space-y-4 text-sm font-bold text-on-surface-variant border-b border-outline-variant pb-6 mb-6">
+                <div class="flex justify-between"><span>Subtotal</span><span id="subtotal">रू 0</span></div>
+                <div class="flex justify-between"><span>Delivery Fee</span><span class="text-secondary">रू 150</span></div>
+            </div>
+            <div class="flex justify-between items-end mb-8">
+                <span class="font-bold uppercase tracking-widest text-xs">Total Amount</span>
+                <span id="totalCost" class="font-headline font-black text-3xl text-primary">रू 0</span>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Delivery Method -->
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Delivery Method</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-start gap-3 p-3 rounded-xl border-2 border-outline-variant cursor-pointer hover:border-primary transition-colors" id="lbl-agent">
+                            <input type="radio" name="deliveryType" value="agent" checked class="mt-0.5 accent-green-600" onchange="setDeliveryType('agent')">
+                            <div>
+                                <p class="font-bold text-sm text-on-surface">🚛 Via Agent</p>
+                                <p class="text-[10px] text-on-surface-variant mt-0.5">Standard home delivery by dispatch agent</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 rounded-xl border-2 border-outline-variant cursor-pointer hover:border-secondary transition-colors" id="lbl-direct">
+                            <input type="radio" name="deliveryType" value="direct" class="mt-0.5 accent-amber-600" onchange="setDeliveryType('direct')">
+                            <div>
+                                <p class="font-bold text-sm text-on-surface">🧑‍🌾 Direct from Farmer</p>
+                                <p class="text-[10px] text-on-surface-variant mt-0.5">Farmer delivers or you pick up directly</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Delivery Address</label>
+                    <input type="text" id="addressInput" class="w-full bg-surface-container border border-outline-variant rounded-xl text-sm p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary text-on-surface" placeholder="e.g. Baneshwor, Kathmandu">
+                </div>
+                <button onclick="placeOrder()" id="placeOrderBtn" class="w-full h-14 bg-primary text-white rounded-full font-bold text-lg hover:bg-green-700 transition shadow-[0_10px_20px_rgba(22,163,74,0.3)] hover:-translate-y-1 transform flex justify-center items-center gap-2">
+                    <span class="material-symbols-outlined">payments</span> Place Order
+                </button>
+            </div>
+        </div>
+    </aside>
+</main>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed top-6 right-6 z-[200] hidden">
+    <div id="toastBox" class="border px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 bg-surface-container-high border-primary text-on-surface">
+        <span id="toastIcon" class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span id="toastMsg" class="text-sm font-semibold">Order placed successfully!</span>
+    </div>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem('userCart') || '[]');
+    const customerName = localStorage.getItem('farmerName') || 'Guest';
+    const customerId   = localStorage.getItem('userId') || null;
+    let selectedDeliveryType = 'agent';
+
+    function setDeliveryType(type) {
+        selectedDeliveryType = type;
+        document.getElementById('lbl-agent').classList.toggle('border-primary', type === 'agent');
+        document.getElementById('lbl-agent').classList.toggle('border-outline-variant', type !== 'agent');
+        document.getElementById('lbl-direct').classList.toggle('border-secondary', type === 'direct');
+        document.getElementById('lbl-direct').classList.toggle('border-outline-variant', type !== 'direct');
+    }
+    // Set initial highlight
+    document.addEventListener('DOMContentLoaded', () => setDeliveryType('agent'));
+    setTimeout(() => setDeliveryType('agent'), 100);
+
+    function showToast(msg, isError = false) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        const box = document.getElementById('toastBox');
+        const icon = document.getElementById('toastIcon');
+        if (isError) {
+            box.className = 'border px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 bg-red-50 border-red-300 text-red-700';
+            icon.textContent = 'error';
+            icon.className = 'material-symbols-outlined text-red-500 text-base';
+        } else {
+            box.className = 'border px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 bg-surface-container-high border-primary text-on-surface';
+            icon.textContent = 'check_circle';
+            icon.className = 'material-symbols-outlined text-primary text-base';
+        }
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    const CROP_EMOJIS = {'carrot':'🥕','gajar':'🥕','radish':'🌱','spinach':'🥬','eggplant':'🍆','pumpkin':'🎃','habanero':'🌶️','soybean':'🫘','bamboo':'🍃','coriander':'🌿','mustard':'🌿','potato':'🥔','alu':'🥔','tomato':'🍅','golbheda':'🍅','onion':'🧅','pyaj':'🧅','cauliflower':'🥦','default':'📦'};
+    function getCropEmoji(name) {
+        const n = name.toLowerCase();
+        for (const [key, emoji] of Object.entries(CROP_EMOJIS)) {
+            if (n.includes(key)) return emoji;
+        }
+        return CROP_EMOJIS.default;
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cartList');
+        if (cart.length === 0) {
+            list.innerHTML = `<div class="bg-white p-12 text-center rounded-3xl border border-outline-variant"><span class="material-symbols-outlined text-6xl text-outline-variant mb-4 block">shopping_cart</span><h3 class="font-headline font-bold text-xl">Your cart is empty</h3><p class="text-sm mt-2 text-on-surface-variant">Return to the marketplace to add some yields.</p><button onclick="window.location.href='marketplace.html'" class="mt-6 px-6 py-2 border border-primary text-primary rounded-full font-bold hover:bg-primary hover:text-white transition">Go to Market</button></div>`;
+            document.getElementById('subtotal').innerText = 'रू 0';
+            document.getElementById('totalCost').innerText = 'रू 0';
+            return;
+        }
+
+        let subtotal = 0;
+        list.innerHTML = cart.map((item, index) => {
+            const itemTotal = item.price * item.qty;
+            subtotal += itemTotal;
+            const emoji = getCropEmoji(item.name);
+            return `
+            <div class="bg-white p-5 rounded-2xl border border-outline-variant flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-20 h-20 bg-surface-container rounded-xl flex items-center justify-center text-4xl shrink-0">${emoji}</div>
+                <div class="flex-grow">
+                    <h4 class="font-headline font-bold text-lg text-on-surface">${item.name}</h4>
+                    <p class="text-primary font-bold text-sm">रू ${item.price} /kg</p>
+                    ${item.farmerName ? `<p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mt-0.5">by ${item.farmerName}</p>` : ''}
+                </div>
+                <div class="flex items-center gap-3 bg-surface-container rounded-full px-4 py-2 shrink-0">
+                    <button onclick="updateQty(${index}, -1)" class="text-on-surface-variant hover:text-primary font-bold text-lg w-6 h-6 flex items-center justify-center">-</button>
+                    <span class="font-bold w-6 text-center">${item.qty}</span>
+                    <button onclick="updateQty(${index}, 1)" class="text-on-surface-variant hover:text-primary font-bold text-lg w-6 h-6 flex items-center justify-center">+</button>
+                </div>
+                <div class="w-24 text-right shrink-0">
+                    <p class="font-black text-lg text-on-surface">रू ${itemTotal}</p>
+                    <button onclick="removeItem(${index})" class="text-[10px] text-red-400 hover:text-red-600 font-bold mt-1">Remove</button>
+                </div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('subtotal').innerText = `रू ${subtotal}`;
+        document.getElementById('totalCost').innerText = `रू ${subtotal + 150}`;
+    }
+
+    function updateQty(index, change) {
+        if (change > 0) {
+            const maxQty = cart[index].availableKg !== undefined ? cart[index].availableKg : 99999;
+            if (cart[index].qty >= maxQty) {
+                showToast(`⚠️ Only ${maxQty} kg available for ${cart[index].name}!`, true);
+                return;
+            }
+        }
+        cart[index].qty += change;
+        if (cart[index].qty <= 0) cart.splice(index, 1);
+        localStorage.setItem('userCart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('userCart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    async function placeOrder() {
+        if (cart.length === 0) { showToast('Your cart is empty!', true); return; }
+        const address = document.getElementById('addressInput').value.trim();
+        if (!address) { showToast('Please enter a delivery address.', true); return; }
+
+        const btn = document.getElementById('placeOrderBtn');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Placing Order...`;
+
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0) + 150;
+
+        // Determine farmerName from cart items (use first item's farmerName)
+        const farmerName = cart[0]?.farmerName || null;
+
+        try {
+            const res = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customerName,
+                    customerId,
+                    items: cart,
+                    total,
+                    address,
+                    farmerName,
+                    deliveryType: selectedDeliveryType
+                })
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                // Clear cart
+                localStorage.setItem('userCart', '[]');
+                cart = [];
+                renderCart();
+
+                showToast('✅ Order placed! Farmer will be notified.');
+                btn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Order Placed!`;
+                btn.className = btn.className.replace('bg-primary', 'bg-green-600');
+
+                setTimeout(() => { window.location.href = 'orders.html'; }, 2000);
+            } else {
+                showToast('Failed to place order: ' + result.error, true);
+                btn.disabled = false;
+                btn.innerHTML = `<span class="material-symbols-outlined">payments</span> Place Order`;
+            }
+        } catch (e) {
+            console.error(e);
+            showToast('Server connection error. Please try again.', true);
+            btn.disabled = false;
+            btn.innerHTML = `<span class="material-symbols-outlined">payments</span> Place Order`;
+        }
+    }
+
+    renderCart();
+</script>
+</body>
+</html>

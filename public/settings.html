@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Settings</title>
+<meta name="description" content="Manage your AgroHarvest guardian account, farm profile, and notification preferences.">
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script id="tailwind-config">
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#16a34a',     /* green-600 */
+                    secondary: '#d97706',   /* amber-gold */
+                    surface: '#f4f9f4',
+                    'surface-container': '#e8f5e9',
+                    'surface-container-low': '#ffffff',
+                    'surface-container-high': '#c8e6c9',
+                    'on-surface': '#064e3b',
+                    'on-surface-variant': '#14532d',
+                    'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                },
+                fontFamily: {
+                    headline: ['Epilogue', 'serif'],
+                    body: ['Manrope', 'sans-serif'],
+                    label: ['Manrope', 'sans-serif']
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    /* Toggle switch */
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: rgba(22,163,74,0.1); border-radius: 99px; transition: .3s; border: 1px solid rgba(22,163,74,0.15); }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: #14532d; border-radius: 50%; transition: .3s; }
+    input:checked+.slider { background: rgba(22,163,74,0.15); border-color: #4ade80; }
+    input:checked+.slider:before { transform: translateX(20px); background: #4ade80; box-shadow: 0 0 10px rgba(74,222,128,0.5); }
+    .avatar-ring { background: conic-gradient(#f59e0b, #4ade80, #152815, #f59e0b); padding: 2px; border-radius: 50%; }
+</style>
+</head>
+
+<body class="bg-[#f4f9f4] text-on-surface flex overflow-hidden h-screen font-body">
+
+<!-- Sidebar Navigation -->
+<aside class="sidebar hidden md:flex flex-col h-full py-8 w-72 left-0 top-0 fixed border-r border-outline-variant z-50 shrink-0">
+    <div class="px-6 mb-10 flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary border-2 border-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+        </div>
+        <div>
+            <h1 class="font-headline text-xl text-primary font-black tracking-tighter">🌾 AgroHarvest</h1>
+            <p class="font-body text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mt-1">Guardian Oversight</p>
+        </div>
+    </div>
+    <nav id="sidebarNav" class="flex-1 space-y-2">
+        <!-- JS will populate nav here -->
+    </nav>
+    <div class="px-6 pt-6 border-t border-[rgba(22,163,74,0.05)]">
+        <button id="sidebarActionButton" class="btn-agro btn-primary w-full justify-center truncate shadow-lg">
+            <span class="material-symbols-outlined text-base">receipt_long</span> Harvest Report
+        </button>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="flex-1 ml-0 md:ml-72 flex flex-col h-screen overflow-hidden bg-surface">
+    <!-- Header -->
+    <header class="glass flex justify-between items-center px-8 py-6 shrink-0 border-b border-[rgba(22,163,74,0.08)]">
+        <div>
+            <h2 class="font-headline tracking-tighter text-on-surface text-3xl font-bold italic text-primary">Settings & Preferences</h2>
+            <p id="headerSubtitle" class="text-on-surface-variant font-bold text-[10px] uppercase tracking-widest mt-0.5">Guardian Configuration</p>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative group cursor-pointer">
+                <span class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors text-xl">notifications</span>
+            </div>
+            <div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+                <div class="w-8 h-8 rounded-full border-2 border-primary overflow-hidden flex items-center justify-center bg-surface-container">
+                    <span class="material-symbols-outlined text-on-surface-variant text-base">person</span>
+                </div>
+                <span id="navUserName" class="text-sm font-medium font-body text-on-surface hidden md:block">Guardian</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-12">
+        <div class="max-w-4xl mx-auto space-y-8">
+
+            <!-- Profile Card -->
+            <section class="animate-fade-in agro-card p-10 relative overflow-hidden group border border-outline-variant">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/20 transition-all duration-700"></div>
+                <div class="relative z-10">
+                    <span class="text-[9px] uppercase tracking-widest text-secondary font-bold">Identity Ritual</span>
+                    <h3 class="font-headline text-2xl font-bold text-on-surface mb-8 mt-1 tracking-tight">Guardian Profile</h3>
+                    <div class="flex flex-col sm:flex-row gap-10 items-start">
+                        <!-- Avatar -->
+                        <div class="flex flex-col items-center gap-4 shrink-0">
+                            <div class="avatar-ring cursor-pointer hover:rotate-12 transition-all duration-500" onclick="document.getElementById('avatarInput').click()">
+                                <div class="w-28 h-28 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border-4 border-bg relative border border-outline-variant">
+                                    <img id="avatarImg" class="w-full h-full object-cover hidden" alt="Profile">
+                                    <span id="avatarPlaceholder" class="material-symbols-outlined text-5xl text-on-surface-variant">person</span>
+                                </div>
+                            </div>
+                            <button onclick="document.getElementById('avatarInput').click()" class="text-[10px] uppercase tracking-widest text-secondary font-bold hover:text-primary transition-colors">Change Photo</button>
+                            <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="changeAvatar(event)">
+                        </div>
+                        <!-- Fields -->
+                        <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+                            <div class="space-y-1">
+                                <label class="field-label">Full Name</label>
+                                <input id="settingName" class="field-input w-full" placeholder="e.g. Karuna Tamidewa" value="">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="field-label">Email Address</label>
+                                <input id="settingEmail" class="field-input w-full" placeholder="inari@gmail.com" type="email" value="">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="field-label">Phone Number</label>
+                                <input id="settingPhone" class="field-input w-full" placeholder="+977-XXXX-XXXXXX" value="">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="field-label">District</label>
+                                <select id="settingDistrict" class="field-input w-full cursor-pointer appearance-none">
+                                    <option value="Kathmandu">Kathmandu</option>
+                                    <option value="Jumla">Jumla</option>
+                                    <option value="Pokhara">Pokhara</option>
+                                    <option value="Chitwan">Chitwan</option>
+                                    <option value="Mustang">Mustang</option>
+                                    <option value="Lumbini">Lumbini</option>
+                                    <option value="Ilam">Ilam</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1 sm:col-span-2">
+                                <label class="field-label">Farm Bio</label>
+                                <textarea id="settingBio" rows="2" class="field-input w-full resize-none" placeholder="Describe your farm and specialty crops..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="saveProfile()" class="mt-8 btn-agro btn-primary shadow-lg flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">save</span> Save Profile
+                    </button>
+                </div>
+            </section>
+
+            <!-- Farm Details (Farmer Only) -->
+            <section id="farmDetailsSection" class="animate-fade-in agro-card p-10 border border-outline-variant hidden" style="animation-delay:.1s">
+                <span class="text-[10px] uppercase tracking-widest text-secondary font-bold">Land Registry</span>
+                <h3 class="font-headline text-2xl font-bold text-on-surface mb-8 mt-1 tracking-tight">Farm Details</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="space-y-1">
+                        <label class="field-label">Farm Name</label>
+                        <input id="farmName" class="field-input w-full" placeholder="e.g. Himalayan Fields">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Land Area</label>
+                        <input id="farmArea" class="field-input w-full" placeholder="e.g. 2.5 Ropani">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Primary Crop</label>
+                        <input id="farmCrop" class="field-input w-full" placeholder="e.g. Vegetables">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Elevation (m)</label>
+                        <input id="farmElevation" class="field-input w-full" placeholder="e.g. 1350">
+                    </div>
+                    <div class="space-y-1 border-b border-[rgba(22,163,74,0.25)] pb-2 relative focus-within:border-primary transition-colors">
+                        <label class="field-label">Irrigation Type</label>
+                        <select id="farmIrrigation" class="w-full bg-transparent text-on-surface text-sm font-semibold outline-none py-2 cursor-pointer appearance-none">
+                            <option value="">Select...</option>
+                            <option>Rainwater</option>
+                            <option>Canal</option>
+                            <option>Drip Irrigation</option>
+                            <option>Spring Water</option>
+                            <option>Groundwater Pump</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1 border-b border-[rgba(22,163,74,0.25)] pb-2 relative focus-within:border-primary transition-colors">
+                        <label class="field-label">Certification</label>
+                        <select id="farmCert" class="w-full bg-transparent text-on-surface text-sm font-semibold outline-none py-2 cursor-pointer appearance-none">
+                            <option value="">Select...</option>
+                            <option>Organic (NARC)</option>
+                            <option>Good Agricultural Practices</option>
+                            <option>Fair Trade</option>
+                            <option>None</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="saveFarm()" class="mt-8 px-6 py-3 bg-[rgba(22,163,74,0.05)] border border-[rgba(22,163,74,0.25)] rounded-full font-bold text-primary text-sm hover:bg-primary hover:text-[#ffffff] transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">grass</span> Save Farm Details
+                </button>
+            </section>
+
+            <!-- Notifications -->
+            <section class="animate-fade-in agro-card p-10 border border-outline-variant" style="animation-delay:.2s">
+                <span class="text-[10px] uppercase tracking-widest text-secondary font-bold">Alert Rituals</span>
+                <h3 class="font-headline text-2xl font-bold text-on-surface mb-8 mt-1 tracking-tight">Notification Preferences</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-4 rounded-xl hover:bg-[rgba(22,163,74,0.05)] transition-colors border border-transparent hover:border-[rgba(22,163,74,0.1)]">
+                        <div>
+                            <p class="font-bold text-on-surface text-sm">Weather Alerts</p>
+                            <p class="text-[10px] text-on-surface-variant font-medium mt-1">Receive daily climate updates for your district</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" id="notifWeather" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center p-4 rounded-xl hover:bg-[rgba(22,163,74,0.05)] transition-colors border border-transparent hover:border-[rgba(22,163,74,0.1)]">
+                        <div>
+                            <p class="font-bold text-on-surface text-sm">New Order Ritual</p>
+                            <p class="text-[10px] text-on-surface-variant font-medium mt-1">Alert when a seeker places an order for your crops</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" id="notifOrders" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center p-4 rounded-xl hover:bg-[rgba(22,163,74,0.05)] transition-colors border border-transparent hover:border-[rgba(22,163,74,0.1)]">
+                        <div>
+                            <p class="font-bold text-on-surface text-sm">Delivery Status Updates</p>
+                            <p class="text-[10px] text-on-surface-variant font-medium mt-1">Track every dispatch milestone in real time</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" id="notifDelivery" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center p-4 rounded-xl hover:bg-[rgba(22,163,74,0.05)] transition-colors border border-transparent hover:border-[rgba(22,163,74,0.1)]">
+                        <div>
+                            <p class="font-bold text-on-surface text-sm">Price Fluctuation Signals</p>
+                            <p class="text-[10px] text-on-surface-variant font-medium mt-1">Get notified when market prices shift by ±10%</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" id="notifPrices"><span class="slider"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center p-4 rounded-xl hover:bg-[rgba(22,163,74,0.05)] transition-colors border border-transparent hover:border-[rgba(22,163,74,0.1)]">
+                        <div>
+                            <p class="font-bold text-on-surface text-sm">Weekly Harvest Report</p>
+                            <p class="text-[10px] text-on-surface-variant font-medium mt-1">Summary of your earnings and activity each week</p>
+                        </div>
+                        <label class="toggle"><input type="checkbox" id="notifReport" checked><span class="slider"></span></label>
+                    </div>
+                </div>
+                <button onclick="saveNotifications()" class="mt-6 px-6 py-3 bg-[rgba(22,163,74,0.05)] border border-[rgba(22,163,74,0.25)] rounded-full font-bold text-primary text-sm hover:bg-primary hover:text-[#ffffff] transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">notifications_active</span> Save Preferences
+                </button>
+            </section>
+
+            <!-- Security -->
+            <section class="animate-fade-in agro-card p-10 border border-outline-variant" style="animation-delay:.3s">
+                <span class="text-[10px] uppercase tracking-widest text-secondary font-bold">Sacred Guard</span>
+                <h3 class="font-headline text-2xl font-bold text-on-surface mb-8 mt-1 tracking-tight">Account Security</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="space-y-1">
+                        <label class="field-label">Current Password</label>
+                        <input class="field-input w-full" placeholder="••••••••" type="password">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">New Password</label>
+                        <input class="field-input w-full" placeholder="••••••••" type="password">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="field-label">Confirm New</label>
+                        <input class="field-input w-full" placeholder="••••••••" type="password">
+                    </div>
+                </div>
+                <div class="flex gap-4 mt-8 flex-wrap">
+                    <button onclick="showToast('Password updated successfully!')" class="px-6 py-3 bg-white text-white rounded-full font-bold text-sm hover:brightness-90 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">lock_reset</span> Change Password
+                    </button>
+                    <button onclick="if(confirm('Clear all data and sign out?')){localStorage.clear();window.location.href='signin.html';}" class="px-6 py-3 bg-[rgba(239,68,68,0.1)] border border-red-500/30 text-red-400 rounded-full font-bold text-sm hover:bg-red-500 hover:text-[#ffffff] transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">delete_forever</span> Reset All Data
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<!-- Mobile Nav -->
+<nav id="mobileNav" class="md:hidden glass fixed bottom-0 left-0 right-0 flex justify-around py-3 px-2 border-t border-[rgba(22,163,74,0.08)] z-50">
+    <!-- Populated by JS -->
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-6 right-6 z-[200] hidden">
+    <div class="bg-surface-container-high border border-primary text-on-surface px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 toast-anim">
+        <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span id="toastMsg" class="text-sm font-semibold"></span>
+    </div>
+</div>
+
+<script>
+    // Load saved data
+    (function () {
+        const userRole = localStorage.getItem('userRole') || 'customer';
+        const n = localStorage.getItem('farmerName') || 'Guardian';
+        document.getElementById('navUserName').textContent = n;
+
+        if (userRole === 'farmer') {
+            document.getElementById('farmDetailsSection').classList.remove('hidden');
+            document.getElementById('headerSubtitle').textContent = 'Guardian Configuration';
+            
+            // Farmer Sidebar
+            document.getElementById('sidebarNav').innerHTML = `
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="dashboard.html"><span class="material-symbols-outlined">potted_plant</span><span class="font-body text-sm font-semibold uppercase tracking-widest">My Products</span></a>
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="orders.html"><span class="material-symbols-outlined">shopping_basket</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Orders</span></a>
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="delivery.html"><span class="material-symbols-outlined">local_shipping</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Delivery</span></a>
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="earnings.html"><span class="material-symbols-outlined">payments</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Earnings</span></a>
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="marketplace.html"><span class="material-symbols-outlined">storefront</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Agro Store</span></a>
+                <a class="flex items-center space-x-4 px-6 py-3 rounded-lg text-secondary border-r-4 border-secondary bg-surface-container transition-all" href="settings.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">settings</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Settings</span></a>
+                <a class="flex items-center gap-4 text-red-500 py-3 px-6 hover:text-red-400 transition-all border-t border-[rgba(22,163,74,0.05)] mt-2 pt-4 rounded-lg" href="signin.html"><span class="material-symbols-outlined">logout</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Logout</span></a>
+            `;
+            
+            // Farmer Mobile Nav
+            document.getElementById('mobileNav').innerHTML = `
+                <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="dashboard.html"><span class="material-symbols-outlined text-xl">potted_plant</span><span class="text-[9px] uppercase font-bold mt-1">Products</span></a>
+                <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="orders.html"><span class="material-symbols-outlined text-xl">shopping_basket</span><span class="text-[9px] uppercase font-bold mt-1">Orders</span></a>
+                <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="delivery.html"><span class="material-symbols-outlined text-xl">local_shipping</span><span class="text-[9px] uppercase font-bold mt-1">Delivery</span></a>
+                <a class="flex flex-col items-center text-secondary" href="settings.html"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">settings</span><span class="text-[9px] uppercase font-bold mt-1">Settings</span></a>
+            `;
+        } else if (userRole === 'dealer') {
+            window.location.href = 'dealer_settings.html';
+            return;
+        } else {
+            // Customer
+            document.getElementById('headerSubtitle').textContent = 'Consumer Preferences';
+            document.getElementById('sidebarActionButton').innerHTML = `<span class="material-symbols-outlined text-base">shopping_cart</span> Go to Shop`;
+            document.getElementById('sidebarActionButton').onclick = () => window.location.href = 'marketplace.html';
+
+            // Customer Sidebar
+            document.getElementById('sidebarNav').innerHTML = `
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="marketplace.html"><span class="material-symbols-outlined">store</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Marketplace</span></a>
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="orders.html"><span class="material-symbols-outlined">shopping_basket</span><span class="font-body text-sm font-semibold uppercase tracking-widest">My Orders</span></a>
+                <a class="flex items-center gap-4 nav-item py-3 px-6 transition-all rounded-lg group" href="delivery.html"><span class="material-symbols-outlined">local_shipping</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Track Delivery</span></a>
+                <a class="flex items-center space-x-4 px-6 py-3 rounded-lg text-secondary border-r-4 border-secondary bg-surface-container transition-all" href="settings.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">settings</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Settings</span></a>
+                <a class="flex items-center gap-4 text-red-500 py-3 px-6 hover:text-red-400 transition-all border-t border-[rgba(22,163,74,0.05)] mt-2 pt-4 rounded-lg" href="signin.html"><span class="material-symbols-outlined">logout</span><span class="font-body text-sm font-semibold uppercase tracking-widest">Logout</span></a>
+            `;
+
+            // Customer Mobile Nav
+            document.getElementById('mobileNav').innerHTML = `
+                <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="marketplace.html"><span class="material-symbols-outlined text-xl">store</span><span class="text-[9px] uppercase font-bold mt-1">Market</span></a>
+                <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="orders.html"><span class="material-symbols-outlined text-xl">shopping_basket</span><span class="text-[9px] uppercase font-bold mt-1">Orders</span></a>
+                <a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="delivery.html"><span class="material-symbols-outlined text-xl">local_shipping</span><span class="text-[9px] uppercase font-bold mt-1">Track</span></a>
+                <a class="flex flex-col items-center text-secondary" href="settings.html"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">settings</span><span class="text-[9px] uppercase font-bold mt-1">Settings</span></a>
+            `;
+        }
+
+        const e = localStorage.getItem('farmerEmail') || '';
+        const ph = localStorage.getItem('farmerPhone') || '';
+        const d = localStorage.getItem('selectedDistrict') || 'Kathmandu';
+        const bio = localStorage.getItem('farmerBio') || '';
+        document.getElementById('settingName').value = userRole === 'farmer' ? n : (localStorage.getItem('farmerName') || '');
+        document.getElementById('settingEmail').value = e;
+        document.getElementById('settingPhone').value = ph;
+        document.getElementById('settingBio').value = bio;
+        document.getElementById('settingDistrict').value = d;
+        // Farm
+        document.getElementById('farmName').value = localStorage.getItem('farmName') || '';
+        document.getElementById('farmArea').value = localStorage.getItem('farmArea') || '';
+        document.getElementById('farmCrop').value = localStorage.getItem('farmCrop') || '';
+        document.getElementById('farmElevation').value = localStorage.getItem('farmElevation') || '';
+        document.getElementById('farmIrrigation').value = localStorage.getItem('farmIrrigation') || '';
+        document.getElementById('farmCert').value = localStorage.getItem('farmCert') || '';
+        // Avatar
+        const avatar = localStorage.getItem('farmerAvatar');
+        if (avatar) {
+            document.getElementById('avatarImg').src = avatar;
+            document.getElementById('avatarImg').classList.remove('hidden');
+            document.getElementById('avatarPlaceholder').classList.add('hidden');
+        }
+        // Notifications
+        const notifData = JSON.parse(localStorage.getItem('notifications') || '{"weather":true,"orders":true,"delivery":true,"prices":false,"report":true}');
+        document.getElementById('notifWeather').checked = notifData.weather;
+        document.getElementById('notifOrders').checked = notifData.orders;
+        document.getElementById('notifDelivery').checked = notifData.delivery;
+        document.getElementById('notifPrices').checked = notifData.prices;
+        document.getElementById('notifReport').checked = notifData.report;
+    })();
+
+    function showToast(msg, err = false) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        const icon = t.querySelector('.material-symbols-outlined');
+        icon.textContent = err ? 'error' : 'check_circle';
+        icon.className = `material-symbols-outlined text-base ${err ? 'text-red-400' : 'text-primary'}`;
+        t.classList.remove('hidden');
+        // trigger reflow
+        void t.offsetWidth;
+        t.classList.add('toast-anim');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    function changeAvatar(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            localStorage.setItem('farmerAvatar', ev.target.result);
+            document.getElementById('avatarImg').src = ev.target.result;
+            document.getElementById('avatarImg').classList.remove('hidden');
+            document.getElementById('avatarPlaceholder').classList.add('hidden');
+            showToast('Profile photo updated!');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function saveProfile() {
+        const name = document.getElementById('settingName').value.trim();
+        const email = document.getElementById('settingEmail').value.trim();
+        const phone = document.getElementById('settingPhone').value.trim();
+        const district = document.getElementById('settingDistrict').value;
+        const bio = document.getElementById('settingBio').value.trim();
+        localStorage.setItem('farmerName', name);
+        localStorage.setItem('farmerEmail', email);
+        localStorage.setItem('farmerPhone', phone);
+        localStorage.setItem('selectedDistrict', district);
+        localStorage.setItem('farmerBio', bio);
+        showToast('Profile saved successfully! 🌾');
+    }
+
+    function saveFarm() {
+        localStorage.setItem('farmName', document.getElementById('farmName').value);
+        localStorage.setItem('farmArea', document.getElementById('farmArea').value);
+        localStorage.setItem('farmCrop', document.getElementById('farmCrop').value);
+        localStorage.setItem('farmElevation', document.getElementById('farmElevation').value);
+        localStorage.setItem('farmIrrigation', document.getElementById('farmIrrigation').value);
+        localStorage.setItem('farmCert', document.getElementById('farmCert').value);
+        showToast('Farm details saved! 🏡');
+    }
+
+    function saveNotifications() {
+        const data = {
+            weather: document.getElementById('notifWeather').checked,
+            orders: document.getElementById('notifOrders').checked,
+            delivery: document.getElementById('notifDelivery').checked,
+            prices: document.getElementById('notifPrices').checked,
+            report: document.getElementById('notifReport').checked,
+        };
+        localStorage.setItem('notifications', JSON.stringify(data));
+        showToast('Notification preferences saved!');
+    }
+</script>
+</body>
+</html>

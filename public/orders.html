@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgroHarvest | Order Ledger</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .btn-3d { transition: transform 0.1s ease, box-shadow 0.1s ease; box-shadow: 0 4px 0 0 rgba(0,0,0,0.4); }
+    .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 0 rgba(0,0,0,0.4); }
+    .btn-agro { display:flex; align-items:center; gap:0.5rem; border-radius:1rem; font-weight:900; font-size:10px; text-transform:uppercase; letter-spacing:0.05em; transition:all 0.3s; }
+    .btn-agro:active { transform: scale(0.95); }
+    .btn-primary { background:#16a34a; color:white; box-shadow:0 4px 6px -1px rgba(22,163,74,0.2); }
+    .btn-primary:hover { background:#15803d; }
+</style>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#16a34a', secondary: '#d97706', surface: '#f4f9f4',
+                    'surface-container': '#e8f5e9', 'surface-container-low': '#ffffff',
+                    'surface-container-high': '#c8e6c9', 'on-surface': '#064e3b',
+                    'on-surface-variant': '#14532d', 'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                },
+                fontFamily: { headline: ['Epilogue', 'serif'], body: ['Manrope', 'sans-serif'] }
+            }
+        }
+    }
+</script>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface">
+
+<aside id="farmerSidebar" class="sidebar h-screen w-72 fixed left-0 top-0 flex flex-col p-6 space-y-8 z-50 bg-white border-r border-outline-variant">
+    <div onclick="window.location.href='index.html'" class="flex items-center space-x-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary border-2 border-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">eco</span>
+        </div>
+        <div>
+            <h1 class="text-primary font-black text-xl leading-none font-headline tracking-tighter">🌾 AgroHarvest</h1>
+            <p class="text-on-surface-variant text-[10px] uppercase tracking-widest mt-1">Order Ledger</p>
+        </div>
+    </div>
+    <nav class="flex-1 space-y-2">
+        <div class="space-y-2">
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all group" href="dashboard.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">My Products</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-secondary border-r-4 border-secondary bg-surface-container transition-all" href="orders.html">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">shopping_basket</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Orders</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all group" href="delivery.html">
+                <span class="material-symbols-outlined">local_shipping</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Delivery</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all group" href="earnings.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Earnings</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container text-on-surface-variant transition-all font-bold group" href="marketplace.html">
+                <span class="material-symbols-outlined group-hover:text-primary">storefront</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs group-hover:text-on-surface">Agro Store</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container text-on-surface-variant transition-all font-bold group" href="market_trends.html">
+                <span class="material-symbols-outlined group-hover:text-primary">analytics</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs group-hover:text-on-surface">Live Market</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all group" href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Settings</span>
+            </a>
+        </div>
+        <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 transition-all border-t border-outline-variant mt-2 pt-4" href="signin.html">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="font-body font-bold uppercase tracking-widest text-xs">Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<nav id="customerNav" class="hidden fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4 shadow-sm bg-white/80 backdrop-blur-md border-b border-outline-variant">
+    <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer">
+        <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+        <a class="text-on-surface-variant font-bold hover:text-primary transition-colors" href="marketplace.html">Marketplace</a>
+        <a class="text-primary font-bold" href="orders.html">My Orders</a>
+        <a href="market_trends.html" class="flex items-center gap-1.5 text-on-surface-variant font-bold hover:text-red-500 transition-colors">
+            <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            Live Prices
+        </a>
+    </div>
+    <div class="flex items-center gap-4">
+        <span id="customerNavName" class="text-sm font-bold text-on-surface-variant"></span>
+        <button onclick="window.location.href='signin.html'" class="text-on-surface-variant hover:text-red-500 font-bold text-sm flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">logout</span> Logout
+        </button>
+    </div>
+</nav>
+
+<main id="mainContent" class="ml-0 md:ml-72 min-h-screen">
+    <header class="fixed top-0 right-0 left-0 md:left-72 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 py-6" id="pageHeader">
+        <div>
+            <h2 id="pageTitle" class="font-headline text-2xl font-black tracking-tighter text-primary">Orders</h2>
+            <p id="pageSubtitle" class="text-on-surface-variant text-xs uppercase tracking-widest font-bold mt-0.5">Loading...</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+                <span class="material-symbols-outlined text-on-surface-variant text-base">person</span>
+                <span id="navUserName" class="text-sm font-bold font-body text-on-surface">Guest</span>
+            </div>
+            <button id="goToMarketBtn" onclick="window.location.href='marketplace.html'" class="btn-agro btn-primary px-4 py-2 text-xs hidden">Marketplace</button>
+        </div>
+    </header>
+
+    <div class="pt-32 pb-20 px-6 lg:px-12 max-w-7xl mx-auto space-y-12">
+        <div id="farmerStats" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                <p class="text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-1">New Orders</p>
+                <p id="statNew" class="font-headline text-3xl font-black text-secondary">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                <p class="text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-1">In Prep</p>
+                <p id="statPrep" class="font-headline text-3xl font-black text-primary">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                <p class="text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-1">With Agent / Transit</p>
+                <p id="statTransit" class="font-headline text-3xl font-black text-amber-500">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                <p class="text-[9px] uppercase tracking-widest font-bold text-on-surface-variant mb-1">Delivered</p>
+                <p id="statDelivered" class="font-headline text-3xl font-black text-green-700">0</p>
+            </div>
+        </div>
+
+        <section>
+            <div id="ordersGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="col-span-full flex justify-center items-center py-20">
+                    <span class="material-symbols-outlined text-5xl text-outline-variant animate-spin">sync</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<nav id="mobileNav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-outline-variant flex justify-around py-3 z-50">
+    <a href="marketplace.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-xl">store</span>
+        <span class="text-[8px] font-bold uppercase tracking-widest">Market</span>
+    </a>
+    <a href="orders.html" class="flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">shopping_basket</span>
+        <span class="text-[8px] font-bold uppercase tracking-widest">Orders</span>
+    </a>
+    <a href="market_trends.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="relative">
+            <span class="material-symbols-outlined text-xl">analytics</span>
+            <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+        </span>
+        <span class="text-[8px] font-bold uppercase tracking-widest">Prices</span>
+    </a>
+    <a href="track_order.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-xl">local_shipping</span>
+        <span class="text-[8px] font-bold uppercase tracking-widest">Track</span>
+    </a>
+</nav>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] hidden">
+    <div class="bg-white border border-outline-variant px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span id="toastIcon" class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span id="toastMsg" class="text-sm font-semibold text-on-surface">Action successful</span>
+    </div>
+</div>
+
+<script>
+    const userRole = localStorage.getItem('userRole') || 'customer';
+    const userName = localStorage.getItem('farmerName') || 'Guest';
+
+    document.getElementById('navUserName').textContent = userName;
+
+    function showToast(msg, isError = false) {
+        document.getElementById('toastMsg').textContent = msg;
+        const icon = document.getElementById('toastIcon');
+        icon.textContent = isError ? 'error' : 'check_circle';
+        icon.className = `material-symbols-outlined text-base ${isError ? 'text-red-500' : 'text-primary'}`;
+        const t = document.getElementById('toast');
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    if (userRole === 'customer') {
+        document.getElementById('farmerSidebar').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('md:ml-72');
+        document.getElementById('mainContent').classList.add('ml-0');
+        document.getElementById('pageHeader').classList.remove('md:left-72');
+        document.getElementById('pageHeader').classList.add('left-0');
+        document.getElementById('pageTitle').textContent = 'My Orders';
+        document.getElementById('pageSubtitle').textContent = `Welcome, ${userName}`;
+        document.getElementById('goToMarketBtn').classList.remove('hidden');
+        document.getElementById('customerNavName').textContent = userName;
+        document.getElementById('customerNav').classList.remove('hidden');
+        document.getElementById('customerNav').classList.add('flex');
+        document.getElementById('pageHeader').classList.add('hidden');
+        document.getElementById('mobileNav').classList.remove('hidden');
+    } else if (userRole === 'farmer') {
+        document.getElementById('customerNav').classList.add('hidden');
+        document.getElementById('farmerStats').classList.remove('hidden');
+        document.getElementById('farmerStats').classList.add('grid');
+        document.getElementById('pageTitle').textContent = 'Customer Orders';
+        document.getElementById('pageSubtitle').textContent = `Farmer: ${userName}`;
+        document.getElementById('mobileNav').classList.add('hidden');
+    } else {
+        window.location.href = 'agent_dashboard.html';
+    }
+
+    const STATUS_CONFIG = {
+        'Order Placed': { bg: 'bg-amber-50', border: 'border-amber-300', badge: 'bg-gray-100 text-gray-800 border-gray-200', label: 'Order Placed' },
+        'Order Accepted':   { bg: 'bg-blue-50',  border: 'border-blue-300',  badge: 'bg-blue-100 text-blue-800 border-blue-200',   label: 'Accepted' },
+        'Preparing Order': { bg: 'bg-yellow-50', border: 'border-yellow-300', badge: 'bg-amber-100 text-amber-800 border-amber-200', label: 'Preparing' },
+        'Ready for Pickup': { bg: 'bg-green-50', border: 'border-green-300', badge: 'bg-green-100 text-green-800 border-green-200', label: 'Ready' },
+        'Handed Over to Delivery Agent': { bg: 'bg-purple-50', border: 'border-purple-300', badge: 'bg-purple-100 text-purple-800 border-purple-200', label: 'With Agent' },
+        'Out for Delivery': { bg: 'bg-orange-50',border: 'border-orange-300',badge: 'bg-orange-100 text-orange-800 border-orange-200',label:'In Transit'},
+        'Delivered':  { bg: 'bg-green-50', border: 'border-green-300', badge: 'bg-primary text-white', label: 'Delivered' },
+        'Cancelled':  { bg: 'bg-red-50',   border: 'border-red-300',   badge: 'bg-red-100 text-red-700 border-red-200',       label: 'Cancelled' },
+    };
+
+    function getStatusCfg(status) {
+        return STATUS_CONFIG[status] || STATUS_CONFIG['Order Placed'];
+    }
+
+    async function loadOrders() {
+        try {
+            let orders = [];
+            if (userRole === 'farmer') {
+                const res = await fetch(`/api/orders/farmer/${encodeURIComponent(userName)}`);
+                orders = await res.json();
+                document.getElementById('statNew').textContent = orders.filter(o => o.status === 'Order Placed').length;
+                document.getElementById('statPrep').textContent = orders.filter(o => ['Order Accepted', 'Preparing Order', 'Ready for Pickup'].includes(o.status)).length;
+                document.getElementById('statTransit').textContent = orders.filter(o => ['Handed Over to Delivery Agent', 'Out for Delivery'].includes(o.status)).length;
+                document.getElementById('statDelivered').textContent = orders.filter(o => o.status === 'Delivered').length;
+            } else {
+                const res = await fetch(`/api/orders/customer/${encodeURIComponent(userName)}`);
+                orders = await res.json();
+            }
+            renderOrders(orders);
+        } catch (e) {
+            console.error(e);
+            document.getElementById('ordersGrid').innerHTML = `<div class="col-span-full text-center py-20 text-red-400 font-bold">⚠️ Failed to load orders.</div>`;
+        }
+    }
+
+    function renderOrders(orders) {
+        const grid = document.getElementById('ordersGrid');
+        if (!orders || orders.length === 0) {
+            grid.innerHTML = `<div class="col-span-full h-80 bg-white rounded-3xl border-2 border-dashed border-outline-variant flex flex-col items-center justify-center space-y-6">
+                <span class="material-symbols-outlined text-6xl text-outline-variant">inventory_2</span>
+                <div class="text-center">
+                    <h4 class="font-headline text-2xl font-black text-on-surface tracking-tighter">No Orders Yet</h4>
+                    <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">${userRole === 'customer' ? 'Visit the marketplace to place your first order.' : 'No customer orders received yet.'}</p>
+                </div>
+            </div>`;
+            return;
+        }
+
+        grid.innerHTML = orders.map(o => {
+            const cfg = getStatusCfg(o.status);
+            const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+            const itemsStr = Array.isArray(items) ? items.map(i => `${i.qty}× ${i.name}`).join(', ') : 'Items';
+            const dateStr = new Date(o.created_at).toLocaleDateString();
+
+            const farmerActions = userRole === 'farmer' && o.status === 'Order Placed' ? `
+                <button onclick="acceptOrder(${o.id})" class="h-10 px-5 rounded-xl bg-primary text-white font-black text-xs uppercase tracking-widest hover:bg-green-700 transition flex items-center gap-2 shadow-md">
+                    <span class="material-symbols-outlined text-sm">handshake</span> Accept Order
+                </button>` : '';
+
+            const customerActions = userRole === 'customer' && (o.status === 'Order Placed') ? `
+                <button onclick="cancelOrder(${o.id})" class="h-10 px-5 rounded-xl bg-red-50 text-red-600 font-black text-xs uppercase tracking-widest hover:bg-red-500 hover:text-white transition flex items-center gap-2 border border-red-100">
+                    <span class="material-symbols-outlined text-sm">cancel</span> Cancel
+                </button>` : '';
+
+            const trackAction = o.status !== 'Cancelled' ? `
+                <button onclick="window.location.href='track_order.html?id=${o.id}'" class="h-10 px-5 rounded-xl bg-surface-container text-primary font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition flex items-center gap-2 border border-primary">
+                    <span class="material-symbols-outlined text-sm">my_location</span> Track
+                </button>` : '';
+
+            return `
+            <div class="bg-white rounded-2xl p-6 border ${cfg.border} shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest opacity-50">ORDER #${o.id}</span>
+                        <h4 class="font-headline text-xl font-black text-on-surface mt-0.5 truncate max-w-xs" title="${itemsStr}">${itemsStr}</h4>
+                    </div>
+                    <span class="px-3 py-1 border rounded-full text-[10px] font-black uppercase tracking-widest shrink-0 ${cfg.badge}">${cfg.label}</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 bg-surface-container rounded-xl p-3">
+                    <div>
+                        <p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">Total</p>
+                        <p class="font-headline font-black text-lg text-primary">रू ${parseFloat(o.total).toFixed(0)}</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">Date</p>
+                        <p class="font-bold text-sm text-on-surface">${dateStr}</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">Address</p>
+                        <p class="font-bold text-sm text-on-surface truncate">${o.address || '—'}</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant">${userRole === 'farmer' ? 'Customer' : 'Farmer'}</p>
+                        <p class="font-bold text-sm text-on-surface">${userRole === 'farmer' ? (o.customer_name || '—') : (o.farmer_name || 'Processing')}</p>
+                    </div>
+                </div>
+
+                ${farmerActions || customerActions || trackAction ? `<div class="flex justify-end gap-2 pt-1">${farmerActions}${customerActions}${trackAction}</div>` : ''}
+            </div>`;
+        }).join('');
+    }
+
+    async function acceptOrder(id) {
+        try {
+            const res = await fetch(`/api/orders/${id}/delivery-status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ newStatus: 'Order Accepted', changedBy: userName, changedByRole: 'farmer' })
+            });
+            const result = await res.json();
+            if (result.success) {
+                showToast('Order accepted! Please manage it in Delivery tab.');
+                loadOrders();
+            } else {
+                showToast('Accept failed: ' + result.error, true);
+            }
+        } catch (e) { showToast('Connection error', true); }
+    }
+
+    async function cancelOrder(id) {
+        if (!confirm('Are you sure you want to cancel this order?')) return;
+        try {
+            const res = await fetch(`/api/orders/${id}`, { method: 'DELETE' });
+            const result = await res.json();
+            if (result.success) {
+                showToast('Order cancelled.');
+                loadOrders();
+            } else {
+                showToast('Cancel failed: ' + result.error, true);
+            }
+        } catch (e) { showToast('Connection error', true); }
+    }
+
+    // WebSockets setup
+    let ws;
+    function initWS() {
+        ws = new WebSocket(`ws://${window.location.host}`);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'STATUS_UPDATE') {
+                loadOrders();
+            }
+        };
+        ws.onclose = () => setTimeout(initWS, 3000);
+    }
+
+    loadOrders();
+    initWS();
+</script>
+<script src="chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Delivery Workflow</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#16a34a', secondary: '#d97706', surface: '#f4f9f4',
+                    'surface-container': '#e8f5e9', 'surface-container-low': '#ffffff',
+                    'surface-container-high': '#c8e6c9', 'on-surface': '#064e3b',
+                    'on-surface-variant': '#14532d', 'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                },
+                fontFamily: { headline: ['Epilogue', 'serif'], body: ['Manrope', 'sans-serif'] }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .btn-agro { display:flex; align-items:center; gap:0.5rem; border-radius:1rem; font-weight:900; font-size:10px; text-transform:uppercase; letter-spacing:0.05em; transition:all 0.3s; }
+    .btn-primary { background:#16a34a; color:white; }
+    .btn-primary:hover { background:#15803d; }
+    .nav-item { color:#14532d; }
+    .nav-item:hover { background:#e8f5e9; }
+</style>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body min-h-screen">
+
+<div id="farmerLayout" class="hidden flex overflow-hidden h-screen">
+    <!-- Sidebar -->
+    <aside class="hidden md:flex flex-col h-full py-6 w-72 left-0 top-0 fixed border-r border-outline-variant z-50 shrink-0 bg-white">
+        <div class="px-6 mb-8 flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary border-2 border-primary">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+            </div>
+            <div>
+                <h1 class="font-headline text-xl text-primary font-black tracking-tighter">🌾 AgroHarvest</h1>
+                <p class="font-body text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mt-1">Guardian Oversight</p>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-2 px-2">
+            <a class="flex items-center gap-4 nav-item py-3 px-4 rounded-lg transition-all" href="dashboard.html">
+                <span class="material-symbols-outlined">potted_plant</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">My Products</span>
+            </a>
+            <a class="flex items-center gap-4 nav-item py-3 px-4 rounded-lg transition-all" href="orders.html">
+                <span class="material-symbols-outlined">shopping_basket</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Orders</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-secondary border-r-4 border-secondary bg-surface-container" href="delivery.html">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">local_shipping</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Delivery</span>
+            </a>
+            <a class="flex items-center gap-4 nav-item py-3 px-4 rounded-lg transition-all" href="earnings.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Earnings</span>
+            </a>
+            <a class="flex items-center gap-4 nav-item py-3 px-4 rounded-lg transition-all" href="marketplace.html">
+                <span class="material-symbols-outlined">storefront</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Agro Store</span>
+            </a>
+            <a class="flex items-center gap-4 nav-item py-3 px-4 rounded-lg transition-all" href="market_trends.html">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Live Market</span>
+            </a>
+            <a class="flex items-center gap-4 nav-item py-3 px-4 rounded-lg transition-all" href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Settings</span>
+            </a>
+            <a class="flex items-center gap-4 text-red-500 py-3 px-4 hover:text-red-400 rounded-lg border-t border-outline-variant mt-2 pt-4" href="signin.html">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="text-xs font-semibold uppercase tracking-widest">Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Farmer Main Content -->
+    <main class="flex-1 ml-0 md:ml-72 flex flex-col h-screen overflow-hidden bg-surface">
+        <header class="bg-white flex justify-between items-center px-8 py-6 shrink-0 border-b border-outline-variant">
+            <div>
+                <h2 class="font-headline tracking-tighter text-3xl font-bold italic text-primary">Delivery Management</h2>
+                <p id="farmerLocationBadge" class="text-on-surface-variant font-bold text-[10px] uppercase tracking-widest mt-0.5">Workflow Hub</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+                    <span class="material-symbols-outlined text-on-surface-variant text-base">person</span>
+                    <span id="farmerNavName" class="text-sm font-medium font-body text-on-surface">Farmer</span>
+                </div>
+            </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-6 lg:p-10 space-y-8">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                    <p class="text-[9px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Total Orders</p>
+                    <p class="font-headline text-3xl font-bold text-on-surface" id="f_statTotal">0</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                    <p class="text-[9px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">In Preparation</p>
+                    <p class="font-headline text-3xl font-bold text-amber-500" id="f_statPrep">0</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                    <p class="text-[9px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Ready/Handed Over</p>
+                    <p class="font-headline text-3xl font-bold text-blue-500" id="f_statReady">0</p>
+                </div>
+                <div class="bg-white rounded-2xl p-5 border border-outline-variant shadow-sm text-center">
+                    <p class="text-[9px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Completed</p>
+                    <p class="font-headline text-3xl font-bold text-primary" id="f_statDelivered">0</p>
+                </div>
+            </div>
+
+            <!-- Farmer Orders List -->
+            <div>
+                <div class="flex justify-between items-end mb-4">
+                    <h3 class="font-headline text-xl font-bold">Active Deliveries</h3>
+                </div>
+                <div id="farmerDeliveryList" class="space-y-4">
+                    <div class="flex justify-center py-10"><span class="material-symbols-outlined text-4xl text-outline-variant animate-spin">sync</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] hidden transition-opacity duration-300">
+    <div class="bg-white border border-outline-variant px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span id="toastIcon" class="material-symbols-outlined text-primary text-base">info</span>
+        <span id="toastMsg" class="text-sm font-semibold text-on-surface">Message</span>
+    </div>
+</div>
+
+<script>
+    const userRole = localStorage.getItem('userRole');
+    const userName = localStorage.getItem('farmerName') || 'Guest';
+
+    if (userRole !== 'farmer') {
+        window.location.href = userRole === 'agent' ? 'agent_dashboard.html' : 'track_order.html';
+    } else {
+        document.getElementById('farmerLayout').classList.remove('hidden');
+        document.getElementById('farmerNavName').textContent = userName;
+        loadFarmerDeliveries();
+        initWS();
+    }
+
+    function showToast(msg, isError = false) {
+        document.getElementById('toastMsg').textContent = msg;
+        const icon = document.getElementById('toastIcon');
+        icon.textContent = isError ? 'error' : 'check_circle';
+        icon.className = `material-symbols-outlined text-base ${isError ? 'text-red-500' : 'text-primary'}`;
+        const t = document.getElementById('toast');
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    async function loadFarmerDeliveries() {
+        try {
+            const res = await fetch(`/api/orders/farmer/${encodeURIComponent(userName)}`);
+            const orders = await res.json();
+
+            const statuses = orders.map(o => o.status);
+            document.getElementById('f_statTotal').textContent    = orders.length;
+            document.getElementById('f_statPrep').textContent  = statuses.filter(s => ['Order Accepted', 'Preparing Order'].includes(s)).length;
+            document.getElementById('f_statReady').textContent = statuses.filter(s => ['Ready for Pickup', 'Handed Over to Delivery Agent'].includes(s)).length;
+            document.getElementById('f_statDelivered').textContent = statuses.filter(s => s === 'Delivered').length;
+
+            const list = document.getElementById('farmerDeliveryList');
+            if (orders.length === 0) {
+                list.innerHTML = `<div class="bg-white rounded-2xl border border-outline-variant p-12 text-center">
+                    <span class="material-symbols-outlined text-5xl text-outline-variant mb-3 block">inventory_2</span>
+                    <h3 class="font-headline text-xl font-black text-on-surface">No Delivery Data Yet</h3>
+                    <p class="text-sm text-on-surface-variant mt-2">Accept customer orders to manage their delivery workflow.</p>
+                </div>`;
+                return;
+            }
+
+            const STATUS_BADGE = {
+                'Order Placed': 'bg-gray-100 text-gray-800',
+                'Order Accepted': 'bg-blue-100 text-blue-800',
+                'Preparing Order': 'bg-amber-100 text-amber-800',
+                'Ready for Pickup': 'bg-green-100 text-green-800',
+                'Handed Over to Delivery Agent': 'bg-purple-100 text-purple-800',
+                'Out for Delivery': 'bg-orange-100 text-orange-800',
+                'Delivered': 'bg-primary text-white',
+                'Cancelled': 'bg-red-100 text-red-800'
+            };
+
+            list.innerHTML = orders.map(o => {
+                const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+                const itemsStr = Array.isArray(items) ? items.map(i => `${i.qty}× ${i.name}`).join(', ') : 'Items';
+                const date = new Date(o.created_at).toLocaleDateString();
+                const badge = STATUS_BADGE[o.status] || 'bg-gray-100 text-gray-700';
+
+                let actionHtml = '';
+                if (o.status === 'Order Placed') {
+                    actionHtml = `<button onclick="updateStatus(${o.id}, 'Order Accepted')" class="btn-agro bg-blue-500 text-white px-4 py-2"><span class="material-symbols-outlined">thumb_up</span> Accept Order</button>`;
+                } else if (o.status === 'Order Accepted') {
+                    actionHtml = `<button onclick="updateStatus(${o.id}, 'Preparing Order')" class="btn-agro bg-amber-500 text-white px-4 py-2"><span class="material-symbols-outlined">inventory</span> Start Prep</button>`;
+                } else if (o.status === 'Preparing Order') {
+                    actionHtml = `<button onclick="updateStatus(${o.id}, 'Ready for Pickup')" class="btn-agro bg-green-500 text-white px-4 py-2"><span class="material-symbols-outlined">done_all</span> Mark Ready</button>`;
+                } else if (o.status === 'Ready for Pickup') {
+                    // Direct delivery: farmer goes to Out for Delivery themselves
+                    if (o.delivery_type === 'direct') {
+                        actionHtml = `
+                            <span class="text-[9px] font-black bg-amber-100 text-amber-800 px-2 py-1 rounded-full uppercase tracking-wider">🧑‍🌾 Direct Delivery</span>
+                            <button onclick="updateStatus(${o.id}, 'Out for Delivery')" class="btn-agro bg-orange-500 text-white px-4 py-2"><span class="material-symbols-outlined">directions_bike</span> Start Delivery</button>`;
+                    } else {
+                        actionHtml = `<button onclick="updateStatus(${o.id}, 'Handed Over to Delivery Agent')" class="btn-agro bg-purple-600 text-white px-4 py-2"><span class="material-symbols-outlined">local_shipping</span> Hand Over to Agent</button>`;
+                    }
+                } else if (o.status === 'Out for Delivery' && o.delivery_type === 'direct') {
+                    actionHtml = `<button onclick="updateStatus(${o.id}, 'Delivered')" class="btn-agro bg-primary text-white px-4 py-2"><span class="material-symbols-outlined">check_circle</span> Mark Delivered</button>`;
+                } else {
+                    actionHtml = `<span class="text-xs text-on-surface-variant font-bold italic">${o.status === 'Delivered' ? 'Completed ✅' : 'Agent Handling'}</span>`;
+                }
+
+                return `
+                <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="text-[10px] text-on-surface-variant font-bold">#${o.id}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${badge}">${o.status}</span>
+                            ${o.delivery_type === 'direct' ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-amber-100 text-amber-800">🧑‍🌾 Direct</span>' : ''}
+                        </div>
+                        <h4 class="font-bold text-on-surface truncate">${itemsStr}</h4>
+                        <p class="text-xs text-on-surface-variant mt-0.5">Customer: <span class="font-bold">${o.customer_name}</span> · रू ${parseFloat(o.total).toFixed(0)} · ${date}</p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        ${actionHtml}
+                    </div>
+                </div>`;
+            }).join('');
+
+        } catch (e) {
+            console.error(e);
+            document.getElementById('farmerDeliveryList').innerHTML = `<div class="text-red-400 font-bold text-center py-8">⚠️ Failed to load delivery data.</div>`;
+        }
+    }
+
+    async function updateStatus(orderId, newStatus) {
+        try {
+            const res = await fetch(`/api/orders/${orderId}/delivery-status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ newStatus, changedBy: userName, changedByRole: 'farmer' })
+            });
+            const result = await res.json();
+            if (result.success) {
+                showToast(`Order updated to ${newStatus}`);
+                loadFarmerDeliveries();
+            } else {
+                showToast(result.error, true);
+            }
+        } catch (e) {
+            showToast('Connection error', true);
+        }
+    }
+
+    // WebSockets setup
+    let ws;
+    function initWS() {
+        ws = new WebSocket(`ws://${window.location.host}`);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'STATUS_UPDATE') {
+                loadFarmerDeliveries();
+            }
+        };
+        ws.onclose = () => setTimeout(initWS, 3000);
+    }
+</script>
+<script src="chat.js"></script>
+</body>
+</html>

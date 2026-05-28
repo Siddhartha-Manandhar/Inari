@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "TC001",
+    "title": "Place an order from checkout with delivery address",
+    "description": "Verifies a signed-in user can review cart items, enter a delivery address, place an order, and see an order confirmation.",
+    "category": "Checkout and Order Placement",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /checkout.html"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid delivery address into the delivery address form"
+      },
+      {
+        "type": "action",
+        "description": "Confirm and place the order"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an order confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Sign in and reach farmer dashboard",
+    "description": "A farmer can sign in with valid credentials and is routed to the farmer dashboard.",
+    "category": "User Sign In",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the farmer dashboard"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Visitor can browse products, filter by category, add to cart, and proceed to checkout",
+    "description": "Verifies a user can browse the marketplace, filter products, add an item to the cart, and reach checkout after signing in when required.",
+    "category": "Marketplace",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /marketplace.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the product list to load"
+      },
+      {
+        "type": "action",
+        "description": "Select a product category filter"
+      },
+      {
+        "type": "action",
+        "description": "Add a product to the cart"
+      },
+      {
+        "type": "action",
+        "description": "Open the cart view"
+      },
+      {
+        "type": "action",
+        "description": "Proceed to checkout"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the checkout page"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Agent can progress an order through Processing to Shipped to Delivered",
+    "description": "Verifies an agent can update an order through the full delivery lifecycle and the UI reflects the final delivered state.",
+    "category": "Agent Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the navigation option to open the agent dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the orders list to load"
+      },
+      {
+        "type": "action",
+        "description": "Select an order from the pending or in-transit list"
+      },
+      {
+        "type": "action",
+        "description": "Update the order status to Processing"
+      },
+      {
+        "type": "action",
+        "description": "Update the order status to Shipped"
+      },
+      {
+        "type": "action",
+        "description": "Update the order status to Delivered"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected order is shown as delivered in the agent dashboard"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Add a product listing and see it in the products list",
+    "description": "A signed-in farmer can create a new product listing and the product appears in the listed products section.",
+    "category": "Farmer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Click to start adding a new product"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique product name into the product name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid numeric value into the yield field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid numeric value into the price field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid category"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid harvest date into the harvest date field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a small valid base64 image string into the product image field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the product listing form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new product appears in the listed products"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Filter orders and update an order status",
+    "description": "Verifies a signed-in user can filter the orders list by status, update an order status, and see the updated status reflected in the list.",
+    "category": "Orders Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /orders.html"
+      },
+      {
+        "type": "action",
+        "description": "Filter orders by a specific status"
+      },
+      {
+        "type": "action",
+        "description": "Update the status of an order to a different valid status"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected order shows the updated status in the orders list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Accept an incoming order and see status update",
+    "description": "A signed-in farmer can accept an incoming order and the order shows an accepted status in the farmer view.",
+    "category": "Farmer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the incoming orders section"
+      },
+      {
+        "type": "action",
+        "description": "Accept the first available incoming order"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the accepted order shows an updated accepted status"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Dealer can add an inventory item and see it listed",
+    "description": "Verifies a dealer can create a new inventory item from the dealer dashboard and the item appears in the inventory list afterward.",
+    "category": "Dealer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the navigation option to open the dealer dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Start adding a new inventory item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the item name field with Dealer Item A"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the item price field with 12.50"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid category for the item"
+      },
+      {
+        "type": "action",
+        "description": "Submit the inventory item form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new inventory item appears in the inventory list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Register a new farmer account",
+    "description": "A visitor can sign up as a farmer and receives a visible signup success confirmation.",
+    "category": "User Signup",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique full name into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Select farmer as the role"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid district"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a signup success confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Protected settings route is blocked when not signed in",
+    "description": "Verifies that an unauthenticated visitor attempting to access settings is blocked and prompted to sign in.",
+    "category": "Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /settings.html"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is blocked from viewing settings and is prompted to sign in"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Dealer can delete an inventory item and it is removed from the list",
+    "description": "Verifies a dealer can delete an inventory item and it no longer appears in the inventory list afterward.",
+    "category": "Dealer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the navigation option to open the dealer dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Start adding a new inventory item"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the item name field with Dealer Item To Delete"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the item price field with 9.99"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid category for the item"
+      },
+      {
+        "type": "action",
+        "description": "Submit the inventory item form"
+      },
+      {
+        "type": "action",
+        "description": "Delete the inventory item named Dealer Item To Delete"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the deleted inventory item no longer appears in the inventory list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Delete an order from the orders list",
+    "description": "Verifies a signed-in user can delete an order and the order is removed from the orders list.",
+    "category": "Orders Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /orders.html"
+      },
+      {
+        "type": "action",
+        "description": "Delete an order from the orders list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the deleted order is no longer displayed in the orders list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Delete a product listing and confirm it is removed",
+    "description": "A signed-in farmer can delete a product listing and it no longer appears in the listed products section.",
+    "category": "Farmer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Click to start adding a new product"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique product name into the product name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid numeric value into the yield field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid numeric value into the price field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid category"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid harvest date into the harvest date field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a small valid base64 image string into the product image field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the product listing form"
+      },
+      {
+        "type": "action",
+        "description": "Delete the newly created product from the listed products section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the deleted product is no longer displayed in the listed products"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Agent can cancel a pending order",
+    "description": "Verifies an agent can cancel a pending order and the UI reflects the cancelled status.",
+    "category": "Agent Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the navigation option to open the agent dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the pending orders list to load"
+      },
+      {
+        "type": "action",
+        "description": "Select an order from the pending list"
+      },
+      {
+        "type": "action",
+        "description": "Update the order status to Cancelled"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected order is shown as cancelled in the agent dashboard"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "User can search/filter to find a product and proceed to checkout",
+    "description": "Verifies a user can use marketplace search or filtering to locate a matching product, add it to cart, and reach checkout.",
+    "category": "Marketplace",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /marketplace.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the product list to load"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the search field with rice"
+      },
+      {
+        "type": "action",
+        "description": "Apply the search or filter"
+      },
+      {
+        "type": "action",
+        "description": "Add a product from the filtered results to the cart"
+      },
+      {
+        "type": "action",
+        "description": "Proceed to checkout from the cart"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the checkout page"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC016",
+    "title": "Register a new dealer account",
+    "description": "A visitor can sign up as a dealer and receives a visible signup success confirmation.",
+    "category": "User Signup",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique full name into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Select dealer as the role"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid district"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a signup success confirmation is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC017",
+    "title": "View live market price grid",
+    "description": "Verifies that a visitor can open the market trends page and see a grid of commodity price data displayed.",
+    "category": "Live Market Trends",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /market_trends.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the market data section to finish loading"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a market price grid with commodity rows is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC018",
+    "title": "View farmer earnings summary and recent orders",
+    "description": "Verifies a signed-in farmer can view total revenue, pending amount, and a recent orders section on the earnings page.",
+    "category": "Earnings Overview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /earnings.html"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify total revenue and pending earnings are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a recent orders list or an empty state for recent orders is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC019",
+    "title": "Farmer can update profile information in settings",
+    "description": "Verifies that a signed-in user can update profile fields on the settings page and see the updated information reflected.",
+    "category": "Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open user settings"
+      },
+      {
+        "type": "action",
+        "description": "Fill updated information into an editable profile field"
+      },
+      {
+        "type": "action",
+        "description": "Submit changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the settings page shows the updated profile information"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC020",
+    "title": "Dealer can navigate between dashboard, earnings, settings, and market trends",
+    "description": "Verifies a dealer can move through dealer dashboard pages and reach each destination page successfully.",
+    "category": "Dealer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the navigation option to open the dealer dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open dealer earnings"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open dealer settings"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open market trends"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify market trend data is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC021",
+    "title": "View dealer earnings summary and recent dealer orders",
+    "description": "Verifies a signed-in dealer can view revenue, pending amount, and recent dealer orders on the dealer earnings page.",
+    "category": "Earnings Overview",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /dealer_earnings.html"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify dealer revenue and pending earnings are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a recent dealer orders list or an empty state for recent orders is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Register a new agent account",
+    "description": "A visitor can sign up as an agent and receives a visible signup success confirmation.",
+    "category": "User Signup",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique full name into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Select agent as the role"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid district"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a signup success confirmation is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC023",
+    "title": "Search commodities to filter the price grid",
+    "description": "Verifies that a visitor can search commodities and the grid updates to show matching results.",
+    "category": "Live Market Trends",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /market_trends.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the market data section to finish loading"
+      },
+      {
+        "type": "action",
+        "description": "Fill a common commodity keyword into the search field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the displayed commodity list is filtered to match the search"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC024",
+    "title": "Dealer can update dealer profile information",
+    "description": "Verifies that a signed-in dealer can update dealer settings and see the updated profile reflected on the dealer settings page.",
+    "category": "Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open dealer settings"
+      },
+      {
+        "type": "action",
+        "description": "Fill updated information into an editable dealer profile field"
+      },
+      {
+        "type": "action",
+        "description": "Submit changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the dealer settings page shows the updated dealer profile information"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC025",
+    "title": "Block order placement when required delivery address is missing",
+    "description": "Verifies checkout prevents placing an order when a required delivery address field is left blank and shows a validation error.",
+    "category": "Checkout and Order Placement",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /checkout.html"
+      },
+      {
+        "type": "action",
+        "description": "Fill the delivery address form leaving at least one required field blank"
+      },
+      {
+        "type": "action",
+        "description": "Confirm and place the order"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a delivery address validation error is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC026",
+    "title": "Navigate from dashboard to earnings and back to orders",
+    "description": "A signed-in farmer can navigate from the dashboard to earnings and then to orders, and sees each destination page load correctly.",
+    "category": "Farmer Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to view earnings"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to view orders"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the orders list is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC027",
+    "title": "Theme toggle applies immediately in settings",
+    "description": "Verifies that a signed-in user can toggle the theme and the page updates to the new theme state.",
+    "category": "Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open user settings"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the theme setting"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the site theme is applied according to the new selection"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC028",
+    "title": "Agent can access market trends from the agent dashboard",
+    "description": "Verifies an agent can navigate to market trends from the agent dashboard and see market trend data.",
+    "category": "Agent Dashboard",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the navigation option to open the agent dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open market trends"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify market trend data is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC029",
+    "title": "Theme preference persists during the session when navigating away and back",
+    "description": "Verifies that after toggling theme, navigating away and returning within the same session retains the selected theme.",
+    "category": "Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the sign-in form"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open user settings"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the theme setting"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open user settings"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected theme is still applied"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC030",
+    "title": "Clear search to restore full market grid",
+    "description": "Verifies that clearing the commodity search restores the unfiltered market price grid.",
+    "category": "Live Market Trends",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /market_trends.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the market data section to finish loading"
+      },
+      {
+        "type": "action",
+        "description": "Fill a commodity keyword into the search field"
+      },
+      {
+        "type": "action",
+        "description": "Clear the search field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the full unfiltered market price grid is shown again"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC031",
+    "title": "Show error for invalid credentials",
+    "description": "A user who enters incorrect credentials cannot sign in and sees an invalid credentials error state.",
+    "category": "User Sign In",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signin"
+      },
+      {
+        "type": "action",
+        "description": "Fill a non-existent email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill an incorrect password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an invalid credentials error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC032",
+    "title": "Handle no-match search results",
+    "description": "Verifies that searching for a non-existent commodity shows an empty state instead of stale or unrelated results.",
+    "category": "Live Market Trends",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /market_trends.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the market data section to finish loading"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique random string into the search field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state is shown for no matching commodities"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC033",
+    "title": "Prevent signup when required fields are missing",
+    "description": "A visitor cannot submit signup with missing required data and sees a validation error state.",
+    "category": "User Signup",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a full name into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Leave the email field empty"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Select farmer as the role"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid district"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC034",
+    "title": "Market trends page remains usable after refresh",
+    "description": "Verifies that refreshing the market trends page reloads and still shows the live market grid.",
+    "category": "Live Market Trends",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /market_trends.html"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the market data section to finish loading"
+      },
+      {
+        "type": "action",
+        "description": "Press F5"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the market data section to finish loading"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a market price grid with commodity rows is displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC035",
+    "title": "Prevent signup when role is not selected",
+    "description": "A visitor cannot sign up without selecting a role and sees a validation error state.",
+    "category": "User Signup",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a full name into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid district"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC036",
+    "title": "Prevent signup when district is not selected",
+    "description": "A visitor cannot sign up without selecting a district and sees a validation error state.",
+    "category": "User Signup",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /signup"
+      },
+      {
+        "type": "action",
+        "description": "Fill a full name into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique email into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid password into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Select farmer as the role"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  }
+]

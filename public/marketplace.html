@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Marketplace</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#16a34a',     /* green-600 */
+                    secondary: '#d97706',   /* amber-gold */
+                    surface: '#f4f9f4',
+                    'surface-container': '#e8f5e9',
+                    'surface-container-low': '#ffffff',
+                    'surface-container-high': '#c8e6c9',
+                    'on-surface': '#064e3b',
+                    'on-surface-variant': '#14532d',
+                    'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                },
+                fontFamily: {
+                    headline: ['Epilogue', 'serif'],
+                    body: ['Manrope', 'sans-serif'],
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body min-h-screen">
+
+<!-- Sidebar Navigation (Farmer/Dealer) -->
+<aside id="dashboardSidebar" class="sidebar hidden flex-col h-screen w-72 fixed left-0 top-0 p-6 space-y-8 z-50 bg-white border-r border-outline-variant">
+    <div onclick="window.location.href='index.html'" class="flex items-center space-x-3 cursor-pointer">
+        <div id="sideLogo" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary border-2 border-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">eco</span>
+        </div>
+        <div>
+            <h1 id="sideBrand" class="text-primary font-black text-xl leading-none font-headline tracking-tighter">🌾 AgroHarvest</h1>
+            <p id="sideTagline" class="text-on-surface-variant text-[10px] uppercase tracking-widest mt-1">Guardian Oversight</p>
+        </div>
+    </div>
+    <nav id="sidebarNav" class="flex-1 space-y-2">
+        <!-- Farmer Links -->
+        <div id="farmerLinks" class="space-y-2 hidden">
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all" href="dashboard.html">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">My Products</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all" href="orders.html">
+                <span class="material-symbols-outlined">shopping_basket</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Orders</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all" href="delivery.html">
+                <span class="material-symbols-outlined">local_shipping</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Delivery</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all" href="earnings.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Earnings</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-primary border-r-4 border-primary bg-surface-container transition-all font-bold group" href="marketplace.html">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">storefront</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Agro Store</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all" href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Settings</span>
+            </a>
+        </div>
+        <!-- Dealer Links -->
+        <div id="dealerLinks" class="space-y-2 hidden">
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container text-on-surface-variant font-bold group" href="dealer_dashboard.html">
+                <span class="material-symbols-outlined">precision_manufacturing</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Dealer Hub</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-primary border-r-4 border-primary bg-cyan-50 font-bold" href="marketplace.html">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">storefront</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Marketplace</span>
+            </a>
+            <a class="flex items-center space-x-4 px-4 py-3 rounded-lg hover:bg-surface-container transition-all" href="dealer_settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-body font-bold uppercase tracking-widest text-xs">Store Settings</span>
+            </a>
+        </div>
+        <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 transition-all border-t border-outline-variant mt-2 pt-4" href="signin.html">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="font-body font-bold uppercase tracking-widest text-xs">Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- Top Nav Bar (Customer Only) -->
+<nav id="customerNav" class="hidden fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4 shadow-sm bg-white/80 backdrop-blur-md border-b border-outline-variant">
+    <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer">
+        <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+        <a class="text-primary font-bold" href="marketplace.html">Marketplace</a>
+        <a class="text-on-surface-variant font-bold hover:text-primary transition-colors" href="orders.html">My Orders</a>
+        <a href="market_trends.html" class="flex items-center gap-1.5 text-on-surface-variant font-bold hover:text-red-500 transition-colors">
+            <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            Live Prices
+        </a>
+    </div>
+    <div class="flex items-center gap-4">
+        <span id="custNameDisplay" class="hidden md:block text-sm font-bold text-on-surface-variant"></span>
+        <button onclick="window.location.href='checkout.html'" class="relative p-2 text-on-surface hover:text-primary transition-colors group">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="cartBadge" class="absolute top-0 right-0 w-4 h-4 bg-secondary text-white text-[9px] font-bold rounded-full flex justify-center items-center opacity-0 transition-opacity">0</span>
+        </button>
+        <button onclick="window.location.href='signin.html'" class="text-on-surface-variant hover:text-red-500 font-bold text-sm flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">logout</span> Logout
+        </button>
+    </div>
+</nav>
+
+<!-- Main Content Area -->
+<main id="mainContent" class="flex-1 flex flex-col min-h-screen">
+    <!-- Dashboard Header (Hidden for customers) -->
+    <header id="dashboardHeader" class="hidden fixed top-0 right-0 left-0 md:left-72 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 py-6">
+        <div>
+            <h2 class="font-headline text-2xl font-black tracking-tighter text-primary">Agro Store</h2>
+            <p id="navSubtext" class="text-on-surface-variant text-xs uppercase tracking-widest font-bold mt-0.5">Global Market Access</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="window.location.href='checkout.html'" class="relative p-2 text-on-surface hover:text-primary transition-colors group">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span id="dashCartBadge" class="absolute top-0 right-0 w-4 h-4 bg-secondary text-white text-[9px] font-bold rounded-full flex justify-center items-center opacity-0 transition-opacity">0</span>
+            </button>
+             <div class="hidden sm:flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+                <span class="material-symbols-outlined text-on-surface-variant text-base">person</span>
+                <span id="navUserName" class="text-sm font-bold font-body text-on-surface">Guest</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="pt-24 md:pt-32 pb-12 px-6 lg:px-12 transition-all duration-300" id="marketplaceContainer">
+        <!-- Hero Banner -->
+        <section class="max-w-7xl mx-auto mb-12">
+            <div id="heroBanner" class="bg-primary rounded-3xl p-10 md:p-16 relative overflow-hidden text-white flex flex-col md:flex-row items-center justify-between shadow-2xl">
+                <div class="absolute inset-0 bg-black/10 z-0"></div>
+                <div class="relative z-10 max-w-lg space-y-4">
+                    <h1 class="text-4xl md:text-6xl font-headline font-black tracking-tight leading-[1]">Fresh From The <span class="text-secondary">Source</span></h1>
+                    <p class="font-medium text-lg text-white/90">Connect directly with authentic Nepali farmers. Buy pure, organically tracked produce shipped straight from the valley to your table.</p>
+                    <div class="relative mt-6 max-w-sm flex bg-white rounded-full p-1 shadow-lg border border-outline-variant">
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                        <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="What are you craving today?" class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant pl-12 font-medium">
+                    </div>
+                </div>
+                <div class="hidden md:block relative z-10">
+                    <div class="w-48 h-48 bg-white/20 backdrop-blur-md rounded-full shadow-2xl border flex items-center justify-center border-white/30">
+                        <span class="material-symbols-outlined text-8xl text-secondary">local_florist</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content/Filters -->
+        <section class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
+            <!-- Sidebar Filters -->
+            <aside id="catFilters" class="w-full lg:w-64 shrink-0 space-y-8">
+                <div>
+                    <h3 class="font-headline font-bold text-xl mb-4">Categories</h3>
+                    <ul class="space-y-2">
+                        <li><button onclick="setFilter('All')" class="font-bold text-primary w-full text-left py-2 border-b border-outline-variant filter-btn filter-active">All Discoveries</button></li>
+                        <li><button onclick="setFilter('Vegetables')" class="font-bold text-on-surface-variant hover:text-primary transition w-full text-left py-2 border-b border-outline-variant filter-btn">Fresh Vegetables</button></li>
+                        <li><button onclick="setFilter('Grains')" class="font-bold text-on-surface-variant hover:text-primary transition w-full text-left py-2 border-b border-outline-variant filter-btn">Grains & Legumes</button></li>
+                        <li><button onclick="setFilter('Fruits')" class="font-bold text-on-surface-variant hover:text-primary transition w-full text-left py-2 border-b border-outline-variant filter-btn">Orchard Fruits</button></li>
+                        <li><button onclick="setFilter('Machinery')" class="font-bold text-on-surface-variant hover:text-primary transition w-full text-left py-2 border-b border-outline-variant filter-btn">Agro Machinery</button></li>
+                        <li><button onclick="setFilter('Fertilizer')" class="font-bold text-on-surface-variant hover:text-primary transition w-full text-left py-2 border-b border-outline-variant filter-btn">Supplies & Seeds</button></li>
+                        <li><button onclick="setFilter('Cash Crops')" class="font-bold text-on-surface-variant hover:text-primary transition w-full text-left py-2 border-b border-outline-variant filter-btn">Cash Crops</button></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Product Grid -->
+            <div class="flex-1">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="font-headline text-3xl font-black">Marketplace Ledger</h2>
+                    <div class="text-sm font-bold text-on-surface-variant"><span id="productCount">0</span> Items found</div>
+                </div>
+
+                <div id="marketplaceGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Products dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer id="mainFooter" class="bg-white w-full border-t border-outline-variant">
+    <div class="max-w-7xl mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div class="flex flex-col gap-4">
+            <span class="text-lg font-black text-on-surface font-headline tracking-tighter">🌾 AgroHarvest</span>
+            <div class="font-manrope text-sm tracking-wide text-on-surface-variant font-medium">Global Marketplace</div>
+        </div>
+        <p class="text-sm tracking-widest text-primary font-bold">© 2026 AgroHarvest.</p>
+    </div>
+</footer>
+
+<!-- Custom Request Modal -->
+<div id="customRequestModal" class="fixed inset-0 z-[100] bg-on-surface/40 backdrop-blur-sm hidden flex items-center justify-center px-4">
+    <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative border border-outline-variant">
+        <button onclick="closeRequestModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-red-500 material-symbols-outlined">close</button>
+        <h3 class="font-headline font-black text-2xl mb-1 text-primary">Pre-Order Harvest</h3>
+        <p class="text-on-surface-variant text-sm mb-6 font-bold" id="modalFarmerLabel">Request a custom harvest.</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Desired Crop</label>
+                <input type="text" id="reqCrop" class="w-full mt-1 bg-surface-container border border-outline-variant rounded-xl p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="e.g. Tomatoes">
+            </div>
+            <div>
+                <label class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Required Quantity (kg)</label>
+                <input type="text" id="reqQty" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full mt-1 bg-surface-container border border-outline-variant rounded-xl p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="e.g. 50">
+            </div>
+            <div>
+                <label class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Expected Delivery Date</label>
+                <input type="date" id="reqDate" class="w-full mt-1 bg-surface-container border border-outline-variant rounded-xl p-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+            </div>
+            <input type="hidden" id="reqFarmer">
+            <button onclick="submitCustomRequest()" class="w-full bg-secondary text-white font-bold py-3 rounded-xl mt-4 hover:bg-amber-600 transition-colors shadow-lg hover:-translate-y-0.5">Submit Request</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] hidden">
+    <div class="bg-white border border-outline-variant text-on-surface px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span id="toastMsg" class="text-sm font-semibold"></span>
+    </div>
+</div>
+
+<script>
+    // Role & Layout Logic
+    (function initLayout() {
+        const userRole = localStorage.getItem('userRole') || 'customer';
+        const userName = localStorage.getItem('farmerName') || 'Guest';
+        
+        document.getElementById('navUserName').textContent = userName;
+        
+        const sidebar = document.getElementById('dashboardSidebar');
+        const mainContent = document.getElementById('mainContent');
+        const dashHeader = document.getElementById('dashboardHeader');
+        const custNav = document.getElementById('customerNav');
+        const footer = document.getElementById('mainFooter');
+
+        if (userRole === 'customer') {
+            sidebar.classList.add('hidden');
+            sidebar.style.display = 'none'; // force-hide regardless of Tailwind md: breakpoint
+            custNav.classList.remove('hidden');
+            dashHeader.classList.add('hidden');
+            mainContent.style.marginLeft = '0';
+            // Show customer name in top nav
+            const custNameEl = document.getElementById('custNameDisplay');
+            if (custNameEl) custNameEl.textContent = userName;
+        } else {
+            sidebar.classList.remove('hidden');
+            sidebar.style.display = 'flex';
+            custNav.classList.add('hidden');
+            dashHeader.classList.remove('hidden');
+            mainContent.classList.add('md:ml-72');
+            
+            // Adjust categories for non-customers
+            if (userRole === 'dealer') {
+                document.getElementById('dealerLinks').classList.remove('hidden');
+                document.getElementById('sideBrand').textContent = '⚙️ Dealer Hub';
+                document.getElementById('sideBrand').classList.add('text-cyan-700');
+                document.getElementById('sideBrand').classList.remove('text-primary');
+                document.getElementById('sideLogo').classList.add('bg-cyan-50', 'text-cyan-700', 'border-cyan-700');
+                document.getElementById('sideLogo').classList.remove('bg-surface-container-low', 'text-primary', 'border-primary');
+                document.getElementById('sideLogo').innerHTML = '<span class="material-symbols-outlined" style="font-variation-settings:\'FILL\' 1;">precision_manufacturing</span>';
+                document.getElementById('sideTagline').textContent = 'Industrial Network';
+                document.getElementById('heroBanner').classList.remove('bg-primary');
+                document.getElementById('heroBanner').classList.add('bg-cyan-800');
+            } else {
+                document.getElementById('farmerLinks').classList.remove('hidden');
+            }
+        }
+    })();
+
+    function openRequestModal(farmerName) {
+        document.getElementById('modalFarmerLabel').textContent = `Targeting: ${farmerName}`;
+        document.getElementById('reqFarmer').value = farmerName;
+        document.getElementById('customRequestModal').classList.remove('hidden');
+    }
+    function closeRequestModal() {
+        document.getElementById('customRequestModal').classList.add('hidden');
+    }
+    async function submitCustomRequest() {
+        const crop = document.getElementById('reqCrop').value;
+        const qty = document.getElementById('reqQty').value;
+        const date = document.getElementById('reqDate').value;
+        const customerName = localStorage.getItem('farmerName') || 'Guest Customer';
+        
+        if(!crop || !qty || !date) return alert("Please fill all fields to make a formal request.");
+        
+        try {
+            const res = await fetch('/api/contracts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ crop, qty, date, customerName })
+            });
+            const result = await res.json();
+            if (result.success) {
+                closeRequestModal();
+                showToast(`Request sent to the global ledger!`);
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    // System core functions
+    let allProducts = [];
+    let cart = JSON.parse(localStorage.getItem('userCart') || '[]');
+    updateCartBadge();
+
+    async function loadMarket() {
+        try {
+            const res = await fetch('/api/products');
+            allProducts = await res.json();
+            renderMarket(allProducts);
+        } catch(e) { console.error(e); }
+    }
+
+    const CROP_EMOJIS = {'carrot':'🥕','gajar':'🥕','radish':'🌱','spinach':'🥬','eggplant':'🍆','pumpkin':'🎃','habanero':'🌶️','soybean':'🫘','bamboo':'🍃','coriander':'🌿','mustard':'🌿','apple':'🍎','syau':'🍎','rice':'🌾','dhan':'🌾','tractor':'🚜','plow':'🚜','tool':'🛠️','fertilizer':'🧪','default':'📦'};
+    function getCropEmoji(name) {
+        const n = name.toLowerCase();
+        for (const [key, emoji] of Object.entries(CROP_EMOJIS)) {
+            if (n.includes(key)) return emoji;
+        }
+        return CROP_EMOJIS.default;
+    }
+
+    function getFarmerRating(name) {
+        if (!name) return "4.8";
+        let hash = 0;
+        for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
+        return (4.2 + (hash % 8) / 10).toFixed(1); // 4.2 to 4.9 rating
+    }
+
+    function renderMarket(products) {
+        const grid = document.getElementById('marketplaceGrid');
+        const available = products.filter(p => p.status === 'Available');
+        document.getElementById('productCount').textContent = available.length;
+        
+        if (available.length === 0) {
+            grid.innerHTML = `<div class="col-span-full py-20 text-center"><span class="material-symbols-outlined text-6xl text-outline-variant mb-4">inventory_2</span><h3 class="font-headline font-bold text-2xl">The market is empty</h3><p class="text-on-surface-variant">Check back later after the next harvest.</p></div>`;
+            return;
+        }
+
+        grid.innerHTML = available.map(p => {
+            const imgHTML = p.image 
+                ? `<img src="${p.image}" class="w-full h-full object-cover transition-transform hover:scale-105 duration-500">`
+                : `<div class="w-full h-full flex items-center justify-center text-6xl bg-surface-container-high transition-transform hover:scale-105 duration-500">${getCropEmoji(p.name)}</div>`;
+            
+            const farmerName = p.farmer_name || p.farmerName || 'AgroHarvest Trust';
+            const rating = getFarmerRating(farmerName);
+            // Parse available kg from the yield field (e.g. "10 kg" → 10)
+            const availableKg = parseFloat(p.yield) || 0;
+
+            return `
+            <div class="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+                <div class="h-48 overflow-hidden relative">
+                    ${imgHTML}
+                    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded shadow-sm text-secondary">${p.category || 'Fresh Goods'}</div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex justify-between items-start mb-1">
+                        <h4 class="font-headline font-extrabold text-xl pr-2 w-full truncate">${p.name}</h4>
+                        <div class="flex items-center gap-1 bg-[#fffbeb] px-1.5 py-0.5 rounded text-secondary text-xs font-bold border border-[#fef3c7] shrink-0" title="Farmer Rating">
+                            <span class="material-symbols-outlined text-[10px]" style="font-variation-settings:'FILL' 1;">star</span>
+                            ${rating}
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-primary mb-3 flex items-center gap-1 truncate w-full" title="${farmerName}">
+                        <span class="material-symbols-outlined text-[14px]">psychiatry</span>
+                        ${farmerName}
+                    </p>
+                    <p class="text-sm font-bold text-on-surface-variant mb-4 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">scale</span> Yield: ${p.yield}
+                    </p>
+                    <div class="mt-auto flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest">Price per Kg</p>
+                            <p class="font-headline font-black text-2xl text-primary">रू ${p.price}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="openRequestModal('${farmerName}')" class="h-10 px-3 rounded-full border-2 border-secondary text-secondary font-bold flex items-center gap-1 hover:bg-amber-50 transition-colors shadow-sm" title="Pre-Order Custom Load">
+                                <span class="material-symbols-outlined text-sm">handshake</span> <span class="text-[10px]">Contract</span>
+                            </button>
+                            <button onclick="addToCart('${p.id}', '${p.name}', ${p.price}, '${farmerName}', ${availableKg})" class="h-10 w-10 rounded-full bg-secondary text-white flex items-center justify-center hover:bg-amber-600 transition-colors shadow-lg hover:-translate-y-1 transform">
+                                <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+
+    function filterProducts() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const activeCat = document.querySelector('.filter-active').innerText;
+        
+        let filtered = allProducts;
+        if(activeCat !== 'All Discoveries') {
+            // Map display label → exact category string stored in DB
+            const catMap = {
+                "Fresh Vegetables": "Fresh Vegetables",
+                "Grains & Legumes": "Grains & Legumes",
+                "Orchard Fruits":   "Orchard Fruits",
+                "Agro Machinery":   "Agro Machinery",
+                "Supplies & Seeds": "Supplies & Seeds",
+                "Cash Crops":       "Cash Crops",
+                // Legacy fallbacks for products saved before the category update
+                "Vegetables":       "Vegetables",
+                "Grains":           "Grains",
+                "Fruits":           "Fruits",
+                "Machinery":        "Machinery",
+                "Fertilizer":       "Fertilizer",
+            };
+            const target = catMap[activeCat] || activeCat;
+            filtered = filtered.filter(p => (p.category || '').toLowerCase().includes(target.toLowerCase()));
+        }
+        
+        if (term) {
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
+        }
+        renderMarket(filtered);
+    }
+
+    function setFilter(categoryName) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('filter-active', 'text-primary');
+            btn.classList.add('text-on-surface-variant');
+        });
+        const clicked = event.target;
+        clicked.classList.add('filter-active', 'text-primary');
+        clicked.classList.remove('text-on-surface-variant');
+        filterProducts();
+    }
+
+    function addToCart(id, name, price, farmerName, availableKg) {
+        const item = cart.find(i => i.id == id);
+        const maxQty = availableKg !== undefined ? availableKg : (item ? item.availableKg : 99999);
+        if (item) {
+            if (item.qty >= maxQty) {
+                showToast(`⚠️ Only ${maxQty} kg available for ${name}!`);
+                return;
+            }
+            item.qty += 1;
+        } else {
+            cart.push({id, name, price: Number(price), qty: 1, farmerName: farmerName || '', availableKg: maxQty});
+        }
+        localStorage.setItem('userCart', JSON.stringify(cart));
+        updateCartBadge();
+        
+        const btn = event.currentTarget.querySelector('span');
+        const oldText = btn.innerText;
+        btn.innerText = 'check';
+        setTimeout(() => btn.innerText = oldText, 1000);
+    }
+
+    function updateCartBadge() {
+        const count = cart.reduce((sum, item) => sum + item.qty, 0);
+        const badge = document.getElementById('cartBadge');
+        const dashBadge = document.getElementById('dashCartBadge');
+        if (count > 0) {
+            if(badge) { badge.textContent = count; badge.style.opacity = '1'; }
+            if(dashBadge) { dashBadge.textContent = count; dashBadge.style.opacity = '1'; }
+        } else {
+            if(badge) badge.style.opacity = '0';
+            if(dashBadge) dashBadge.style.opacity = '0';
+        }
+    }
+
+    loadMarket();
+</script>
+<script src="chat.js"></script>
+</body>
+</html>

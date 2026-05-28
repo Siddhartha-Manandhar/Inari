@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>AgroHarvest | Track Order</title>
+    <link href="css/style.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#16a34a', secondary: '#d97706', surface: '#f4f9f4',
+                        'surface-container': '#e8f5e9', 'surface-container-low': '#ffffff',
+                        'surface-container-high': '#c8e6c9', 'on-surface': '#064e3b',
+                        'on-surface-variant': '#14532d', 'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                    },
+                    fontFamily: { headline: ['Epilogue', 'serif'], body: ['Manrope', 'sans-serif'], label: ['Manrope', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    </style>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body overflow-x-hidden min-h-screen flex flex-col">
+
+<!-- Top Nav -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 py-4 shadow-sm">
+    <div onclick="window.history.back()" class="flex items-center gap-2 cursor-pointer text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="font-bold text-sm tracking-tight hidden sm:block">Back to Orders</span>
+    </div>
+    <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer absolute left-1/2 -translate-x-1/2">
+        <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+    </div>
+</nav>
+
+<main class="flex-grow pt-28 pb-24 max-w-5xl mx-auto w-full px-6">
+    <div id="loading" class="flex flex-col items-center justify-center py-32 space-y-4">
+        <span class="material-symbols-outlined text-outline-variant text-6xl animate-spin">sync</span>
+        <p class="font-bold text-on-surface-variant animate-pulse">Locating your order...</p>
+    </div>
+
+    <div id="error" class="hidden flex-col items-center justify-center py-32 space-y-4 text-center">
+        <span class="material-symbols-outlined text-red-400 text-6xl">error</span>
+        <h3 class="font-headline text-2xl font-black text-on-surface">Order Not Found</h3>
+        <p class="text-on-surface-variant">The requested order could not be loaded or doesn't exist.</p>
+        <button onclick="window.location.href='orders.html'" class="mt-4 px-6 py-3 bg-surface-container text-primary rounded-full font-bold border border-primary hover:bg-primary hover:text-white transition">Return to Orders</button>
+    </div>
+
+    <div id="content" class="hidden space-y-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 bg-white p-8 rounded-3xl border border-outline-variant shadow-sm">
+            <div>
+                <span class="text-[10px] uppercase tracking-widest text-secondary font-bold">Timeline Tracking</span>
+                <h1 id="orderIdHeader" class="font-headline text-3xl font-black text-on-surface tracking-tighter mt-1">Order #</h1>
+                <p id="orderItemsSummary" class="text-on-surface-variant mt-2 text-sm font-bold opacity-80"></p>
+            </div>
+            
+            <div class="flex flex-col items-end gap-2">
+                <span id="orderStatusBadge" class="px-4 py-2 rounded-xl text-sm font-black uppercase tracking-widest bg-surface-container text-on-surface"></span>
+                <p id="deliveryEstimate" class="text-xs font-bold text-on-surface-variant">Updating estimate...</p>
+            </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Timeline Progress Steps -->
+            <div class="bg-white rounded-3xl p-8 border border-outline-variant shadow-sm relative">
+                <h3 class="font-headline text-xl font-bold mb-6">Order Timeline</h3>
+                
+                <!-- Vertical Timeline Line -->
+                <div class="absolute left-12 top-24 bottom-12 w-0.5 bg-gray-200"></div>
+
+                <div id="timelineContainer" class="space-y-6 relative z-10">
+                    <!-- Timeline events injected here -->
+                </div>
+            </div>
+
+            <!-- More Details -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-3xl p-8 border border-outline-variant shadow-sm">
+                    <h3 class="font-headline text-xl font-bold mb-6">Delivery Details</h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-4 items-start">
+                            <span class="material-symbols-outlined text-outline-variant p-2 bg-surface-container rounded-lg">location_on</span>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Delivery Address</p>
+                                <p id="orderAddress" class="font-bold text-sm text-on-surface mt-0.5"></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <span class="material-symbols-outlined text-outline-variant p-2 bg-surface-container rounded-lg">agriculture</span>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Farmer</p>
+                                <p id="orderFarmer" class="font-bold text-sm text-on-surface mt-0.5"></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <span class="material-symbols-outlined text-outline-variant p-2 bg-surface-container rounded-lg">local_shipping</span>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Delivery Agent</p>
+                                <p id="orderAgent" class="font-bold text-sm text-on-surface mt-0.5"></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <span class="material-symbols-outlined text-outline-variant p-2 bg-surface-container rounded-lg">payments</span>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Total Amount</p>
+                                <p id="orderTotal" class="font-black text-lg text-primary mt-0.5"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 rounded-3xl p-8 border border-green-200 shadow-sm text-center">
+                    <span class="material-symbols-outlined text-4xl text-green-600 mb-2">support_agent</span>
+                    <h4 class="font-bold text-green-800">Need help with your delivery?</h4>
+                    <p class="text-xs font-medium text-green-700 mt-2">Our dispatch team is monitoring everything.</p>
+                    <button onclick="alert('Connecting to agent...')" class="mt-4 px-4 py-2 bg-white text-green-700 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-green-100 transition shadow-sm border border-green-200">Contact Support</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('id');
+
+    async function fetchOrderTimeline() {
+        if (!orderId) throw new Error("No Order ID");
+        const res = await fetch('/api/orders/' + orderId + '/timeline');
+        if (!res.ok) throw new Error("Not Found");
+        return await res.json();
+    }
+
+    const ALL_STEPS = [
+        { status: 'Order Placed', icon: 'receipt_long' },
+        { status: 'Order Accepted', icon: 'thumb_up' },
+        { status: 'Preparing Order', icon: 'inventory' },
+        { status: 'Ready for Pickup', icon: 'done_all' },
+        { status: 'Handed Over to Delivery Agent', icon: 'local_shipping' },
+        { status: 'Out for Delivery', icon: 'two_wheeler' },
+        { status: 'Delivered', icon: 'task_alt' }
+    ];
+
+    function updateUI(data) {
+        const order = data.order;
+        const timeline = data.timeline;
+
+        // Items string
+        const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+        const itemsStr = Array.isArray(items) ? items.map(i => `${i.qty}× ${i.name}`).join(', ') : 'Items';
+        
+        // Header
+        document.getElementById('orderIdHeader').textContent = 'Order #' + order.id;
+        document.getElementById('orderItemsSummary').textContent = itemsStr;
+        document.getElementById('orderAddress').textContent = order.address || 'Not specified';
+        document.getElementById('orderFarmer').textContent = order.farmer_name || 'Assigning...';
+        document.getElementById('orderAgent').textContent = order.delivery_agent || 'Assigning...';
+        document.getElementById('orderTotal').textContent = 'रू ' + parseFloat(order.total).toFixed(0);
+
+        // Status Badge
+        const badge = document.getElementById('orderStatusBadge');
+        badge.textContent = order.status;
+        
+        if (order.status === 'Cancelled') {
+            badge.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-widest bg-red-100 text-red-800 border border-red-300";
+            document.getElementById('deliveryEstimate').textContent = "Cancelled";
+        } else if (order.status === 'Delivered') {
+            badge.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-widest bg-green-100 text-green-800 border border-green-300";
+            document.getElementById('deliveryEstimate').textContent = "Completed";
+        } else {
+            badge.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-widest bg-orange-100 text-orange-800 border border-orange-300";
+            document.getElementById('deliveryEstimate').textContent = "In Progress";
+        }
+
+        // Timeline
+        const container = document.getElementById('timelineContainer');
+        if (order.status === 'Cancelled') {
+            container.innerHTML = `<div class="flex items-center gap-4 text-red-500">
+                <span class="material-symbols-outlined text-4xl">cancel</span>
+                <div>
+                    <h4 class="font-bold text-lg">Order Cancelled</h4>
+                    <p class="text-sm">This order will not be delivered.</p>
+                </div>
+            </div>`;
+            return;
+        }
+
+        let html = '';
+        const currentIdx = ALL_STEPS.findIndex(s => s.status === order.status);
+
+        ALL_STEPS.forEach((step, idx) => {
+            // Find if this step is in history
+            const histEvent = timeline.find(t => t.status === step.status);
+            
+            const isCompleted = histEvent !== undefined || idx < currentIdx;
+            const isCurrent = idx === currentIdx;
+            
+            let colorClass = 'bg-gray-100 border-gray-300 text-gray-400';
+            let titleClass = 'text-gray-400';
+            let timeStr = '';
+
+            if (isCompleted) {
+                colorClass = 'bg-primary border-primary text-white';
+                titleClass = 'text-on-surface font-bold';
+                if (histEvent) {
+                    timeStr = new Date(histEvent.created_at).toLocaleString([], {hour: '2-digit', minute:'2-digit', month:'short', day:'numeric'});
+                }
+            } else if (isCurrent) {
+                colorClass = 'bg-orange-500 border-orange-500 text-white shadow-[0_0_15px_rgba(249,115,22,0.5)] animate-pulse';
+                titleClass = 'text-orange-600 font-bold';
+            }
+
+            html += `
+            <div class="flex gap-4 relative ${!isCompleted && !isCurrent ? 'opacity-50' : ''}">
+                <div class="flex-none">
+                    <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center ${colorClass} relative z-10 bg-white">
+                        <span class="material-symbols-outlined text-[20px]">${step.icon}</span>
+                    </div>
+                </div>
+                <div class="flex-grow pt-2">
+                    <h4 class="${titleClass}">${step.status}</h4>
+                    ${timeStr ? `<p class="text-xs text-on-surface-variant font-medium">${timeStr}</p>` : ''}
+                </div>
+            </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    async function initTrack() {
+        try {
+            const data = await fetchOrderTimeline();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+            updateUI(data);
+        } catch (e) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+        }
+    }
+
+    // WebSockets setup
+    let ws;
+    function initWS() {
+        ws = new WebSocket(`ws://${window.location.host}`);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'STATUS_UPDATE' && data.orderId == orderId) {
+                initTrack();
+            }
+        };
+        ws.onclose = () => setTimeout(initWS, 3000);
+    }
+
+    setTimeout(() => {
+        initTrack();
+        initWS();
+    }, 400); 
+</script>
+</body>
+</html>

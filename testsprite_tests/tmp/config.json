@@ -1,0 +1,18 @@
+{
+  "status": "init",
+  "scope": "codebase",
+  "type": "frontend",
+  "localEndpoint": "http://localhost:8080/",
+  "serverPort": 55605,
+  "executionArgs": {
+    "projectName": "html",
+    "projectPath": "e:\\html",
+    "testIds": [],
+    "additionalInstruction": "",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-KjI6asZ6bdaQhqVvCqa0nt4ZRKJTLf-3QMcO6XIbbCiua-DWID8_Jw2W2HmzGyzohcbGITd8_lB7SQNYMvs0ZIzrmYpvXKdfsNriusSuA3h8QuGIkmB0EclhzejtAtc9rC4"
+    }
+  },
+  "proxy": "http://834aca27-1e37-4fed-8110-b9ccdfbb2dc2:csgllgBAg2O7v1c9GuaQyeRBXBsk1gt5@tun.testsprite.com:8080"
+}

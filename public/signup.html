@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sign Up - AgroHarvest</title>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                    primary: '#16a34a',     /* green-600 */
+                        secondary: '#d97706',   /* amber-gold */
+                        surface: '#f4f9f4',
+                        'surface-container': '#e8f5e9',
+                        'surface-container-low': '#ffffff',
+                        'on-surface': '#064e3b',
+                        'on-surface-variant': '#14532d',
+                        'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                    },
+                    fontFamily: {
+                        headline: ['Epilogue', 'serif'],
+                        body: ['Manrope', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body selection:bg-primary selection:text-white">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4">
+        <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer">
+            <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-on-surface font-headline tracking-tighter hover:text-primary transition-colors duration-300" href="#">Our Roots</a>
+            <a class="text-on-surface font-headline tracking-tighter hover:text-primary transition-colors duration-300" href="#">Yields</a>
+            <a class="text-on-surface font-headline tracking-tighter hover:text-primary transition-colors duration-300" href="#">Network</a>
+        </div>
+        <button onclick="window.location.href='signin.html'" class="btn-agro btn-primary font-headline tracking-tighter shadow-lg">
+            Sign In
+        </button>
+    </nav>
+
+    <main class="min-h-screen pt-24 pb-12 flex items-center justify-center relative overflow-hidden">
+        <!-- Ambient Decorative Elements -->
+        <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary/10 rounded-full blur-[120px]"></div>
+        
+        <div class="container max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Side: Visual/Hero -->
+            <div class="hidden lg:flex flex-col items-start space-y-8 animate-fade-in">
+                <div class="relative group">
+                    <div class="leaf-pulse rounded-3xl overflow-hidden aspect-square w-full max-w-md bg-surface-container-low border border-outline-variant shadow-[0_0_50px_rgba(74,222,128,0.15)]">
+                        <img class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105" alt="Agricultural landscape" src="agro_landscape.png"/>
+                    </div>
+                </div>
+                <div class="space-y-4 max-w-md">
+                    <h1 class="font-headline text-5xl font-black text-on-surface tracking-tighter leading-none">
+                        Join the <span class="text-primary italic">AgroHarvest</span> Network
+                    </h1>
+                    <p class="text-on-surface-variant font-body text-lg leading-relaxed">
+                        Step into a realm where precision agriculture meets ancestral wisdom. Connect your yields to the global ecosystem.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Side: Sign Up Form -->
+            <div class="w-full max-w-lg mx-auto fade-up">
+                <div class="bg-surface-container-low p-8 md:p-12 rounded-[2rem] border border-outline-variant shadow-2xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <header class="mb-8">
+                            <h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tighter mb-2">Create Account</h2>
+                            <p class="text-on-surface-variant font-body">Begin your journey in AgroHarvest.</p>
+                        </header>
+                        
+                        <form class="space-y-5">
+                            <div class="space-y-2">
+                                <label class="field-label">Full Name / नाम</label>
+                                <input id="signupName" class="field-input" placeholder="Karuna Tamidewa" type="text"/>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="field-label">User Role</label>
+                                <select id="userRole" class="field-input appearance-none cursor-pointer bg-surface-container">
+                                    <option value="farmer">Farmer</option>
+                                    <option value="customer">Customer</option>
+                                    <option value="dealer">Agro Dealer</option>
+                                    <option value="agent">Dispatch Agent</option>
+                                </select>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="field-label">District / जिल्ला</label>
+                                <select class="field-input appearance-none cursor-pointer bg-surface-container" id="districtSelect">
+                                    <option disabled selected value="">Select District</option>
+                                    <option value="Achham">Achham</option>
+                                    <option value="Arghakhanchi">Arghakhanchi</option>
+                                    <option value="Baglung">Baglung</option>
+                                    <option value="Baitadi">Baitadi</option>
+                                    <option value="Bajhang">Bajhang</option>
+                                    <option value="Bajura">Bajura</option>
+                                    <option value="Banke">Banke</option>
+                                    <option value="Bara">Bara</option>
+                                    <option value="Bardiya">Bardiya</option>
+                                    <option value="Bhaktapur">Bhaktapur</option>
+                                    <option value="Bhojpur">Bhojpur</option>
+                                    <option value="Chitwan">Chitwan</option>
+                                    <option value="Dadeldhura">Dadeldhura</option>
+                                    <option value="Dailekh">Dailekh</option>
+                                    <option value="Dang">Dang</option>
+                                    <option value="Darchula">Darchula</option>
+                                    <option value="Dhading">Dhading</option>
+                                    <option value="Dhankuta">Dhankuta</option>
+                                    <option value="Dhanusa">Dhanusa</option>
+                                    <option value="Dolakha">Dolakha</option>
+                                    <option value="Dolpa">Dolpa</option>
+                                    <option value="Doti">Doti</option>
+                                    <option value="Eastern Rukum">Eastern Rukum</option>
+                                    <option value="Gorkha">Gorkha</option>
+                                    <option value="Gulmi">Gulmi</option>
+                                    <option value="Humla">Humla</option>
+                                    <option value="Ilam">Ilam</option>
+                                    <option value="Jajarkot">Jajarkot</option>
+                                    <option value="Jhapa">Jhapa</option>
+                                    <option value="Jumla">Jumla</option>
+                                    <option value="Kailali">Kailali</option>
+                                    <option value="Kalikot">Kalikot</option>
+                                    <option value="Kanchanpur">Kanchanpur</option>
+                                    <option value="Kapilvastu">Kapilvastu</option>
+                                    <option value="Kaski">Kaski</option>
+                                    <option value="Kathmandu">Kathmandu</option>
+                                    <option value="Kavrepalanchok">Kavrepalanchok</option>
+                                    <option value="Khotang">Khotang</option>
+                                    <option value="Lalitpur">Lalitpur</option>
+                                    <option value="Lamjung">Lamjung</option>
+                                    <option value="Mahottari">Mahottari</option>
+                                    <option value="Makwanpur">Makwanpur</option>
+                                    <option value="Manang">Manang</option>
+                                    <option value="Morang">Morang</option>
+                                    <option value="Mugu">Mugu</option>
+                                    <option value="Mustang">Mustang</option>
+                                    <option value="Myagdi">Myagdi</option>
+                                    <option value="Nawalpur">Nawalpur</option>
+                                    <option value="Nuwakot">Nuwakot</option>
+                                    <option value="Okhaldhunga">Okhaldhunga</option>
+                                    <option value="Palpa">Palpa</option>
+                                    <option value="Panchthar">Panchthar</option>
+                                    <option value="Parasi">Parasi</option>
+                                    <option value="Parbat">Parbat</option>
+                                    <option value="Parsa">Parsa</option>
+                                    <option value="Pyuthan">Pyuthan</option>
+                                    <option value="Ramechhap">Ramechhap</option>
+                                    <option value="Rasuwa">Rasuwa</option>
+                                    <option value="Rautahat">Rautahat</option>
+                                    <option value="Rolpa">Rolpa</option>
+                                    <option value="Rupandehi">Rupandehi</option>
+                                    <option value="Salyan">Salyan</option>
+                                    <option value="Sankhuwasabha">Sankhuwasabha</option>
+                                    <option value="Saptari">Saptari</option>
+                                    <option value="Sarlahi">Sarlahi</option>
+                                    <option value="Sindhuli">Sindhuli</option>
+                                    <option value="Sindhupalchok">Sindhupalchok</option>
+                                    <option value="Siraha">Siraha</option>
+                                    <option value="Solukhumbu">Solukhumbu</option>
+                                    <option value="Sunsari">Sunsari</option>
+                                    <option value="Surkhet">Surkhet</option>
+                                    <option value="Syangja">Syangja</option>
+                                    <option value="Tanahun">Tanahun</option>
+                                    <option value="Taplejung">Taplejung</option>
+                                    <option value="Terhathum">Terhathum</option>
+                                    <option value="Udayapur">Udayapur</option>
+                                    <option value="Western Rukum">Western Rukum</option>
+                                </select>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="field-label">Email Address</label>
+                                <input id="signupEmail" class="field-input" placeholder="farmer@agroharvest.com" type="email"/>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="field-label">Password</label>
+                                    <input id="signupPassword" class="field-input" placeholder="••••••••" type="password"/>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="field-label">Confirm Password</label>
+                                    <input id="signupConfirm" class="field-input" placeholder="••••••••" type="password"/>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 mt-4">
+                                <div class="relative flex items-center h-5">
+                                    <input class="w-5 h-5 rounded border-outline-variant bg-surface-container text-primary focus:ring-primary/20" id="terms" type="checkbox"/>
+                                </div>
+                                <label class="text-sm text-on-surface-variant leading-tight" for="terms">
+                                    I agree to the <a class="text-secondary hover:underline transition-all" href="#">Terms of Service</a> and <a class="text-secondary hover:underline transition-all" href="#">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <button onclick="createAccountAndRoute()" class="bg-primary text-white w-full justify-center py-4 rounded-full font-bold text-lg mt-2 shadow-[0_10px_20px_rgba(22,163,74,0.3)] hover:brightness-110 hover:-translate-y-1 transition-all" type="button">
+                                Create Account
+                            </button>
+                            <script>
+                                async function createAccountAndRoute() {
+                                    console.log("Signup initiation started...");
+                                    try {
+                                        const name = document.getElementById('signupName').value;
+                                        const role = document.getElementById('userRole').value;
+                                        const district = document.getElementById('districtSelect').value;
+                                        const email = document.getElementById('signupEmail').value;
+                                        const password = document.getElementById('signupPassword').value;
+                                        const confirm = document.getElementById('signupConfirm').value;
+
+                                        console.log("Form data collected:", { name, role, district, email });
+
+                                        if (!name || !email || !password || !district) {
+                                            alert("Please fill all mandatory fields.");
+                                            return;
+                                        }
+                                        if (password !== confirm) {
+                                            alert("Passwords do not match.");
+                                            return;
+                                        }
+
+                                        console.log("Sending fetch request to /api/signup...");
+                                        const response = await fetch('/api/signup', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ name, email, password, role, district })
+                                        });
+
+                                        console.log("Response received. Status:", response.status);
+                                        const result = await response.json();
+                                        console.log("Result payload:", result);
+
+                                        if (result.success) {
+                                            localStorage.setItem('selectedDistrict', result.user.district);
+                                            localStorage.setItem('userRole', result.user.role);
+                                            localStorage.setItem('farmerName', result.user.name);
+                                            localStorage.setItem('userId', result.user.id);
+                                            
+                                            window.location.href = result.user.role === 'customer' ? 'marketplace.html' : 
+                                                                  result.user.role === 'agent' ? 'agent_dashboard.html' : 
+                                                                  result.user.role === 'dealer' ? 'dealer_dashboard.html' : 'dashboard.html';
+                                        } else {
+                                            alert("Signup failed: " + result.error);
+                                        }
+                                    } catch (err) {
+                                        console.error("CRITICAL SIGNUP ERROR:", err);
+                                        alert("CRITICAL ERROR: " + err.message);
+                                    }
+                                }
+                            </script>
+                        </form>
+                        
+                        <footer class="mt-6 text-center">
+                            <p class="text-on-surface-variant text-sm">
+                                Already have an account? 
+                                <a class="text-primary font-bold hover:brightness-110 transition-colors duration-200 ml-1" href="signin.html">Sign In</a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#ffffff] w-full border-t border-[rgba(22,163,74,0.05)]">
+        <div class="max-w-7xl mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div class="flex flex-col gap-4">
+                <span class="text-lg font-black text-on-surface font-headline tracking-tighter">🌾 AgroHarvest</span>
+                <div class="flex flex-col gap-2 text-sm uppercase tracking-widest text-primary">
+                    <a class="hover:brightness-125 transition-all duration-300" href="tel:+9779808128988">+9779808128988</a>
+                    <a class="hover:brightness-125 transition-all duration-300" href="mailto:contact@agroharvest.com">contact@agroharvest.com</a>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-x-8 gap-y-4">
+                <a class="text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-all duration-300" href="#">Privacy Policy</a>
+                <a class="text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-all duration-300" href="#">Terms of Use</a>
+            </div>
+            <p class="text-sm uppercase tracking-widest text-[#4a7c4a]">
+                © 2026 AgroHarvest. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

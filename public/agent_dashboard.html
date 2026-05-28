@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Dispatch Agent Dashboard</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: { primary: '#16a34a', secondary: '#d97706', surface: '#f4f9f4', 'surface-container': '#e8f5e9', 'surface-container-low': '#ffffff', 'surface-container-high': '#c8e6c9', 'on-surface': '#064e3b', 'on-surface-variant': '#14532d', 'outline-variant': 'rgba(22, 163, 74, 0.2)' },
+                fontFamily: { headline: ['Epilogue', 'serif'], body: ['Manrope', 'sans-serif']}
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body overflow-x-hidden min-h-screen flex flex-col">
+
+<nav class="fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4 shadow-sm bg-white/80 backdrop-blur-md border-b border-outline-variant">
+    <div class="flex items-center gap-2">
+        <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+        <span class="bg-secondary text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ml-2">Dispatch Agent</span>
+    </div>
+    <div class="flex flex-row items-center gap-6">
+        <div class="flex items-center gap-2 bg-surface-container px-4 py-2 rounded-full border border-outline-variant">
+            <span class="material-symbols-outlined text-primary text-base">local_shipping</span>
+            <span id="agentNameDisplay" class="text-sm font-bold text-on-surface">Agent</span>
+        </div>
+        <button onclick="window.location.href='signin.html'" class="text-on-surface-variant hover:text-red-500 font-bold tracking-tight text-sm flex items-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-sm">logout</span> Logout
+        </button>
+    </div>
+</nav>
+
+<main class="flex-grow pt-28 pb-12 max-w-6xl mx-auto px-6 w-full flex flex-col gap-10">
+    <div class="bg-primary rounded-3xl p-8 relative overflow-hidden text-white shadow-xl">
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h1 class="font-headline text-3xl font-black mb-2">Fleet Overview</h1>
+                <p class="font-medium text-white/80 text-sm max-w-md">Manage current pickups and active deliveries. Update status as you go.</p>
+            </div>
+            <div class="flex gap-4">
+               <div class="bg-white/20 backdrop-blur-md border border-white/20 rounded-xl p-4 text-center w-28">
+                   <h3 id="statPending" class="text-3xl font-black font-headline">0</h3>
+                   <span class="text-[10px] uppercase tracking-widest font-bold">Awaiting Pickup</span>
+               </div>
+               <div class="bg-white/20 backdrop-blur-md border border-white/20 rounded-xl p-4 text-center w-28">
+                   <h3 id="statTransit" class="text-3xl font-black font-headline">0</h3>
+                   <span class="text-[10px] uppercase tracking-widest font-bold">In Transit</span>
+               </div>
+               <div class="bg-white/20 backdrop-blur-md border border-white/20 rounded-xl p-4 text-center w-28">
+                   <h3 id="statDelivered" class="text-3xl font-black font-headline">0</h3>
+                   <span class="text-[10px] uppercase tracking-widest font-bold">Delivered</span>
+               </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <span class="text-[10px] uppercase tracking-widest text-secondary font-bold">Active Missions</span>
+                <h2 class="font-headline text-2xl font-bold">Dispatch Ledger</h2>
+            </div>
+            <button onclick="loadDispatch()" class="flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant bg-white font-bold text-sm text-on-surface-variant hover:border-primary hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-sm">refresh</span> Refresh
+            </button>
+        </div>
+        <div id="dispatchList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-full flex justify-center py-16">
+                <span class="material-symbols-outlined text-5xl text-outline-variant animate-spin">sync</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] hidden">
+    <div class="bg-white border border-outline-variant px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span id="toastIcon" class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span id="toastMsg" class="text-sm font-semibold text-on-surface">Action successful</span>
+    </div>
+</div>
+
+<script>
+    const _role = localStorage.getItem('userRole');
+    if (!_role) { window.location.href = 'signin.html'; }
+    else if (_role !== 'agent') {
+        const _roleMap = { farmer: 'dashboard.html', dealer: 'dealer_dashboard.html', customer: 'marketplace.html' };
+        window.location.href = _roleMap[_role] || 'signin.html';
+    }
+
+    const agentName = localStorage.getItem('farmerName') || 'Dispatch Agent';
+    document.getElementById('agentNameDisplay').textContent = agentName;
+
+    function showToast(msg, isError = false) {
+        document.getElementById('toastMsg').textContent = msg;
+        const icon = document.getElementById('toastIcon');
+        icon.textContent = isError ? 'error' : 'check_circle';
+        icon.className = `material-symbols-outlined text-base ${isError ? 'text-red-500' : 'text-primary'}`;
+        const t = document.getElementById('toast');
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    // Status display config for agent dashboard
+    const STATUS_CONFIG = {
+        'Order Placed':                  { badge: 'bg-blue-100 text-blue-700 border-blue-200',      label: 'Order Placed',        icon: 'receipt_long' },
+        'Order Accepted':                { badge: 'bg-cyan-100 text-cyan-700 border-cyan-200',       label: 'Accepted by Farmer',  icon: 'check' },
+        'Preparing Order':               { badge: 'bg-yellow-100 text-yellow-700 border-yellow-200', label: 'Preparing',           icon: 'cutting_out' },
+        'Ready for Pickup':              { badge: 'bg-indigo-100 text-indigo-700 border-indigo-200', label: 'Ready for Pickup',    icon: 'inventory' },
+        'Handed Over to Delivery Agent': { badge: 'bg-purple-100 text-purple-700 border-purple-200', label: 'Ready for Pickup ✅',  icon: 'front_loader' },
+        'Out for Delivery':              { badge: 'bg-orange-100 text-orange-700 border-orange-200', label: 'In Transit 🚛',        icon: 'local_shipping' },
+        'Delivered':                     { badge: 'bg-green-100 text-green-700 border-green-200',    label: 'Delivered ✓',          icon: 'task_alt' },
+        'Cancelled':                     { badge: 'bg-red-100 text-red-700 border-red-200',          label: 'Cancelled',           icon: 'cancel' },
+    };
+
+    async function loadDispatch() {
+        try {
+            const res = await fetch('/api/orders');
+            const orders = await res.json();
+
+            // Agents see ALL active orders (exclude Cancelled)
+            const agentOrders = orders.filter(o => o.status !== 'Cancelled');
+
+            const pending   = agentOrders.filter(o => o.status === 'Handed Over to Delivery Agent').length;
+            const transit   = agentOrders.filter(o => o.status === 'Out for Delivery').length;
+            const delivered = agentOrders.filter(o => o.status === 'Delivered').length;
+
+            document.getElementById('statPending').textContent  = pending;
+            document.getElementById('statTransit').textContent  = transit;
+            document.getElementById('statDelivered').textContent = delivered;
+
+            const list = document.getElementById('dispatchList');
+            if (agentOrders.length === 0) {
+                list.innerHTML = `<div class="col-span-full py-16 text-center bg-white rounded-3xl border border-outline-variant">
+                    <span class="material-symbols-outlined text-5xl text-outline-variant mb-4 block">inbox</span>
+                    <h3 class="font-bold text-lg text-on-surface">No active orders</h3>
+                    <p class="text-sm text-on-surface-variant mt-2">All clear — no orders in the system.</p>
+                </div>`;
+                return;
+            }
+
+            list.innerHTML = agentOrders.map(o => {
+                const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+                const itemsStr = Array.isArray(items) ? items.map(i => `${i.qty}× ${i.name}`).join(', ') : 'Items';
+
+                const cfg = STATUS_CONFIG[o.status] || { badge: 'bg-gray-100 text-gray-700 border-gray-200', label: o.status, icon: 'help' };
+                const badgeHtml = `<span class="${cfg.badge} border text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">${cfg.label}</span>`;
+
+                let btnHtml = '';
+                if (o.status === 'Handed Over to Delivery Agent') {
+                    btnHtml = `<button onclick="updateStatus(${o.id}, 'Out for Delivery')" class="bg-secondary text-white w-full py-3 rounded-xl font-bold text-sm hover:brightness-110 flex justify-center items-center gap-2 transition-all">
+                        <span class="material-symbols-outlined text-sm">front_loader</span> Accept & Start Transit
+                    </button>`;
+                } else if (o.status === 'Out for Delivery') {
+                    btnHtml = `<button onclick="updateStatus(${o.id}, 'Delivered')" class="bg-primary text-white w-full py-3 rounded-xl font-bold text-sm hover:bg-green-700 flex justify-center items-center gap-2 transition-all">
+                        <span class="material-symbols-outlined text-sm">check_circle</span> Mark as Delivered
+                    </button>`;
+                } else if (o.status === 'Delivered') {
+                    btnHtml = `<div class="bg-surface-container text-primary w-full py-3 rounded-xl font-bold text-sm text-center flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">task_alt</span> Completed
+                    </div>`;
+                } else {
+                    // Pipeline stages - show informational status only
+                    btnHtml = `<div class="bg-blue-50 text-blue-600 border border-blue-100 w-full py-3 rounded-xl font-bold text-sm text-center flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">${cfg.icon}</span> ${cfg.label} — Awaiting farmer handover
+                    </div>`;
+                }
+
+                return `
+                <div class="bg-white border border-outline-variant rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] font-bold tracking-widest text-on-surface-variant uppercase">Order #${o.id}</span>
+                            <h4 class="font-headline font-bold text-base leading-tight mt-1 truncate" title="${itemsStr}">${itemsStr}</h4>
+                        </div>
+                        <div class="ml-3 shrink-0">${badgeHtml}</div>
+                    </div>
+                    <div class="space-y-2 mt-3 bg-surface-container py-3 px-4 rounded-xl mb-4">
+                        <div class="flex gap-3 items-center">
+                            <span class="material-symbols-outlined text-secondary text-lg">pin_drop</span>
+                            <p class="text-sm font-semibold text-on-surface">${o.address || 'Address not set'}</p>
+                        </div>
+                        <div class="flex gap-3 items-center">
+                            <span class="material-symbols-outlined text-primary text-lg">person</span>
+                            <p class="text-sm text-on-surface-variant font-bold">Customer: <span class="text-on-surface">${o.customer_name}</span></p>
+                        </div>
+                        <div class="flex gap-3 items-center">
+                            <span class="material-symbols-outlined text-on-surface-variant text-lg">agriculture</span>
+                            <p class="text-sm text-on-surface-variant font-bold">Farmer: <span class="text-on-surface">${o.farmer_name || 'Unassigned'}</span></p>
+                        </div>
+                    </div>
+                    ${btnHtml}
+                </div>`;
+            }).join('');
+        } catch (e) {
+            console.error(e);
+            document.getElementById('dispatchList').innerHTML = `<div class="col-span-full text-center py-16 text-red-400 font-bold">⚠️ Failed to connect to server.</div>`;
+        }
+    }
+
+    async function updateStatus(orderId, newStatus) {
+        try {
+            const res = await fetch(`/api/orders/${orderId}/delivery-status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ newStatus, changedBy: agentName, changedByRole: 'agent' })
+            });
+            const result = await res.json();
+            if (result.success) {
+                showToast(newStatus === 'Delivered' ? '✅ Order marked as Delivered!' : '🚛 Order In Transit!');
+                loadDispatch();
+            } else {
+                showToast('Update failed: ' + result.error, true);
+            }
+        } catch (e) {
+            showToast('Connection error', true);
+        }
+    }
+
+    // WebSockets setup
+    let ws;
+    function initWS() {
+        ws = new WebSocket(`ws://${window.location.host}`);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'STATUS_UPDATE') {
+                loadDispatch();
+            }
+        };
+        ws.onclose = () => setTimeout(initWS, 3000);
+    }
+
+    loadDispatch();
+    initWS();
+</script>
+<script src="chat.js"></script>
+</body>
+</html>

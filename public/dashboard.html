@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AgroHarvest | Farmer Guardian</title>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#16a34a',
+                        secondary: '#d97706',
+                        surface: '#f4f9f4',
+                        'surface-container': '#e8f5e9',
+                        'surface-container-low': '#ffffff',
+                        'on-surface': '#064e3b',
+                        'on-surface-variant': '#14532d',
+                        'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                    },
+                    fontFamily: {
+                        headline: ['Epilogue', 'serif'],
+                        body: ['Manrope', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body selection:bg-primary selection:text-white">
+    <nav class="fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4">
+        <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer">
+            <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+            <div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+            <span class="text-[10px] uppercase tracking-[0.2em] font-black text-primary animate-pulse">Guardian Oversight</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative group cursor-pointer" onclick="showToast('Market insights are currently stable.')">
+                <span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</span>
+                <span id="notifBadge" class="absolute -top-1 -right-1 w-2 h-2 bg-secondary rounded-full hidden"></span>
+            </div>
+            <div class="relative cursor-pointer" onclick="updateWeather()">
+                <span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">grass</span>
+            </div>
+            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant cursor-pointer" onclick="window.location.href='settings.html'">
+                <div class="text-right hidden sm:block">
+                    <p class="text-[9px] font-bold uppercase tracking-widest text-[#4a7c4a] opacity-60 leading-none mb-1">Active Guardian</p>
+                    <p id="navFarmerName" class="text-xs font-black text-on-surface leading-none">Farmer Guardian</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-surface-container border-2 border-primary/20 flex items-center justify-center overflow-hidden">
+                    <span class="material-symbols-outlined text-primary">person</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-20 h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 border-r border-outline-variant flex flex-col p-6 space-y-8 bg-surface-container-low/50">
+            <div class="space-y-2">
+                <a href="dashboard.html" class="flex items-center gap-4 p-3 rounded-2xl bg-primary/10 text-primary font-bold transition-all group">
+                    <span class="material-symbols-outlined">eco</span>
+                    <span class="text-sm uppercase tracking-widest">My Products</span>
+                </a>
+                <a href="orders.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">shopping_basket</span>
+                    <span class="text-sm uppercase tracking-widest group-hover:text-on-surface">Orders</span>
+                </a>
+                <a href="delivery.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">local_shipping</span>
+                    <span class="text-sm uppercase tracking-widest group-hover:text-on-surface">Delivery</span>
+                </a>
+                <a href="earnings.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">payments</span>
+                    <span class="text-sm uppercase tracking-widest group-hover:text-on-surface">Earnings</span>
+                </a>
+                <a href="marketplace.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">storefront</span>
+                    <span class="text-sm uppercase tracking-widest group-hover:text-on-surface">Agro Store</span>
+                </a>
+                <a href="market_trends.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">analytics</span>
+                    <span class="text-sm uppercase tracking-widest group-hover:text-on-surface">Live Market</span>
+                </a>
+                <a href="settings.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">settings_suggest</span>
+                    <span class="text-sm uppercase tracking-widest group-hover:text-on-surface">Settings</span>
+                </a>
+            </div>
+            <div class="mt-auto border-t border-outline-variant pt-6">
+                <button onclick="window.location.href='signin.html'" class="flex items-center gap-4 p-3 w-full text-red-600 font-bold hover:bg-red-50 rounded-2xl transition-all group">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="text-sm uppercase tracking-widest">Logout</span>
+                </button>
+            </div>
+            <button onclick="window.location.href='earnings.html'" class="btn-agro btn-primary w-full justify-center mt-4">
+                <span class="material-symbols-outlined text-base">assessment</span>
+                Harvest Report
+            </button>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar pb-32">
+            <!-- Header Section -->
+            <header class="flex justify-between items-end">
+                <div>
+                    <h2 class="font-headline text-3xl font-black text-on-surface tracking-tighter leading-none mb-1">Welcome, <span id="farmerDisplayName">Farmer Guardian</span></h2>
+                    <p class="text-xs uppercase tracking-[0.3em] font-bold text-[#4a7c4a] opacity-80" id="districtHeader">KATHMANDU DISTRICT</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest opacity-60 mb-1">System Time</p>
+                    <p id="apiClock" class="font-headline text-xl font-black text-primary tabular-nums">12:00:00</p>
+                </div>
+            </header>
+
+            <!-- Weather Telemetry Widget -->
+            <section class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-3 bg-surface-container p-8 rounded-[2.5rem] border border-outline-variant relative overflow-hidden flex flex-col justify-between min-h-[300px]">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="font-headline text-3xl font-bold text-on-surface tracking-tight">जलवायु भविष्य</h3>
+                                <p class="text-[10px] uppercase tracking-[0.4em] font-black text-secondary leading-none" id="weatherSector">KATHMANDU SECTOR</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-5xl font-headline font-black text-secondary" id="currentTemp">--°C</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-8 mb-8" id="weatherMain">
+                            <span class="material-symbols-outlined text-7xl text-secondary animate-pulse" id="weatherIcon">wb_sunny</span>
+                            <div class="space-y-2">
+                                <h4 class="font-headline text-2xl font-bold text-on-surface leading-none capitalize" id="weatherTitle">Syncing...</h4>
+                                <p class="text-xs text-on-surface-variant max-w-md font-medium" id="weatherAdvice">Analyzing atmospheric data for field optimization...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-4" id="forecastGrid">
+                        <!-- Forecast items generated via JS -->
+                    </div>
+                </div>
+                <!-- Mini Stats / Activity -->
+                <div class="space-y-6">
+                    <div class="bg-primary p-6 rounded-[2.5rem] text-white flex flex-col justify-between h-36">
+                        <p class="text-[9px] uppercase tracking-widest font-black opacity-80 leading-none">Market Demand</p>
+                        <h4 class="text-3xl font-headline font-black leading-none">+24%</h4>
+                        <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+                            <span class="material-symbols-outlined text-sm">trending_up</span>
+                            Strong Outlook
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low border border-outline-variant p-6 rounded-[2.5rem] flex flex-col justify-between h-36">
+                        <p class="text-[9px] uppercase tracking-widest font-black text-[#4a7c4a] opacity-80 leading-none">Active Bounties</p>
+                        <h4 class="text-3xl font-headline font-black text-on-surface leading-none" id="bountyCount">0</h4>
+                        <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#d97706]">
+                            <span class="material-symbols-outlined text-sm">handshake</span>
+                            Open Contracts
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Market Pulse Widget -->
+            <section class="space-y-6">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <span class="text-secondary uppercase tracking-[0.3em] text-[10px] font-black">Live Insights</span>
+                        <h3 class="font-headline text-2xl font-black text-on-surface tracking-tighter">Market <span class="text-primary italic">Pulse</span></h3>
+                    </div>
+                    <a href="market_trends.html" class="flex items-center gap-1 text-xs font-bold text-primary hover:underline">
+                        Show Full Market <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+                <div id="marketPulseGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="col-span-full py-10 text-center opacity-40">
+                        <span class="material-symbols-outlined animate-spin">sync</span>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-surface-container-low rounded-[2.5rem] border border-outline-variant p-8 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
+                <div class="flex-1 space-y-6 w-full">
+                    <div class="space-y-1">
+                        <h3 class="font-headline text-2xl font-black text-on-surface tracking-tighter">Initiate a New <span class="text-primary italic">Seasonal Offering</span></h3>
+                        <p class="text-xs text-on-surface-variant font-medium">Register your latest harvest. Define quality, quantity, and ceremonial pricing.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="field-label">Crop Identity</label>
+                            <select id="cropName" class="field-input appearance-none bg-surface-container cursor-pointer">
+                                <option disabled selected value="">Select Product...</option>
+                                <option value="Carrot (Gajar)">Carrot (Gajar)</option>
+                                <option value="Radish (Mullo)">Radish (Mullo)</option>
+                                <option value="Spinach (Palungo)">Spinach (Palungo)</option>
+                                <option value="Mustard Greens (Toriko Saag)">Mustard Greens (Toriko Saag)</option>
+                                <option value="Cabbage (Banda Govi)">Cabbage (Banda Govi)</option>
+                                <option value="Cauliflower (Kauli)">Cauliflower (Kauli)</option>
+                                <option value="Potato (Alu)">Potato (Alu)</option>
+                                <option value="Onion (Pyaj)">Onion (Pyaj)</option>
+                                <option value="Tomato (Golbheda)">Tomato (Golbheda)</option>
+                                <option value="Eggplant (Bhanta)">Eggplant (Bhanta)</option>
+                                <option value="Pumpkin (Pharsi)">Pumpkin (Pharsi)</option>
+                                <option value="Habanero (Akabare Khursani)">Habanero (Akabare Khursani)</option>
+                                <option value="Soybean (Bhatmas)">Soybean (Bhatmas)</option>
+                                <option value="Bamboo Shoots (Tama)">Bamboo Shoots (Tama)</option>
+                                <option value="Coriander (Dhania)">Coriander (Dhania)</option>
+                                <option value="Cowpea (Bodi)">Cowpea (Bodi)</option>
+                                <option value="Wheat (Gahu)">Wheat (Gahu)</option>
+                                <option value="Rice (Chamal)">Rice (Chamal)</option>
+                                <option value="Maize (Makai)">Maize (Makai)</option>
+                                <option value="Lentils (Dal)">Lentils (Dal)</option>
+                                <option value="Mango (Aanp)">Mango (Aanp)</option>
+                                <option value="Banana (Kera)">Banana (Kera)</option>
+                                <option value="Papaya (Mewa)">Papaya (Mewa)</option>
+                                <option value="Sugarcane (Ukhu)">Sugarcane (Ukhu)</option>
+                                <option value="Tea (Chiya)">Tea (Chiya)</option>
+                                <option value="Coffee (Kafi)">Coffee (Kafi)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="field-label">Expected Yield in kg</label>
+                            <input id="cropYield" class="field-input" placeholder="e.g. 500" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="field-label">Price per kg (रू)</label>
+                            <input id="cropPrice" class="field-input" placeholder="e.g. 80" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="field-label">Harvest Date</label>
+                            <input id="cropDate" class="field-input" type="date">
+                        </div>
+                        <!-- Category — full width row -->
+                        <div class="space-y-1 md:col-span-2">
+                            <label class="field-label">Category</label>
+                            <div class="relative">
+                                <select id="cropCategory" class="field-input appearance-none bg-surface-container cursor-pointer w-full pr-10">
+                                    <option disabled selected value="">Select Category...</option>
+                                    <option value="Fresh Vegetables">🥬 Fresh Vegetables</option>
+                                    <option value="Grains & Legumes">🌾 Grains &amp; Legumes</option>
+                                    <option value="Orchard Fruits">🍎 Orchard Fruits</option>
+                                    <option value="Cash Crops">💰 Cash Crops</option>
+                                    <option value="Agro Machinery">🚜 Agro Machinery</option>
+                                    <option value="Supplies & Seeds">🌱 Supplies &amp; Seeds</option>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-base">expand_more</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="addProductBtn" onclick="addProduct()" class="btn-agro btn-primary mt-2">
+                        <span class="material-symbols-outlined text-lg">add</span>
+                        Manifest Harvest
+                    </button>
+                </div>
+                <!-- Upload Zone -->
+                <div id="uploadZone" class="upload-zone relative w-full md:w-48 h-44 bg-surface-container-low flex items-center justify-center rounded-2xl border-2 border-dashed border-outline-variant cursor-pointer shrink-0" onclick="document.getElementById('cropImageInput').click()">
+                    <div class="text-center space-y-2" id="uploadPlaceholder">
+                        <span class="material-symbols-outlined text-3xl text-outline-variant group-hover:text-primary transition-colors">upload_file</span>
+                        <p class="text-[9px] text-on-surface-variant uppercase tracking-widest font-bold">Upload Crop Photo</p>
+                        <p class="text-[8px] text-[#4a7c4a]">JPG, PNG up to 5MB</p>
+                    </div>
+                    <img id="cropPreview" class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" alt="Crop preview">
+                    <div class="absolute bottom-2 right-2 bg-surface-container-high p-1.5 rounded-full shadow-lg">
+                        <span class="material-symbols-outlined text-primary text-base">photo_camera</span>
+                    </div>
+                    <input type="file" id="cropImageInput" accept="image/*" class="hidden" onchange="previewImage(event)">
+                </div>
+            </section>
+
+            <!-- Pre-Order Contracts Section -->
+            <section class="shrink-0 mb-6 hidden" id="contractsSection">
+                <h3 class="font-headline text-xl font-bold text-on-surface tracking-tight mb-4">Custom Pre-Order Requests</h3>
+                <div id="contractsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Contract cards go here -->
+                </div>
+            </section>
+
+            <!-- My Products Grid -->
+            <section class="shrink-0">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <span class="text-secondary uppercase tracking-[0.3em] text-[9px] font-bold">Your Offerings</span>
+                        <h3 class="font-headline text-xl font-bold text-on-surface tracking-tight">My Products <span id="productCount" class="text-secondary text-base">(0)</span></h3>
+                    </div>
+                </div>
+                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Empty state -->
+                    <div id="emptyState" class="col-span-full flex flex-col items-center justify-center py-16 opacity-30">
+                        <span class="material-symbols-outlined text-5xl mb-3">eco</span>
+                        <p class="font-headline text-sm uppercase tracking-widest text-[#dcfce7]">No offerings yet. Manifest your first harvest above.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Component -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] hidden p-0.5 rounded-2xl glass shadow-2xl overflow-hidden border border-primary/20">
+        <div class="bg-surface-container px-6 py-3 rounded-[1.4rem] flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+            <span id="toastMsg" class="text-xs font-bold text-on-surface tracking-wide">Action Successful</span>
+        </div>
+    </div>
+
+    <script>
+        const DISTRICT_COORDS = {
+            "Kathmandu": {lat: 27.7172, lon: 85.3240}, "Achham": {lat: 29.11, lon: 81.3}, "Arghakhanchi": {lat: 27.9, lon: 83.05}, "Baglung": {lat: 28.27, lon: 83.6},
+            "Baitadi": {lat: 29.5, lon: 80.5}, "Bajhang": {lat: 29.5, lon: 81.2}, "Bajura": {lat: 29.4, lon: 81.5}, "Banke": {lat: 28.15, lon: 81.7},
+            "Bara": {lat: 27.0, lon: 85.0}, "Bardiya": {lat: 28.3, lon: 81.3}, "Bhaktapur": {lat: 27.67, lon: 85.43}, "Bhojpur": {lat: 27.17, lon: 87.05},
+            "Chitwan": {lat: 27.6, lon: 84.4}, "Dadeldhura": {lat: 29.3, lon: 80.58}, "Dailekh": {lat: 28.8, lon: 81.7}, "Dang": {lat: 28.0, lon: 82.3},
+            "Darchula": {lat: 29.8, lon: 80.5}, "Dhading": {lat: 27.9, lon: 84.9}, "Dhankuta": {lat: 26.98, lon: 87.33}, "Dhanusa": {lat: 26.8, lon: 86.0},
+            "Dolakha": {lat: 27.7, lon: 86.1}, "Dolpa": {lat: 29.0, lon: 83.0}, "Doti": {lat: 29.2, lon: 80.9}, "Eastern Rukum": {lat: 28.6, lon: 82.8},
+            "Gorkha": {lat: 28.0, lon: 84.6}, "Gulmi": {lat: 28.1, lon: 83.2}, "Humla": {lat: 29.9, lon: 81.8}, "Ilam": {lat: 26.9, lon: 87.9},
+            "Jajarkot": {lat: 28.8, lon: 82.2}, "Jhapa": {lat: 26.54, lon: 87.9}, "Jumla": {lat: 29.27, lon: 82.18}, "Kailali": {lat: 28.7, lon: 80.6},
+            "Kalikot": {lat: 29.1, lon: 81.6}, "Kanchanpur": {lat: 28.9, lon: 80.3}, "Kapilvastu": {lat: 27.6, lon: 83.0}, "Kaski": {lat: 28.2, lon: 83.98},
+            "Kavrepalanchok": {lat: 27.5, lon: 85.5}, "Khotang": {lat: 27.2, lon: 86.8}, "Lalitpur": {lat: 27.6, lon: 85.3}, "Lamjung": {lat: 28.2, lon: 84.4},
+            "Mahottari": {lat: 26.8, lon: 85.8}, "Makwanpur": {lat: 27.4, lon: 85.0}, "Manang": {lat: 28.6, lon: 84.1}, "Morang": {lat: 26.6, lon: 87.4},
+            "Mugu": {lat: 29.5, lon: 82.2}, "Mustang": {lat: 28.8, lon: 83.8}, "Myagdi": {lat: 28.4, lon: 83.5}, "Nawalpur": {lat: 27.6, lon: 84.0},
+            "Nuwakot": {lat: 27.9, lon: 85.1}, "Okhaldhunga": {lat: 27.3, lon: 86.5}, "Palpa": {lat: 27.8, lon: 83.5}, "Panchthar": {lat: 27.2, lon: 87.8},
+            "Parasi": {lat: 27.5, lon: 83.6}, "Parbat": {lat: 28.2, lon: 83.7}, "Parsa": {lat: 27.1, lon: 84.8}, "Pyuthan": {lat: 28.1, lon: 82.8},
+            "Ramechhap": {lat: 27.4, lon: 86.1}, "Rasuwa": {lat: 28.1, lon: 85.3}, "Rautahat": {lat: 26.9, lon: 85.3}, "Rolpa": {lat: 28.3, lon: 82.6},
+            "Rupandehi": {lat: 27.6, lon: 83.4}, "Salyan": {lat: 28.3, lon: 82.1}, "Sankhuwasabha": {lat: 27.6, lon: 87.3}, "Saptari": {lat: 26.6, lon: 86.7},
+            "Sarlahi": {lat: 26.9, lon: 85.5}, "Sindhuli": {lat: 27.2, lon: 85.9}, "Sindhupalchok": {lat: 27.9, lon: 85.7}, "Siraha": {lat: 26.7, lon: 86.2},
+            "Solukhumbu": {lat: 27.8, lon: 86.7}, "Sunsari": {lat: 26.6, lon: 87.1}, "Surkhet": {lat: 28.5, lon: 81.6}, "Syangja": {lat: 28.1, lon: 83.8},
+            "Tanahun": {lat: 27.9, lon: 84.2}, "Taplejung": {lat: 27.5, lon: 87.7}, "Terhathum": {lat: 27.1, lon: 87.5}, "Udayapur": {lat: 26.9, lon: 86.7},
+            "Western Rukum": {lat: 28.6, lon: 82.5}
+        };
+
+        // --- Access Control ---
+        const userRole = localStorage.getItem('userRole');
+        if (!userRole) { window.location.href = 'signin.html'; }
+        else if (userRole === 'customer') { window.location.href = 'marketplace.html'; }
+        else if (userRole === 'agent')    { window.location.href = 'agent_dashboard.html'; }
+        else if (userRole === 'dealer')   { window.location.href = 'dealer_dashboard.html'; }
+
+        const farmerName = localStorage.getItem('farmerName') || 'Farmer Guardian';
+        const district = localStorage.getItem('selectedDistrict') || 'Kathmandu';
+        document.getElementById('navFarmerName').textContent = farmerName;
+        document.getElementById('farmerDisplayName').textContent = farmerName;
+        document.getElementById('districtHeader').textContent = `${district} DISTRICT`.toUpperCase();
+        document.getElementById('weatherSector').textContent = `${district} SECTOR`.toUpperCase();
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('apiClock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        async function updateWeather() {
+            const currentCity = document.getElementById('weatherSector');
+            currentCity.innerHTML = `<span class="animate-pulse">Locating...</span>`;
+            
+            function fetchWeatherForCoords(lat, lon, label) {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
+                
+                fetch(url).then(res => res.json()).then(data => {
+                    const c = data.current;
+                    const code = c.weather_code;
+                    const advice = getAdvice(code);
+                    
+                    document.getElementById('currentTemp').innerHTML = `${Math.round(c.temperature_2m)}<span class="text-2xl opacity-50">°C</span>`;
+                    document.getElementById('weatherSector').textContent = label.toUpperCase();
+                    document.getElementById('weatherTitle').textContent = advice.title;
+                    document.getElementById('weatherIcon').textContent = advice.icon;
+                    
+                    const feels = Math.round(c.apparent_temperature);
+                    const humidity = c.relative_humidity_2m;
+                    const wind = Math.round(c.wind_speed_10m);
+                    
+                    document.getElementById('weatherAdvice').innerHTML = `
+                        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+                            <span class="flex items-center gap-1 text-[10px] bg-white/40 px-2 py-0.5 rounded-full border border-outline-variant">🌡 Feels ${feels}°C</span>
+                            <span class="flex items-center gap-1 text-[10px] bg-white/40 px-2 py-0.5 rounded-full border border-outline-variant">💧 ${humidity}% Humidity</span>
+                            <span class="flex items-center gap-1 text-[10px] bg-white/40 px-2 py-0.5 rounded-full border border-outline-variant">💨 ${wind} km/h Wind</span>
+                        </div>
+                        <p class="mt-3 text-xs opacity-90">${advice.text}</p>
+                    `;
+
+                    const forecastGrid = document.getElementById('forecastGrid');
+                    forecastGrid.innerHTML = data.daily.time.slice(0, 4).map((time, i) => {
+                        const date = new Date(time + 'T00:00:00');
+                        const day = i === 0 ? 'Today' : date.toLocaleDateString('en-US', {weekday: 'short'});
+                        const fAdv = getAdvice(data.daily.weather_code[i]);
+                        const hi = Math.round(data.daily.temperature_2m_max[i]);
+                        const lo = Math.round(data.daily.temperature_2m_min[i]);
+                        return `
+                            <div class="bg-white/30 backdrop-blur-sm border border-white/40 rounded-2xl p-4 text-center hover:bg-white/60 transition-all cursor-default">
+                                <p class="text-[9px] font-black tracking-widest text-on-surface-variant mb-2 uppercase">${day}</p>
+                                <span class="material-symbols-outlined text-secondary text-2xl mb-1">${fAdv.icon}</span>
+                                <div class="flex justify-center items-end gap-1">
+                                    <p class="text-sm font-headline font-black text-on-surface">${hi}°</p>
+                                    <p class="text-[9px] text-on-surface-variant font-bold opacity-60">${lo}°</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }).catch(err => {
+                    console.error(err);
+                    showToast("Atmospheric sync interrupted.", true);
+                });
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    p => fetchWeatherForCoords(p.coords.latitude, p.coords.longitude, district + " (Precision)"),
+                    () => {
+                        const c = DISTRICT_COORDS[district] || DISTRICT_COORDS["Kathmandu"];
+                        fetchWeatherForCoords(c.lat, c.lon, district);
+                    },
+                    { timeout: 5000 }
+                );
+            } else {
+                const c = DISTRICT_COORDS[district] || DISTRICT_COORDS["Kathmandu"];
+                fetchWeatherForCoords(c.lat, c.lon, district);
+            }
+        }
+
+        function getAdvice(code) {
+            // WMO Weather interpretation codes (https://open-meteo.com/en/docs)
+            if (code === 0)  return {title: "साफ आकाश",   text: "Clear sky. Perfect for harvesting and field work.", icon: "wb_sunny"};
+            if (code <= 2)   return {title: "आंशिक बादल", text: "Partly cloudy. Good conditions for outdoor activities.", icon: "partly_cloudy_day"};
+            if (code === 3)  return {title: "बादलमय",     text: "Overcast skies. Mild conditions, irrigation not needed.", icon: "cloud"};
+            if (code <= 49)  return {title: "कुहिरो",     text: "Fog or haze detected. Drive carefully on farm roads.", icon: "foggy"};
+            if (code <= 67)  return {title: "वर्षा",      text: "Rain detected. Protect harvested yields, avoid spraying.", icon: "rainy"};
+            if (code <= 77)  return {title: "हिमपात",     text: "Snow conditions. Cover sensitive crops immediately.", icon: "ac_unit"};
+            if (code <= 82)  return {title: "भारी वर्षा", text: "Heavy rain showers. Stay inside, secure storage areas.", icon: "thunderstorm"};
+            return             {title: "विषम मौसम",   text: "Severe weather alert. Shield livestock and structures.", icon: "severe_cold"};
+        }
+
+        updateWeather();
+
+        // ─── Image Upload (with compression) ──────────────────────────────────────
+        let cropImageBase64 = null;
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = ev => {
+                const img = new Image();
+                img.onload = () => {
+                    // Compress: max 800×800, 75% JPEG quality
+                    const MAX = 800;
+                    let { width, height } = img;
+                    if (width > MAX || height > MAX) {
+                        if (width > height) { height = Math.round(height * MAX / width); width = MAX; }
+                        else                { width  = Math.round(width  * MAX / height); height = MAX; }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width; canvas.height = height;
+                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                    cropImageBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                    const preview = document.getElementById('cropPreview');
+                    preview.src = cropImageBase64;
+                    preview.classList.remove('hidden');
+                    document.getElementById('uploadPlaceholder').classList.add('hidden');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ─── Toast ─────────────────────────────────────────────────────────────────
+        function showToast(msg, isError=false) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            t.querySelector('.material-symbols-outlined').textContent = isError ? 'error' : 'check_circle';
+            t.querySelector('.material-symbols-outlined').className = `material-symbols-outlined text-base ${isError ? 'text-red-400' : 'text-primary'}`;
+            t.classList.remove('hidden');
+            setTimeout(() => { t.classList.add('hidden'); }, 3000);
+        }
+
+        const CROP_EMOJIS = {
+            'carrot':'🥕','gajar':'🥕','radish':'🌱','mullo':'🌱','spinach':'🥬','palungo':'🥬',
+            'eggplant':'🍆','bhanta':'🍆','pumpkin':'🎃','pharsi':'🎃','habanero':'🌶️','khursani':'🌶️',
+            'soybean':'🫘','bhatmas':'🫘','bamboo':'🍃','tama':'🍃','coriander':'🌿','dhania':'🌿',
+            'cowpea':'🟤','bodi':'🟤','mustard':'🌿','gundruk':'🥬','default':'🌾',
+        };
+        function getCropEmoji(name) {
+            const n = name.toLowerCase();
+            for (const [key, emoji] of Object.entries(CROP_EMOJIS)) {
+                if (n.includes(key)) return emoji;
+            }
+            return CROP_EMOJIS.default;
+        }
+
+        // ─── Product Management ────────────────────────────────────────────────────
+        async function addProduct() {
+            const name     = document.getElementById('cropName').value.trim();
+            const yield_   = document.getElementById('cropYield').value.trim();
+            const price    = document.getElementById('cropPrice').value.trim();
+            const date     = document.getElementById('cropDate').value;
+            const category = document.getElementById('cropCategory').value;
+            if (!name)     { showToast('Please select a crop name.', true);    return; }
+            if (!yield_)   { showToast('Please enter expected yield.', true);   return; }
+            if (!category) { showToast('Please select a category.', true);      return; }
+            
+            const product = {
+                name,
+                yield:    yield_ + ' kg',
+                price:    Number(price) || 0,
+                date:     date || new Date().toISOString().split('T')[0],
+                farmerName: localStorage.getItem('farmerName') || 'Local Agro Farm',
+                image:    cropImageBase64,
+                category
+            };
+
+            try {
+                const res = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    document.getElementById('cropName').value = '';
+                    document.getElementById('cropYield').value = '';
+                    document.getElementById('cropPrice').value = '';
+                    document.getElementById('cropDate').value = '';
+                    document.getElementById('cropCategory').selectedIndex = 0;
+                    cropImageBase64 = null;
+                    document.getElementById('cropPreview').classList.add('hidden');
+                    document.getElementById('uploadPlaceholder').classList.remove('hidden');
+                    document.getElementById('cropImageInput').value = '';
+                    renderProducts();
+                    showToast(`"${name}" manifested to your harvest database!`);
+                    document.getElementById('notifBadge').classList.remove('hidden');
+                }
+            } catch(e) {
+                showToast('Database Sync Error', true);
+            }
+        }
+
+        async function acceptContract(id) {
+            const farmerName = localStorage.getItem('farmerName') || 'Farmer Guardian';
+            try {
+                const res = await fetch('/api/contracts/accept', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, farmerName })
+                });
+                if (await res.json()) {
+                    showToast('Contract Accepted and Saved! 🤝');
+                    renderContracts();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function renderContracts() {
+            try {
+                const res = await fetch('/api/contracts');
+                const reqs = await res.json();
+                document.getElementById('bountyCount').textContent = reqs.filter(r => r.status !== 'Accepted').length;
+                
+                if(reqs.length > 0) {
+                    document.getElementById('contractsSection').classList.remove('hidden');
+                    document.getElementById('contractsGrid').innerHTML = reqs.map(r => `
+                        <div class="bg-surface-container-high rounded-xl p-4 shadow-sm border border-outline-variant flex flex-col gap-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-bold text-secondary uppercase tracking-widest leading-none">ORDER: ${r.id}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full leading-none ${r.status === 'Accepted' ? 'bg-primary text-white' : 'bg-amber-100 text-amber-800'}">${r.status}</span>
+                            </div>
+                            <h4 class="font-headline font-black text-lg text-on-surface leading-tight mt-1">${r.crop} <span class="text-on-surface-variant font-medium text-sm">(${r.qty} kg)</span></h4>
+                            <div class="text-xs font-bold text-on-surface-variant flex items-center gap-1 mt-1">
+                                <span class="material-symbols-outlined text-sm">person</span> Custom Request by ${r.customer_name}
+                            </div>
+                            <div class="text-xs font-bold text-primary flex items-center gap-1 mb-2">
+                                <span class="material-symbols-outlined text-sm">event</span> Delivery: ${new Date(r.delivery_date).toLocaleDateString()}
+                            </div>
+                            <div class="mt-auto pt-2 border-t border-[rgba(22,163,74,0.08)]">
+                                ${r.status !== 'Accepted' ? `<button onclick="acceptContract('${r.id}')" class="w-full bg-primary text-white py-2 rounded-lg font-bold text-sm tracking-wide hover:bg-green-700 transition-colors shadow flex items-center justify-center gap-1"><span class="material-symbols-outlined text-base">handshake</span> Accept Contract</button>` : `<button disabled class="w-full bg-surface-container text-primary py-2 rounded-lg font-bold text-sm tracking-wide opacity-50 cursor-not-allowed">Contract Secured</button>`}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('contractsSection').classList.add('hidden');
+                }
+            } catch(e) {}
+        }
+
+        async function renderProducts() {
+            const currentFarmer = localStorage.getItem('farmerName');
+            try {
+                const res = await fetch('/api/products');
+                const allProducts = await res.json();
+                const products = allProducts.filter(p => p.farmer_name === currentFarmer);
+                
+                const grid = document.getElementById('productGrid');
+                const empty = document.getElementById('emptyState');
+                document.getElementById('productCount').textContent = `(${products.length})`;
+                
+                // Clear and render
+                grid.querySelectorAll('.product-card').forEach(c => c.remove());
+                
+                if (products.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                empty.classList.add('hidden');
+
+                products.forEach(p => {
+                    const soldBadge = p.status === 'Sold' 
+                        ? `<span class="badge-sold px-2 py-0.5 rounded-full text-[9px] font-bold uppercase">Sold</span>`
+                        : `<span class="badge-available px-2 py-0.5 rounded-full text-[9px] font-bold uppercase">Available</span>`;
+                    const emoji = getCropEmoji(p.name);
+                    const imgHTML = p.image
+                        ? `<img src="${p.image}" class="w-full h-full object-cover" alt="${p.name}">`
+                        : `<div class="w-full h-full flex items-center justify-center text-5xl bg-[#152815]">${emoji}</div>`;
+                    const dateStr = p.harvest_date ? new Date(p.harvest_date).toLocaleDateString() : '';
+                    const card = document.createElement('div');
+                    card.className = 'product-card agro-card overflow-hidden animate-fade-in';
+                    card.innerHTML = `
+                        <div class="h-36 relative overflow-hidden">
+                            ${imgHTML}
+                            <div class="absolute top-2 right-2 flex gap-1.5">${soldBadge}</div>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <h4 class="font-headline font-bold text-on-surface text-base truncate">${p.name}</h4>
+                            <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                <div><p class="text-on-surface-variant uppercase tracking-widest">Yield</p><p class="font-semibold">${p.yield}</p></div>
+                                <div><p class="text-on-surface-variant uppercase tracking-widest">Price</p><p class="text-secondary font-bold">रू ${p.price}/kg</p></div>
+                                <div class="col-span-2"><p class="text-on-surface-variant uppercase tracking-widest">Harvest</p><p class="font-semibold">${dateStr}</p></div>
+                            </div>
+                        </div>`;
+                    grid.appendChild(card);
+                });
+            } catch(e) {}
+        }
+
+        async function loadMarketPulse() {
+            try {
+                const res = await fetch('/api/market-data');
+                const data = await res.json();
+                const grid = document.getElementById('marketPulseGrid');
+                if (data.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full py-4 text-center opacity-40">No market data available.</div>';
+                    return;
+                }
+                grid.innerHTML = data.slice(0, 4).map(item => `
+                    <div class="bg-white border border-outline-variant p-4 rounded-3xl shadow-sm">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-[8px] font-black uppercase text-secondary">Prices</span>
+                            <span class="text-[10px] font-black text-primary">रू ${item.avg}</span>
+                        </div>
+                        <h4 class="text-xs font-black text-on-surface truncate">${item.name}</h4>
+                        <div class="flex justify-between mt-2 pt-2 border-t border-outline-variant/30 text-[8px] font-bold text-on-surface-variant">
+                            <span>Min: रू ${item.min}</span>
+                            <span>Max: रू ${item.max}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        renderProducts();
+        renderContracts();
+        loadMarketPulse();
+    </script>
+<script src="chat.js"></script>
+</body> </html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgroHarvest | Earnings Ledger</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#16a34a', secondary: '#d97706', surface: '#f4f9f4',
+                    'surface-container': '#e8f5e9', 'surface-container-low': '#ffffff',
+                    'surface-container-high': '#c8e6c9', 'on-surface': '#064e3b',
+                    'on-surface-variant': '#14532d', 'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                },
+                fontFamily: { headline: ['Epilogue', 'serif'], body: ['Manrope', 'sans-serif'], label: ['Manrope', 'sans-serif'] }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .text-shadow-glow { text-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+    .btn-agro { display:flex; align-items:center; gap:0.5rem; border-radius:1rem; font-weight:900; font-size:10px; text-transform:uppercase; letter-spacing:0.05em; transition:all 0.3s; }
+    .btn-primary { background:#16a34a; color:white; }
+    .btn-primary:hover { background:#15803d; }
+    .nav-item { color:#14532d; }
+    .nav-item:hover { background:#e8f5e9; color:#064e3b; }
+</style>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body flex h-screen overflow-hidden">
+
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col h-full py-8 w-72 left-0 top-0 fixed border-r border-outline-variant z-50 shrink-0 bg-white">
+    <div class="px-6 mb-10 flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary border-2 border-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">eco</span>
+        </div>
+        <div>
+            <h1 class="font-headline text-xl text-primary font-black tracking-tighter">🌾 AgroHarvest</h1>
+            <p class="font-body text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant mt-1">Guardian Oversight</p>
+        </div>
+    </div>
+    <nav class="flex-1 space-y-2 px-2">
+        <a class="flex items-center gap-4 nav-item py-3 px-4 transition-all rounded-lg" href="dashboard.html">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">My Products</span>
+        </a>
+        <a class="flex items-center gap-4 nav-item py-3 px-4 transition-all rounded-lg" href="orders.html">
+            <span class="material-symbols-outlined">shopping_basket</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">Orders</span>
+        </a>
+        <a class="flex items-center gap-4 nav-item py-3 px-4 transition-all rounded-lg" href="delivery.html">
+            <span class="material-symbols-outlined">local_shipping</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">Delivery</span>
+        </a>
+        <a class="flex items-center space-x-4 px-4 py-3 rounded-lg text-secondary border-r-4 border-secondary bg-surface-container transition-all" href="earnings.html">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">payments</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">Earnings</span>
+        </a>
+        <a class="flex items-center gap-4 nav-item py-3 px-4 transition-all rounded-lg" href="marketplace.html">
+            <span class="material-symbols-outlined">storefront</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">Agro Store</span>
+        </a>
+        <a class="flex items-center gap-4 nav-item py-3 px-4 transition-all rounded-lg" href="settings.html">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">Settings</span>
+        </a>
+        <a class="flex items-center gap-4 text-red-500 py-3 px-4 hover:text-red-400 transition-all border-t border-outline-variant mt-2 pt-4 rounded-lg" href="signin.html">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-sm font-semibold uppercase tracking-widest">Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="flex-1 ml-0 md:ml-72 flex flex-col min-h-screen overflow-hidden bg-surface">
+    <header class="bg-white flex justify-between items-center px-8 py-6 shrink-0 border-b border-outline-variant">
+        <div>
+            <h2 class="font-headline tracking-tighter text-on-surface text-3xl font-bold italic text-primary">Earnings Ledger</h2>
+            <p id="farmerBadge" class="text-on-surface-variant font-bold text-[10px] uppercase tracking-widest mt-0.5">Financial Overview</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant">
+                <span class="material-symbols-outlined text-on-surface-variant text-base">person</span>
+                <span id="navFarmerName" class="text-sm font-medium font-body text-on-surface">Loading...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-6 md:p-12">
+        <!-- Header -->
+        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-10 gap-6">
+            <div>
+                <div class="text-secondary font-label text-xs uppercase tracking-widest mb-3">Financial Vessel</div>
+                <h1 class="font-headline text-5xl font-extrabold tracking-tighter text-on-surface leading-none">
+                    Harvest <span class="text-primary italic">Yields</span>
+                </h1>
+                <p class="mt-4 text-on-surface-variant text-base max-w-lg leading-relaxed">
+                    A complete overview of your seasonal earnings. Every delivery tracked, every payment recorded.
+                </p>
+            </div>
+            <button onclick="loadEarnings()" class="btn-agro btn-primary px-5 py-3 shadow-lg flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">refresh</span> Refresh
+            </button>
+        </header>
+
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white p-8 rounded-2xl border-l-4 border-secondary border border-outline-variant shadow-sm hover:-translate-y-1 transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-[10px] uppercase tracking-widest text-secondary font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">payments</span> Total Revenue
+                    </span>
+                    <span class="material-symbols-outlined text-secondary text-shadow-glow">trending_up</span>
+                </div>
+                <div id="totalRevenue" class="font-headline text-4xl font-bold text-on-surface">रू 0</div>
+                <div class="mt-2 text-xs text-on-surface-variant">From all delivered orders</div>
+            </div>
+            <div class="bg-white p-8 rounded-2xl border-l-4 border-primary border border-outline-variant shadow-sm hover:-translate-y-1 transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-[10px] uppercase tracking-widest text-primary font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">schedule</span> Pending Payments
+                    </span>
+                    <span class="material-symbols-outlined text-primary">hourglass_empty</span>
+                </div>
+                <div id="pendingAmount" class="font-headline text-4xl font-bold text-on-surface">रू 0</div>
+                <div class="mt-2 text-xs text-on-surface-variant">Orders in progress</div>
+            </div>
+            <div class="bg-white p-8 rounded-2xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-all">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+                        Orders Summary
+                    </span>
+                    <span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+                </div>
+                <div id="ordersCount" class="font-headline text-4xl font-bold text-secondary">0</div>
+                <div class="mt-2 text-xs text-on-surface-variant"><span id="deliveredCount">0</span> delivered · <span id="pendingCount">0</span> pending</div>
+            </div>
+        </section>
+
+        <!-- Transaction History -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-headline text-2xl font-bold text-on-surface">Transaction History</h3>
+                <span id="ordersTotalBadge" class="text-[10px] font-bold uppercase tracking-widest text-primary border border-primary/30 px-3 py-1 rounded-full">0 Records</span>
+            </div>
+            <div class="bg-white rounded-2xl overflow-hidden border border-outline-variant shadow-sm">
+                <table class="w-full border-collapse text-left">
+                    <thead class="bg-surface-container border-b border-outline-variant">
+                        <tr>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Order ID</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Items</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Customer</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Date</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold text-right">Amount (रू)</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-bold text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionBody" class="divide-y divide-outline-variant">
+                        <tr>
+                            <td colspan="6" class="px-6 py-16 text-center opacity-40">
+                                <span class="material-symbols-outlined text-5xl mb-3 block text-on-surface-variant animate-spin">sync</span>
+                                <p class="font-bold text-xs uppercase tracking-widest">Loading transactions...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Mobile Nav -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-outline-variant flex justify-around py-3 z-50">
+    <a class="flex flex-col items-center text-on-surface-variant" href="dashboard.html">
+        <span class="material-symbols-outlined text-xl">potted_plant</span>
+        <span class="text-[9px] uppercase font-bold mt-1">Products</span>
+    </a>
+    <a class="flex flex-col items-center text-on-surface-variant" href="orders.html">
+        <span class="material-symbols-outlined text-xl">shopping_basket</span>
+        <span class="text-[9px] uppercase font-bold mt-1">Orders</span>
+    </a>
+    <a class="flex flex-col items-center text-secondary" href="earnings.html">
+        <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">payments</span>
+        <span class="text-[9px] uppercase font-bold mt-1">Earnings</span>
+    </a>
+    <a class="flex flex-col items-center text-on-surface-variant" href="settings.html">
+        <span class="material-symbols-outlined text-xl">settings</span>
+        <span class="text-[9px] uppercase font-bold mt-1">Settings</span>
+    </a>
+</nav>
+
+<script>
+    const farmerName = localStorage.getItem('farmerName') || 'Farmer';
+    document.getElementById('navFarmerName').textContent = farmerName;
+    document.getElementById('farmerBadge').textContent = `Farmer: ${farmerName}`;
+
+    const STATUS_BADGE = {
+        'Processing': 'bg-amber-100 text-amber-800',
+        'Accepted':   'bg-blue-100 text-blue-700',
+        'In Transit': 'bg-orange-100 text-orange-700',
+        'Delivered':  'bg-green-100 text-green-700',
+        'Cancelled':  'bg-red-100 text-red-600',
+    };
+
+    async function loadEarnings() {
+        try {
+            const res = await fetch(`/api/earnings/${encodeURIComponent(farmerName)}`);
+            const data = await res.json();
+
+            document.getElementById('totalRevenue').textContent  = `रू ${parseFloat(data.totalRevenue || 0).toFixed(0)}`;
+            document.getElementById('pendingAmount').textContent  = `रू ${parseFloat(data.pendingAmount || 0).toFixed(0)}`;
+            document.getElementById('ordersCount').textContent   = (data.deliveredCount || 0) + (data.pendingCount || 0);
+            document.getElementById('deliveredCount').textContent = data.deliveredCount || 0;
+            document.getElementById('pendingCount').textContent   = data.pendingCount || 0;
+            document.getElementById('ordersTotalBadge').textContent = `${data.recentOrders.length} Records`;
+
+            const tbody = document.getElementById('transactionBody');
+            if (!data.recentOrders || data.recentOrders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-16 text-center opacity-40">
+                    <span class="material-symbols-outlined text-5xl mb-3 block text-on-surface-variant">receipt_long</span>
+                    <p class="font-bold text-xs uppercase tracking-widest">No transactions yet. Accept customer orders to start earning!</p>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.recentOrders.map(o => {
+                const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+                const itemsStr = Array.isArray(items) ? items.map(i => `${i.qty}× ${i.name}`).join(', ') : 'Items';
+                const date = new Date(o.created_at).toLocaleDateString('en-NP', { year:'numeric', month:'short', day:'numeric' });
+                const badge = STATUS_BADGE[o.status] || 'bg-gray-100 text-gray-700';
+                return `
+                <tr class="hover:bg-surface transition-colors">
+                    <td class="px-6 py-4 text-xs font-bold text-on-surface-variant">#${o.id}</td>
+                    <td class="px-6 py-4 text-sm font-bold text-on-surface max-w-[200px] truncate">${itemsStr}</td>
+                    <td class="px-6 py-4 text-sm text-on-surface-variant font-bold">${o.customer_name || '—'}</td>
+                    <td class="px-6 py-4 text-sm text-on-surface-variant">${date}</td>
+                    <td class="px-6 py-4 text-right font-headline font-black text-lg ${o.status === 'Delivered' ? 'text-primary' : 'text-on-surface-variant'}">
+                        रू ${parseFloat(o.total).toFixed(0)}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${badge}">${o.status}</span>
+                    </td>
+                </tr>`;
+            }).join('');
+        } catch (e) {
+            console.error(e);
+            document.getElementById('transactionBody').innerHTML = `<tr><td colspan="6" class="px-6 py-12 text-center text-red-400 font-bold">⚠️ Failed to load earnings. Check server connection.</td></tr>`;
+        }
+    }
+
+    loadEarnings();
+</script>
+</body>
+</html>

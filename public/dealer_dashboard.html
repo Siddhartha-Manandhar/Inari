@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AgroHarvest | Dealer Hub</title>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                    primary: '#0e7490',     /* Indigo/Teal for Dealers */
+                    secondary: '#d97706',   /* amber-gold */
+                    surface: '#f0f4f8',
+                    'surface-container': '#e2e8f0',
+                    'surface-container-low': '#ffffff',
+                    'surface-container-high': '#cbd5e1',
+                    'on-surface': '#0f172a',
+                    'on-surface-variant': '#334155',
+                    'outline-variant': 'rgba(14, 116, 144, 0.2)'
+                },
+                fontFamily: {
+                    headline: ['Epilogue', 'serif'],
+                    body: ['Manrope', 'sans-serif']
+                }
+            }
+        }
+    }
+    </script>
+</head>
+<body class="bg-[#f4f9f4] text-on-surface font-body selection:bg-primary selection:text-white">
+    <nav class="fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-4 bg-white/80 backdrop-blur-md border-b border-outline-variant">
+        <div onclick="window.location.href='index.html'" class="flex items-center gap-2 cursor-pointer">
+            <span class="text-2xl font-bold tracking-tighter text-on-surface font-headline">🌾 AgroHarvest</span>
+            <div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+            <span class="text-[10px] uppercase tracking-[0.2em] font-black text-primary">Dealer Hub</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant cursor-pointer" onclick="window.location.href='settings.html'">
+                <div class="text-right hidden sm:block">
+                    <p class="text-[9px] font-bold uppercase tracking-widest text-primary opacity-60 leading-none mb-1">Authorized Dealer</p>
+                    <p id="navDealerName" class="text-xs font-black text-on-surface leading-none">Dealer Name</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-surface-container border-2 border-primary/20 flex items-center justify-center overflow-hidden">
+                    <span class="material-symbols-outlined text-primary">storefront</span>
+                </div>
+            </div>
+            <button onclick="window.location.href='signin.html'" class="text-on-surface-variant hover:text-red-500 font-bold tracking-tight text-sm flex items-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-sm">logout</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="flex pt-20 h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 border-r border-outline-variant flex flex-col p-6 space-y-8 bg-surface-container-low/50">
+            <div class="space-y-2">
+                <button onclick="switchTab('inventory')" id="tab-inventory" class="w-full flex items-center gap-4 p-3 rounded-2xl bg-primary text-white font-bold transition-all shadow-lg active-tab">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="text-xs uppercase tracking-widest text-left">Store Inventory</span>
+                </button>
+                <button onclick="switchTab('orders')" id="tab-orders" class="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">receipt_long</span>
+                    <span class="text-xs uppercase tracking-widest text-left group-hover:text-on-surface">Farmer Orders</span>
+                </button>
+                <button onclick="switchTab('tracking')" id="tab-tracking" class="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">local_shipping</span>
+                    <span class="text-xs uppercase tracking-widest text-left group-hover:text-on-surface">Logistics</span>
+                </button>
+                <a href="marketplace.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary text-secondary">storefront</span>
+                    <span class="text-xs uppercase tracking-widest group-hover:text-on-surface">Agro Store</span>
+                </a>
+                <a href="dealer_earnings.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">analytics</span>
+                    <span class="text-xs uppercase tracking-widest text-left group-hover:text-on-surface">Sales Analysis</span>
+                </a>
+                <a href="market_trends.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">trending_up</span>
+                    <span class="text-xs uppercase tracking-widest text-left group-hover:text-on-surface">Live Market</span>
+                </a>
+                <a href="dealer_settings.html" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container text-on-surface-variant transition-all font-bold group">
+                    <span class="material-symbols-outlined group-hover:text-primary">settings</span>
+                    <span class="text-xs uppercase tracking-widest text-left group-hover:text-on-surface">Store Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar pb-32">
+            
+            <!-- Tab: Inventory -->
+            <section id="content-inventory" class="tab-content transition-all duration-300">
+                <header class="flex justify-between items-end mb-10">
+                    <div>
+                        <span class="text-[10px] font-black tracking-[0.3em] text-primary uppercase mb-2 block">Stock Management</span>
+                        <h1 class="font-headline text-5xl font-black text-on-surface tracking-tighter">Inventory Ledger <span id="productCount" class="text-primary/40 text-3xl font-normal">(0)</span></h1>
+                    </div>
+                    <button onclick="openModal()" class="btn-agro bg-primary text-white flex items-center gap-3 px-6 py-4 rounded-3xl font-black text-sm uppercase tracking-widest hover:brightness-110 hover:-translate-y-1 transition-all shadow-xl">
+                        <span class="material-symbols-outlined">add_circle</span> Add Equipment
+                    </button>
+                </header>
+
+                <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Products will load here -->
+                    <div id="emptyState" class="col-span-full py-20 text-center bg-white border border-outline-variant rounded-[3rem] border-dashed">
+                        <span class="material-symbols-outlined text-6xl text-primary/10 mb-4 block">precision_manufacturing</span>
+                        <h2 class="font-headline text-2xl font-bold text-on-surface">No equipment listed</h2>
+                        <p class="text-on-surface-variant mt-2">Start adding machinery, tools, or supplies to your digital store.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Orders -->
+            <section id="content-orders" class="tab-content hidden transition-all duration-300">
+                <header class="mb-10">
+                    <span class="text-[10px] font-black tracking-[0.3em] text-primary uppercase mb-2 block">Sales History</span>
+                    <h1 class="font-headline text-5xl font-black text-on-surface tracking-tighter">Farmer Requests</h1>
+                </header>
+                <div id="ordersList" class="space-y-4">
+                    <!-- Orders will load here -->
+                    <div class="py-20 text-center bg-white border border-outline-variant rounded-[3rem] border-dashed">
+                        <span class="material-symbols-outlined text-6xl text-primary/10 mb-4 block">receipt</span>
+                        <h2 class="font-headline text-2xl font-bold text-on-surface">No active orders</h2>
+                        <p class="text-on-surface-variant mt-2">Farmers will place orders for your products through the market.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Tracking -->
+            <section id="content-tracking" class="tab-content hidden transition-all duration-300">
+                <header class="mb-10">
+                    <span class="text-[10px] font-black tracking-[0.3em] text-primary uppercase mb-2 block">In-Transit Status</span>
+                    <h1 class="font-headline text-5xl font-black text-on-surface tracking-tighter">Logistics Overview</h1>
+                </header>
+                <div id="trackingView" class="bg-white border border-outline-variant rounded-3xl p-8 shadow-sm">
+                    <div class="flex items-center gap-4 mb-8 p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                        <span class="material-symbols-outlined text-primary text-3xl">map</span>
+                        <div>
+                            <h3 class="font-bold text-on-surface">Active Shipments</h3>
+                            <p class="text-xs text-on-surface-variant font-bold">Monitor your hardware and supplies in transit to farmers.</p>
+                        </div>
+                    </div>
+                    <div id="activeTrackingList" class="space-y-6">
+                        <!-- Tracking items -->
+                        <div class="flex justify-center py-10 opacity-50 italic text-sm">No shipments currently in transit.</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div id="addProductModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl bg-white rounded-[2.5rem] p-10 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="font-headline text-3xl font-black text-on-surface tracking-tighter">Add Store Item</h2>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="productForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="field-label px-1">Equipment / Supply Name</label>
+                    <input type="text" id="itemName" class="field-input w-full" placeholder="e.g. Sonalika Tractor RX 45">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="field-label px-1">Price (रू)</label>
+                        <input type="number" id="itemPrice" class="field-input w-full" placeholder="0.00">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="field-label px-1">Quantity in Stock</label>
+                        <input type="text" id="itemQty" class="field-input w-full" placeholder="e.g. 5 units">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="field-label px-1">Category</label>
+                    <select id="itemCategory" class="field-input w-full bg-surface-container">
+                        <option value="Machinery">Machinery & Tractors</option>
+                        <option value="Tools">Agricultural Tools</option>
+                        <option value="Fertilizer">Fertilizers & Soil</option>
+                        <option value="Pesticides">Pesticides & Seeds</option>
+                        <option value="Irrigation">Irrigation Supplies</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="field-label px-1">Product Image (Optional)</label>
+                    <div class="relative group h-48 border-2 border-dashed border-outline-variant rounded-3xl flex items-center justify-center overflow-hidden hover:border-primary transition-all cursor-pointer">
+                        <input type="file" onchange="handleImage(event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                        <div id="uploadPlaceholder" class="text-center group-hover:scale-105 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-4xl text-primary opacity-40">cloud_upload</span>
+                            <p class="text-xs font-bold text-on-surface-variant mt-2 uppercase tracking-widest">Tap to upload</p>
+                        </div>
+                        <img id="imagePreview" class="hidden w-full h-full object-cover">
+                    </div>
+                </div>
+                <button type="button" onclick="saveItem()" class="btn-agro bg-primary text-white w-full justify-center py-4 rounded-full font-black text-lg mt-4 shadow-xl hover:brightness-110 transition-all">
+                    Register Product
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] hidden scale-up">
+        <div class="bg-primary text-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3">
+            <span class="material-symbols-outlined">verified</span>
+            <span id="toastMsg" class="font-bold tracking-tight">Product listed successfully!</span>
+        </div>
+    </div>
+
+    <script>
+        // --- Access Control ---
+        const _role = localStorage.getItem('userRole');
+        if (!_role) { window.location.href = 'signin.html'; }
+        else if (_role !== 'dealer') {
+            const _map = { farmer: 'dashboard.html', agent: 'agent_dashboard.html', customer: 'marketplace.html' };
+            window.location.href = _map[_role] || 'signin.html';
+        }
+
+        const dealerName = localStorage.getItem('farmerName') || 'Authorized Dealer';
+        document.getElementById('navDealerName').textContent = dealerName;
+
+        let activeImage = null;
+
+        function openModal() { document.getElementById('addProductModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('addProductModal').classList.add('hidden'); }
+
+        function handleImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (re) => {
+                const img = new Image();
+                img.onload = () => {
+                    const MAX = 800;
+                    let { width, height } = img;
+                    if (width > MAX || height > MAX) {
+                        if (width > height) { height = Math.round(height * MAX / width); width = MAX; }
+                        else                { width  = Math.round(width  * MAX / height); height = MAX; }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width; canvas.height = height;
+                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                    activeImage = canvas.toDataURL('image/jpeg', 0.75);
+                    document.getElementById('imagePreview').src = activeImage;
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                    document.getElementById('uploadPlaceholder').classList.add('hidden');
+                };
+                img.src = re.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function saveItem() {
+            const name = document.getElementById('itemName').value;
+            const price = document.getElementById('itemPrice').value;
+            const qty = document.getElementById('itemQty').value;
+            const category = document.getElementById('itemCategory').value;
+
+            if (!name || !price || !qty) {
+                alert("Please fill in item details.");
+                return;
+            }
+
+            const product = {
+                name,
+                yield: qty,
+                price: Number(price),
+                date: new Date().toISOString().split('T')[0],
+                farmerName: dealerName,
+                image: activeImage,
+                category
+            };
+
+            try {
+                const res = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast("Product listed in dealer catalog!");
+                    closeModal();
+                    loadInventory();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 3000);
+        }
+
+        async function loadInventory() {
+            try {
+                const res = await fetch('/api/products');
+                const products = await res.json();
+                const dealerItems = products.filter(p => p.farmer_name === dealerName);
+                
+                document.getElementById('productCount').textContent = `(${dealerItems.length})`;
+                const grid = document.getElementById('productGrid');
+                
+                if (dealerItems.length > 0) {
+                    grid.innerHTML = dealerItems.map(p => `
+                        <div id="product-${p.id}" class="bg-white border border-outline-variant rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all group relative">
+                            <div class="h-48 bg-surface-container relative overflow-hidden">
+                                ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center opacity-20"><span class="material-symbols-outlined text-6xl">precision_manufacturing</span></div>`}
+                                <div class="absolute top-4 left-4 bg-primary text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">${p.category}</div>
+                                
+                                <button onclick="deleteItem(${p.id})" class="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-md text-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg hover:bg-red-500 hover:text-white">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </button>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-headline text-xl font-bold text-on-surface truncate">${p.name}</h3>
+                                <div class="flex justify-between items-center mt-4">
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-black">Price per unit</p>
+                                        <p class="text-xl font-black text-primary">रू ${p.price}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-black">In Stock</p>
+                                        <p class="text-sm font-bold text-on-surface">${p.yield}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    grid.innerHTML = document.getElementById('emptyState').outerHTML;
+                }
+            } catch(e) {}
+        }
+
+        async function deleteItem(id) {
+            if (!confirm("Are you sure you want to remove this item from your catalog?")) return;
+            try {
+                const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                const result = await res.json();
+                if (result.success) {
+                    showToast("Item removed from inventory.");
+                    loadInventory();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+            
+            document.querySelectorAll('aside button').forEach(b => b.classList.remove('bg-primary', 'text-white'));
+            document.querySelectorAll('aside button').forEach(b => b.classList.add('hover:bg-surface-container', 'text-on-surface-variant'));
+            
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.remove('hover:bg-surface-container', 'text-on-surface-variant');
+            activeBtn.classList.add('bg-primary', 'text-white');
+
+            if (tab === 'orders') loadOrders();
+            if (tab === 'tracking') loadTracking();
+        }
+
+        async function loadOrders() {
+            try {
+                const res = await fetch('/api/orders');
+                const orders = await res.json();
+                // Find orders where one of the items was from this dealer
+                const dealerOrders = orders.filter(o => {
+                    const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+                    return Array.isArray(items) && items.some(i => i.farmerName === dealerName);
+                });
+
+                const list = document.getElementById('ordersList');
+                if (dealerOrders.length > 0) {
+                    list.innerHTML = dealerOrders.map(o => {
+                        const canAccept = o.status === 'Processing';
+                        const actionBtn = canAccept ? `
+                            <button onclick="acceptOrder(${o.id})" class="btn-agro bg-primary text-white px-4 py-2 rounded-xl text-[10px] shadow-md hover:brightness-110">
+                                <span class="material-symbols-outlined text-sm">handshake</span> Accept
+                            </button>` : '';
+
+                        return `
+                        <div class="bg-white border border-outline-variant rounded-3xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 group hover:border-primary transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                    <span class="material-symbols-outlined">shopping_cart_checkout</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-on-surface">Order #${o.id} <span class="text-primary/40 text-xs ml-2">via Farmer Ledger</span></h4>
+                                    <p class="text-xs font-bold text-on-surface-variant mt-0.5 uppercase tracking-widest">Customer: ${o.customer_name}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-10">
+                                <div class="text-center">
+                                    <p class="text-[9px] uppercase font-black text-on-surface-variant opacity-50 mb-1">Status</p>
+                                    <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-secondary/10 text-secondary rounded-full border border-secondary/20">${o.status}</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[9px] uppercase font-black text-on-surface-variant opacity-50 mb-1">Revenue</p>
+                                    <p class="text-lg font-black text-primary leading-none">रू ${o.total}</p>
+                                </div>
+                                ${actionBtn}
+                            </div>
+                        </div>
+                    `;}).join('');
+                }
+            } catch(e) {}
+        }
+
+        async function acceptOrder(id) {
+            try {
+                const res = await fetch(`/api/orders/${id}/accept`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ farmerName: dealerName })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast("Order accepted for shipment!");
+                    loadOrders();
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadTracking() {
+            try {
+                const res = await fetch('/api/orders');
+                const orders = await res.json();
+                const trackingOrders = orders.filter(o => {
+                    const items = typeof o.items === 'string' ? JSON.parse(o.items) : o.items;
+                    return Array.isArray(items) && items.some(i => i.farmerName === dealerName) && o.status !== 'Delivered';
+                });
+
+                const list = document.getElementById('activeTrackingList');
+                if (trackingOrders.length > 0) {
+                    list.innerHTML = trackingOrders.map(o => {
+                        const steps = ['Processing', 'Accepted', 'In Transit', 'Delivered'];
+                        const currentIdx = steps.indexOf(o.status);
+                        
+                        return `
+                        <div class="border border-outline-variant rounded-2xl p-6 bg-surface-container/30">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h4 class="font-bold text-on-surface">Tracking Supply Shipment #${o.id}</h4>
+                                    <p class="text-xs text-on-surface-variant font-bold mt-1">Destination: ${o.address || 'Central Ag Hub'}</p>
+                                </div>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">${o.status}</span>
+                            </div>
+                            
+                            <!-- Tracking Bar -->
+                            <div class="relative pt-4 pb-8">
+                                <div class="absolute top-1/2 left-0 w-full h-1 bg-surface-container -translate-y-1/2 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary transition-all duration-1000" style="width: ${(currentIdx/3)*100}%"></div>
+                                </div>
+                                <div class="relative flex justify-between">
+                                    ${steps.map((s, i) => `
+                                        <div class="flex flex-col items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full border-2 ${i <= currentIdx ? 'bg-primary border-primary text-white' : 'bg-white border-outline-variant text-on-surface-variant'} flex items-center justify-center transition-all z-10">
+                                                <span class="material-symbols-outlined text-sm font-black">${i <= currentIdx ? 'check' : 'radio_button_unchecked'}</span>
+                                            </div>
+                                            <span class="text-[9px] font-black uppercase tracking-widest ${i <= currentIdx ? 'text-primary' : 'text-on-surface-variant opacity-40'}">${s}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
+            } catch(e) {}
+        }
+
+        async function loadMarketPulse() {
+            try {
+                const res = await fetch('/api/market-data');
+                const data = await res.json();
+                const grid = document.getElementById('dealerMarketPulse');
+                if (data.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full py-6 text-center opacity-40">Market data sync pending.</div>';
+                    return;
+                }
+                grid.innerHTML = data.slice(0, 4).map(item => `
+                    <div class="bg-white border border-outline-variant p-6 rounded-[2rem] shadow-sm hover:translate-y-[-2px] transition-all">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-[9px] font-black uppercase tracking-widest text-[#d97706]">Price Index</span>
+                            <div class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></div>
+                        </div>
+                        <h4 class="text-sm font-black text-on-surface line-clamp-1 mb-3">${item.name}</h4>
+                        <div class="bg-surface-container rounded-xl p-3">
+                            <div class="flex justify-between text-[10px] font-bold">
+                                <span class="text-on-surface-variant">Avg Rate</span>
+                                <span class="text-primary font-black text-xs">रू ${item.avg}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        loadInventory();
+        loadMarketPulse();
+        setInterval(loadInventory, 30000); // 30s refresh
+        setInterval(loadMarketPulse, 300000); // 5m refresh
+    </script>
+<script src="chat.js"></script>
+</body>
+</html>

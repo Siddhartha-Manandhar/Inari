@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AgroHarvest | Web Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700;800&family=Manrope:wght@300;400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#16a34a',     /* green-600 */
+                        secondary: '#d97706',   /* amber-gold */
+                        surface: '#f4f9f4',
+                        'surface-container': '#e8f5e9',
+                        'surface-container-low': '#ffffff',
+                        'on-surface': '#064e3b',
+                        'on-surface-variant': '#14532d',
+                        'outline-variant': 'rgba(22, 163, 74, 0.2)'
+                    },
+                    fontFamily: {
+                        headline: ['Epilogue', 'serif'],
+                        body: ['Manrope', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ghost-border {
+            border: 1px solid rgba(22, 163, 74, 0.3);
+        }
+
+        /* Animation Styles */
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0) rotateX(2deg) rotateY(-2deg); }
+            50% { transform: translateY(-15px) rotateX(-2deg) rotateY(2deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); filter: blur(40px); }
+            50% { opacity: 0.6; transform: scale(1.1); filter: blur(60px); }
+        }
+
+        @keyframes shimmerSweep {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            20% { transform: translateX(200%) rotate(45deg); }
+            100% { transform: translateX(200%) rotate(45deg); }
+        }
+
+        .animate-float-3d {
+            animation: float3D 6s ease-in-out infinite;
+            perspective: 1000px;
+        }
+
+        .animate-pulse-glow {
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+
+        .shimmer-overlay {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(217, 119, 6, 0) 40%,
+                rgba(217, 119, 6, 0.4) 50%,
+                rgba(217, 119, 6, 0) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            animation: shimmerSweep 8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 25;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-white">
+    <header class="fixed top-0 w-full z-50 glass flex justify-between items-center px-8 py-6 w-full shadow-sm">
+        <div class="text-2xl font-bold tracking-tighter text-on-surface font-headline flex items-center gap-2">
+            🌾 AgroHarvest
+        </div>
+        <div class="flex items-center gap-6">
+            <span class="material-symbols-outlined text-on-surface hover:text-secondary cursor-pointer transition-colors duration-300">account_circle</span>
+        </div>
+    </header>
+    <main class="flex-grow flex flex-col lg:flex-row items-center justify-center pt-24 pb-12 relative">
+        <div class="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-[600px] h-[600px] rounded-full bg-primary blur-[120px]"></div>
+            <div class="absolute bottom-0 left-0 w-full h-[50%] bg-gradient-to-t from-secondary/10 to-transparent"></div>
+        </div>
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 pt-10">
+            <div class="lg:col-span-6 flex flex-col items-start space-y-8 animate-fade-in">
+                <div class="inline-flex items-center space-x-3 px-4 py-1.5 rounded-full bg-surface-container-low ghost-border shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    <span class="text-secondary font-bold text-xs tracking-widest uppercase">4S Nexus</span>
+                </div>
+                <h1 class="font-headline text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-on-surface leading-[1]">
+                    Hami Char <br/>
+                    <span class="text-primary italic">daju</span> bhai
+                </h1>
+                <p class="font-body text-lg text-on-surface-variant max-w-md leading-relaxed">
+                    Bridging ancient wisdom with precision agriculture. Manage your harvest through the lens of ritual intelligence and modern craftsmanship.
+                </p>
+                <div class="flex flex-wrap gap-5 pt-4">
+                    <button onclick="window.location.href='signin.html'" class="bg-primary text-white px-10 py-4 rounded-full font-bold tracking-tight text-lg transform transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-110 active:translate-y-0.5 active:shadow-inner flex items-center gap-3 shadow-lg group">
+                        Sign In
+                        <span class="material-symbols-outlined text-sm transition-transform duration-500 ease-in-out group-hover:translate-x-1.5">arrow_forward</span>
+                    </button>
+                    <button onclick="window.location.href='signup.html'" class="bg-surface-container-low text-secondary px-10 py-4 rounded-full font-bold tracking-tight text-lg transform transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg hover:border-secondary active:translate-y-0.5 active:shadow-inner border border-outline-variant shadow-sm shadow-[0_4px_14px_0_rgba(217,119,6,0.1)]">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+            <div class="lg:col-span-6 flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-lg aspect-square mt-8 lg:mt-0">
+                    <div class="absolute inset-0 bg-primary opacity-20 rounded-3xl blur-3xl transform rotate-6 animate-pulse-glow"></div>
+                    <div class="relative z-20 w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-[rgba(22,163,74,0.3)] flex items-center justify-center bg-surface-container animate-float-3d bg-white">
+                        <div class="shimmer-overlay"></div>
+                        <img class="w-4/5 h-4/5 object-contain relative z-10 drop-shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoUD8YOmJddeN3OJFKM3Y818bUoiQRF9U4qP9CK9FSQmnIhvGEir05erANIWHagLXi1KTj4ODAcBcldCZkDdPqWlkVlxHTbzJGHFRuV_t8LyCEG5S7Xf8HRG-6M1H2X9hDnvRlX_v0ymmJnampRyzjZvsYeCyACLWA1vJT6-m08HweEg2VVimWY9IXG2lDHq5Lpko5Pfux4vstHdiDXPq7YUqH7b2XT_1Lvkvvz7SDy_cdn8UYl3nSGR3mJgamoFne1e_reJhTZFJy" alt="Kitsune Mask"/>
+                        <div class="absolute bottom-6 right-6 flex space-x-2 z-30">
+                            <div class="w-1.5 h-12 bg-[#c8e6c9] rounded-full overflow-hidden flex flex-col justify-end">
+                                <div class="w-full h-3/4 bg-secondary"></div>
+                            </div>
+                            <div class="w-1.5 h-12 bg-[#c8e6c9] rounded-full overflow-hidden flex flex-col justify-end">
+                                <div class="w-full h-1/2 bg-secondary"></div>
+                            </div>
+                            <div class="w-1.5 h-12 bg-[#c8e6c9] rounded-full overflow-hidden flex flex-col justify-end">
+                                <div class="w-full h-full bg-secondary"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-8 -left-8 w-24 h-24 border-t-4 border-l-4 border-secondary/40 rounded-tl-3xl opacity-70"></div>
+                    <div class="absolute -bottom-8 -right-8 w-24 h-24 border-b-4 border-r-4 border-primary/40 rounded-br-3xl opacity-70"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full mt-auto bg-surface border-t border-outline-variant">
+        <div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 w-full max-w-7xl mx-auto gap-8">
+            <div class="flex flex-col items-center md:items-start space-y-2">
+                <div class="text-lg font-bold text-on-surface font-headline">Editorial Harvest</div>
+                <div class="font-manrope text-sm tracking-wide text-on-surface-variant font-medium">© 2026 AgroHarvest. All rights reserved.</div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-6 md:gap-12">
+                <div class="flex flex-col items-center md:items-end font-manrope text-sm tracking-wide text-on-surface-variant font-bold">
+                    <span class="hover:text-primary transition-colors cursor-pointer">+9779808128988</span>
+                    <span class="hover:text-primary transition-colors cursor-pointer">contact@agroharvest.com</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a class="text-on-surface-variant font-bold hover:text-primary transition-all font-manrope text-sm" href="#">Privacy Policy</a>
+                    <a class="text-on-surface-variant font-bold hover:text-primary transition-all font-manrope text-sm" href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
